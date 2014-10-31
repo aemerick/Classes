@@ -1,0 +1,204 @@
+\documentclass[12pt]{article}% uses letterpaper by default
+
+%---------- Uncomment one of them ------------------------------
+\usepackage[includeheadfoot, top=.5in, bottom=.5in, hmargin=1in]{geometry}
+
+% \usepackage[a5paper, landscape, twocolumn, twoside,
+%    left=2cm, hmarginratio=2:1, includemp, marginparwidth=43pt,
+%    bottom=1cm, foot=.7cm, includefoot, textheight=11cm, heightrounded,
+%    columnsep=1cm, dvips,  verbose]{geometry}
+%---------------------------------------------------------------
+\usepackage{fancyhdr}
+\usepackage{verbatim}
+\usepackage{url}
+\pagestyle{fancy}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage[pdftex]{graphicx}
+\usepackage[english]{babel}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{}
+%\doublespacing
+\singlespacing
+
+\chead{Wed. 7-10 p.m., Pupin 1402}
+\lhead{ASTRONOMY LAB II} \rhead{Fall 2014}
+\renewcommand{\rightmark}{}
+\lfoot{Emerick}
+
+\newcommand{\degrees}{\ensuremath{^\circ}}
+\newcommand{\arcmin}{\ensuremath{'}}
+\newcommand{\arcsec}{\ensuremath{"}}
+\newcommand{\hours}{\ensuremath{^\mathrm{h}}}
+\newcommand{\minutes}{\ensuremath{^\mathrm{m}}}
+\newcommand{\seconds}{\ensuremath{^\mathrm{s}}}
+
+
+
+\begin{document}
+
+
+\begin{flushleft}
+\begin{center}
+
+\Large\textbf{Lab 1: Orders of Magnitude, Distance, and Parallax}
+\end{center}
+
+\vspace{20 pt}
+
+\paragraph{}
+Today we'll explore some fundamental concepts used in astronomy. Astronomy is a field of extremes, from the small scales of atoms involved in the nuclear reactions that power the sun, all the way to the size of our Universe. When dealing with such a large range of scales, astronomers need a way to easily talk about size. Today we will learn how to do this accurately. We will then apply what we know to one of the most fundamental problems in astronomy: figuring out the distances between objects in our galaxy and beyond.
+
+\section{Scales of the Universe}
+\subsection{Orders of Magnitude}
+\paragraph{}
+Scientists use orders of magnitude to describe anything involving very large numbers, or a range of scales. In this lab, we will focus on using orders of magnitude to describe the size of objects or the distances between two objects. In many cases, it is not necessary to know an object's precise size. It may even be impossible to measure with great precision. In these cases, using orders of magnitude becomes valuable. Strictly speaking, the order of magnitude of a value is the "power of ten" that is closest to that value. Although the Sun's radius is $695,000,000$~m, it is often sufficient to consider its radius to be a billion meters (this is usually phrased as it has a radius \textit{on the order of} a billion meters). Determining the order of magnitude of a value becomes very easy when writing numbers in scientific notation (as we will do in a minute).  
+
+\paragraph{}
+I gave the Sun's radius with many zeros, but we can write it in a more compact way by using scientific notation.  To write a number in scientifc notation, find the first non-zero digit in the highest place (the left-most, non-zero number; in this case it's the 6), and put the decimal point after that digit.  By counting how many places you had to move the decimal to do this, you can obtain the power of ten (in this case, its 8; check my math!). If you had to move the decimal place to the left (as we did here), the power of ten is positive. If you had to move the decimal place to the right (i.e. the number is less than 1), then the power of ten is negative. By doing this, we can write the Sun's radius in scientific notation as $6.95\times10^8$ m (\textit{always remember units!}). As an example for numbers less than one, the size of an ant is about 0.0081 m. The left-most, non-zero number here is 8. Placing the decimal after 8 requires moving it three times to the right (to the right = negative power). The size of an ant in scientific notation is 8.1 $\times$ 10$^{-3}$ m.
+ 
+\paragraph{}
+While it's tempting to take the power of ten given in scientific notation as an object's order of magnitude, be careful.  You need to round the number up or down to the nearest power of 10 (you round up to 10, or down to 1).  This is true for the Sun's radius - the power of ten used in scientific notation is 8, but since 6.95 in 6.95$\times$10$^8$ m rounds \emph{up} to 10, the order of magnitude is 10$\times$10$^8$ m, or 10$^9$ m. The same applies for negative powers as well. Take the ant, for example. You would round \emph{up} here as well, to 10$\times$10$^{-3}$ m . This means that the order of magnitude for the ant is 10$^{-2}$ m.
+
+\paragraph{}
+For practice, find the order of magnitude of the following.  Don't forget to include the unit! If the number is not already in scientific notation, convert it!
+\begin{enumerate}
+\item \textbf{The Bohr Radius}, or the radius of a hydrogen atom, $5.3 \times 10^{-11}$ m %10^-10 m
+\item \textbf{Your height in inches}
+\item \textbf{The Empire State Building} 358 m. %10^2 m
+\item \textbf{The diameter of our Milky Way galaxy} 1.08 $\times$ 10$^{21}$ m
+\item \textbf{The Universe} $4.32 \times 10^{26}$ meters
+\item \textbf{A leap year} 366 days
+\item \textbf{The mass of the Hubble Space Telescope} 11,110 kg
+\end{enumerate}
+
+\subsection{Unit Conversions}
+\paragraph{}
+Now look at some measurements that are \emph{not} given in meters.  To find their orders of magnitude, you'll first need to convert the value from the given units to meters.  
+\paragraph{}
+Centimeters, inches, miles, and meters are examples of different units.  When reporting a measurement it is very important to include the unit.  Every number we will deal with in this lab represents something and requires a unit.  Class is not 3 long - it is 3 \emph{hours} long; the Brooklyn Bridge is not 1.13 long - it is 1.13 \emph{miles} long.  
+\paragraph{}
+To convert units, it's best to multiply the value by a fraction that is equal to one. For example, to convert 2 years into days, I would multiply 2 by the number of days in a year, or 2 years $\times$ 365 days / 1 year = 730 days. This works the other way too. Say I want to convert 2500 ft to miles, I would take 2500 ft $\times$ 1 mile / 5280 ft = 0.47 mi. Sometimes, it may take several steps to reach the unit you want.  For example, to convert 2.3 years to hours:
+
+\begin{equation}
+2.3~years \left(\frac{365~days}{1~year}\right) \left(\frac{24~hours}{1~day}\right) = 20148~hours \approx 10^4~hours
+\end{equation}
+
+In the following problems, convert the given values to meters, then give the order of magnitude.  Use the table given below. Especially if the conversion requires multiple steps, always make sure to keep track of your units as you go.  
+\begin{enumerate}
+\item \textbf{Humans} Let's put it at 5'9'', or use your own height if you wish. %5.75 fit = 1.75*10^0 m, or 1 m
+\item \textbf{Distance from the Sun to the nearest star} 4.243 ly % 4.01*10^16 m
+\item \textbf{One Mile}
+\item \textbf{The radius of the Earth} 6,371 km %10^7 m
+\item \textbf{The Hubble Space Telescope (length)} 43.5 ft
+\end{enumerate}
+
+\paragraph{}
+\begin{tabular}{cc}
+\hline
+\hline
+{\bf1 of these} & {\bf= this many of these} \\
+\hline
+1 inch ($''$) & 2.54 centimeter (cm) \\
+1 meter (m) & 100 cm \\
+1 kilometer (km) & 1000 m \\
+1 foot ($'$) & 12$''$ \\
+1 mile & 6285$'$ \\
+1 Astronomical Unit (AU*) & $1.49\times10^8$ km \\
+1 light-year (ly) & $9.46\times10^{12}$ km \\
+1 light-year (ly) & 63241 AU \\
+\hline
+\hline
+*1 AU = the distance from Earth to the Sun
+\end{tabular}
+
+\subsection{Order of Magnitude Differences}
+Orders of magnitude are great for making (rough) comparisons. The Sun is about $10^6$ times larger than the Earth, or six orders of magnitude larger.  New York City has a population an order of magnitude greater than North Dakota.
+
+To calculate the order of magnitude difference between thing A and thing B, you divide their orders of magnitude (OOM):
+\begin{equation}
+\frac{OOM(A)}{OOM(B)}
+\end{equation}
+
+When doing this, however, you must make sure you are comparing two values with the same units! Remember that when you divide two of the same number with different exponents, you simply subtract the bottom exponent from the top exponent:
+
+\begin{equation}
+\frac{10^x}{10^y} = 10^{x-y}
+\end{equation}
+
+Here are some questions to practice this:
+\begin{enumerate}
+\item The distance from Earth to the Sun is called an Astronomical Unit (AU).  What's the order of magnitude difference between our distance from the Sun and the radius of the Earth?
+\item What's the order of magnitude difference between Earth's distance from the Sun and the distance to the nearest star? Now compare 1 AU to the size of the Milky Way galaxy.
+\item Without measuring anything, estimate the order of magnitude difference between the length of the hallway and the thickness of a human hair. Make reasonable assumptions in whichever units you wish, and convert those to meters.  Show your work. % Hallway: 10 or 100 m, Hair: 0.1 mm (~200 microns), so 10^5 difference
+\end{enumerate}
+
+\subsection{Powers of Ten}
+\paragraph{}
+We're going to watch a short movie on powers of ten.
+\begin{enumerate} 
+\item Why is it useful for scientists to use scientific notation and orders of magnitude when describing things in the universe?
+\end{enumerate}
+
+\section{Parallax}
+\emph{By M. Salem}
+\begin{figure}[tb]
+\center
+\includegraphics[width=0.9\linewidth]{parallaxstar1.png}
+\caption{\small An illustration of Parallax. The foreground (nearby) star appears to shift positions when observed six months apart (in July and January). By measuring the full angle and dividing by 2, you can get the parallax angle, p. Using some trigonometry, since we know the distance from the Earth to the Sun, you can calculate the distance to the star (d).}
+\label{parallax}
+\end{figure}
+
+\paragraph{}
+Distance to objects in space is a very important piece of information in astronomy. Unfortunately, it's also very hard to obtain. We start the semester with a very simple method, used for the closest stars in our solar neighborhood: Parallax.
+\paragraph{}
+As the Earth orbits the Sun, the position of nearby stars, with respect to far away background stars, appears to shift. Measuring the total angle of shift can give us a measure of distance to the nearby star. This is the parallax method, illustrated in Figure \ref{parallax}.  We'll use this method to find the distance to two different stars.
+
+\begin{figure}[t]
+\center
+\includegraphics[width=0.9\linewidth]{stars.png}
+\caption{\small Motion of two stars due to parallax. Two images are taken of the same region of the sky, 6 months apart. These are superimposed on top of each other and show that the apparent position of star A and star B has moved, relative to everything else (the background stars).}
+\label{star}
+\end{figure}
+
+\subsection{Distance to a star}
+
+\paragraph{}
+Figure \ref{star} shows two stars in the same field observed 6 months apart.  We combined two images so you could see the shift the stars made in this time. Astronomers often use different units than degrees to describe an angle, since many times 1 degree is very large compared to the angular size of a given object. Astronomers often use arcseconds or arcminutes instead of degrees. There are 60 arcminutes in a degree, and 60 arcseconds in an arcminute. The scale in the upper right corner represents an angle of 0.1 arcseconds, written as 0.1'' (not 0.1 inches). 
+\paragraph{}
+In this section we will use a unit of measure called a parsec (pc).  A star 1 pc from the Sun will have a parallax angle of 1''.  In our equation for parallax, if we convert the parallax angle to arcseconds and the distances to pc, we find that $\theta=\frac{1}{d}$.  But remember!  For this form of the equation to hold, $\theta$ must be in arcseconds and d must be in pc.
+\begin{enumerate}
+\item What is the total angular shift for each star over this time period?  
+\item What is the parallax angle for each star?  
+\item What is the distance to each star, in parsecs?
+\item We can measure parallax angles up to about 0.005 arcseconds.  What is the maximum distance we can use parallax to determine distances?  
+\item Our galaxy is about 30 kpc in diameter.  What fraction of the galaxy's diameter can we measure distances out to using parallax?
+\end{enumerate}
+
+\subsection{Rooftop Parallax}
+
+\paragraph{}
+Our goal is to measure the distance from Pupin to a tower of Union Theological Seminary, across the street.
+\begin{enumerate}
+\item We need an instrument that measures angular sizes. Take an index card and cut a horizontal slot through the bottom of the card so it can be slid onto a meter stick.  On the top of the card cut a 1 cm wide notch.
+\item Next go up to the roof. Before we make any measurements, what order of magnitude is the distance to the tower (with units)?
+\item I'll show you where to stand. For consistency we will measure the distance to the back, left spire on Union's tower. You will notice that there is a building across the river in New Jersey that is behind this spire. As you walk back and forth along the railing you will see the spire shift position with respect to this background building.
+\item To begin, we must measure the angular size of the building in Jersey. This is what you need your meter stick for. Stand somewhere where you can see the entire building. Slide the notched index card onto the meter stick and hold the zero end up to your eye, pointing the other end toward the building.  Slide the card along the meter stick until the building fills the notch. Record the position of the card on the meter stick in your lab notebook.
+\item Now stand so that one edge of the spire is aligned with one side of the building.  Have one of your partners mark your position.  Next, walk along the railing until the same spire edge is aligned with the other side of the building.  Have your partner measure the distance between your two observation points.
+\item Down in the classroom, use your first measurement to calculate the angular size of the building. 
+\item What is the parallax angle in degrees? Now determine the distance to the seminary spire in meters. Does it agree with your order of magnitude estimate?
+\item Comment on the sources of uncertainty in your measurements.  What sources will affect the accuracy of your measurement and what sources will affect its precision? 
+\item According to google maps, the distance is about 150m.  What is the percent error in your measurement? The uncertainty in the google maps measurement is about 30 m. Does your answer fall within 30m of google maps answer? (\textbf{Note}: It does not have to. Don't change your answer if it is not. If you are outside this range, why do you think this happened?).
+\end{enumerate}
+
+\section{Conclusions}
+\begin{enumerate}
+\item Summarize the goals of tonight's lab.  Tell me what you learned (by that I mean explain the concepts that you learned.  For example, don't tell me that you learned that Earth is round, tell me how you know that Earth is round.)
+\item Was there anything you particularly enjoyed or disliked?
+\item Do you have any comments or questions? Anything you would like to know more about?
+\end{enumerate}
+
+\end{flushleft}
+\end{document}

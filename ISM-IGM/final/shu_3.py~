@@ -1,0 +1,158 @@
+import numpy as np
+import scipy.optimize as opt
+import matplotlib.pyplot as plt
+
+def overall_function(set_T, name, set_xe):
+
+    T = set_T
+    
+    solved_xe = set_xe
+
+    CR = 1.0E-17
+    eh = 50.0 * 1.6021772E-12 # ev - > erg
+    
+    def LC(T):
+        return 2.4E-24 * T**(-0.5) * np.exp(-91.0/T)
+    
+    def LH(T):
+        return 9.2E-17 * T**(0.5) * (1.0 + 17500.0/T) * np.exp(-118000.0/T)
+        
+    def alpha(T):
+        T_4 = T / 1.0E4
+        return 2.54E-13 * T_4 ** (-0.8163-0.0208*np.log(T_4))
+
+
+    def f_xe(xe):   
+    
+        return (alpha(T)*eh + LH(T))*xe - (LC(T)+LH(T))
+        
+    
+    def f_n(xe):
+    
+        num = CR*(1.0-solved_xe)*eh
+        denom = solved_xe*LC(T) + solved_xe*(1.0-solved_xe)*LH(T)
+
+        return num / denom
+        
+    fDict = {'xe': f_xe, 'n': f_n(solved_xe)}
+
+    return fDict[name]
+
+if __name__=="__main__":
+    N = 1000
+    
+    
+    Tall = np.logspace(1.0,5.0,N)    
+  
+    narray = np.zeros(N)
+    xearray = np.zeros(N)
+    P = np.zeros(N)
+  
+    i = 0
+    while i < np.size(Tall):
+        T = Tall[i]
+
+        xe = opt.fsolve(overall_function(T, 'xe', -1.0), 0.4)
+        #n  = opt.fsolve(overall_function(T, 'n' , xe), 0.001)
+        n = overall_function(T, 'n', xe)
+
+        P[i] = n*(1.0+xe)*T
+        narray[i] = n
+        xearray[i] = xe
+    
+        #nprev, neprev = n, ne
+        
+
+        i = i + 1
+        
+
+ #  print P
+#   print narray
+    CR = 1.0E-17
+    plt.loglog()
+    plt.plot(Tall,P)
+    plt.xlabel('T (K)')
+    plt.ylabel(r'P/k (cm$^{-3}$ K)')
+    plt.savefig("P_T.png")
+    plt.close()
+    
+    plt.loglog()
+    plt.plot(P,Tall)
+    plt.ylabel('T (K)')
+    plt.xlabel(r'P/k (cm$^{-3}$ K)')
+    plt.xlim(1E2,1E5)
+    plt.ylim(5E1,1E4)
+    plt.savefig("T_P.png")
+    plt.close()
+    
+    plt.loglog()
+    plt.plot(narray,P)
+    plt.xlabel(r'n (cm$^{-3}$)')
+    plt.ylabel(r'P/k (cm$^{-3}$ K)')
+    plt.savefig("P_n.png")
+    plt.close()
+    
+    plt.loglog()
+    plt.plot(Tall,narray)
+    plt.ylabel(r'n (cm$^{-3}$)')
+    plt.xlabel(r'T (K)')
+    plt.savefig("n_T.png")
+    plt.close()
+    
+    plt.loglog()
+    plt.plot(xearray*narray,P)
+    plt.xlabel(r'ne (cm$^{-3}$)')
+    plt.ylabel(r'P/k (cm$^{-3}$ K)')
+    plt.savefig("P_ne.png")
+    plt.close()
+  
+    
+    print np.min(n), np.max(n), np.average(n)
+    print np.min(xe),np.max(xe), np.average(xe)
+    CR = 1.0E-17
+    eh = 50.0 * 1.6021772E-12 # ev - > erg
+    
+    def LC(T):
+        return 2.4E-24 * T**(-0.5) * np.exp(-91.0/T)
+    
+    def LH(T):
+        return 9.2E-17 * T**(0.5) * (1.0 + 17500.0/T) * np.exp(-118000.0/T)
+        
+    def alpha(T):
+        T_4 = T / 1.0E4
+        return 2.54E-13 * T_4 ** (-0.8163-0.0208*np.log(T_4))
+
+
+
+    nearray = xearray*narray
+
+    QC = narray*nearray*LC(Tall) + nearray*(narray-nearray)*LH(Tall)
+    QH = CR*(narray-nearray)*eh
+    
+    
+    CRrate = CR*(narray - nearray)
+    alrate = nearray**2 * alpha(Tall)
+    
+    plt.loglog()
+    plt.plot(Tall,LC(Tall),label='QC')
+    plt.plot(Tall,LH(Tall),label='QH')
+    plt.ylim(np.min([np.min(QC),np.min(QH)]),np.max([np.max(QC),np.max(QH)]))
+    plt.xlabel(r'T (K)')
+    plt.ylabel(r'Q')
+    plt.legend(loc='best')
+    plt.savefig("Q_T.png")
+    plt.close()
+    
+    plt.loglog()
+
+    plt.plot(Tall,alpha(Tall),label='Alpha')
+    plt.xlabel(r'T (K)')
+    plt.ylabel(r'Rates')
+    plt.legend(loc='best')
+    plt.savefig("CR_alpha_T.png")
+    plt.close()
+    
+    
+
+
+    

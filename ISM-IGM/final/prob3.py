@@ -1,0 +1,76 @@
+import numpy as np
+import scipy.optimize as opt
+import matplotlib.pyplot as plt
+
+def overall_function(set_T):
+
+    T = set_T
+
+    def f(variables):
+
+    
+        CR = 1.0E-17
+        eh = 50.0 * 1.6021772E-12 # ev - > erg
+    
+        def LC(T):
+            return 2.4E-24 * T**(-0.5) * np.exp(-91.0/T)
+    
+        def LH(T):
+            return 9.2E-17 * T**(0.5) * (1.0 + 17500.0/T) * np.exp(-118000.0/T)
+        
+        def alpha(T):
+            T_4 = T / 1.0E4
+            return 2.54E-13 * T_4 ** (-0.8163-0.0208*np.log(T_4))
+    
+    
+    
+        (n,ne) = variables
+    
+        first_eq = n*ne*LC(T) + n*(n-ne)*LH(T) - CR*(n-ne)*eh
+        second_eq = ne*ne*alpha(T) - CR*(n-ne)
+    
+        return [first_eq, second_eq]
+    
+
+    return f
+
+if __name__=="__main__":
+    N = 1000
+    
+    
+    Tall = np.logspace(2,4,N)    
+  
+    narray = np.zeros(N)
+    nearray = np.zeros(N)
+    P = np.zeros(N)
+  
+    i = 0
+    nprev = 0.1
+    neprev = 0.5
+    while i < np.size(Tall):
+        T = Tall[i]
+        solution = opt.newton_krylov(overall_function(T), (nprev,neprev))
+    
+        (n,ne) = solution
+    
+        P[i] = (n+ne)*T
+        narray[i] = n
+        nearray[i] = ne
+    
+        #nprev, neprev = n, ne
+        
+
+        i = i + 1
+        
+        
+ #  print P
+#   print narray
+    plt.loglog()
+    plt.plot(Tall,P)
+    plt.xlabel('T (K)')
+    plt.ylabel(r'P/k (cm^{-3} K)')
+    plt.savefig("P_T.png")
+    
+    
+    
+    

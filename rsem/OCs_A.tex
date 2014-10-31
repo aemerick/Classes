@@ -1,0 +1,333 @@
+% MDMPROP.TEX -- MDM electronic proposal form.
+% Revision: September 4, 2003 --- valid for the Fall 2011 observing semester.
+% DEADLINE: 5:00 PM Friday, April 15, 2011
+%
+% General Instructions:
+%
+%   I. Where/how/when to submit this form:
+%
+%      Give a paper copy to Jules or his mailbox on the 10th floor
+%      of Pupin by the above deadline, or email the postscript or
+%      pdf file to jules@astro.columbia.edu.
+%
+% THE FORM STARTS HERE
+
+% please don't modify or delete this line.
+\documentstyle[mdmprop,11pt]{article}
+
+\begin{document}
+
+% Give a descriptive title for the proposal in the \title command.
+%
+%    \title{TEXT}
+%
+% Note that a title can be quite long; LaTeX will break the title into
+% separate lines automatically.  If you wish to indicate line breaks
+% yourself, do so with a `\\' command at the appropriate point in
+% the title text.
+
+\title{Spectroscopic follow-up of PTF observations of open clusters}
+
+% Investigator's (PI and CoI) information blocks.
+%
+% The PI must be affiliated with Columbia University.
+% Please give each investigator's name, email address.
+% At least one investigator must be listed as definitely
+% being present at the telescope.
+%
+%    \name{OBSERVER NAME}
+%    \emailaddress{EMAIL ADDRESS}
+%    \atthetelescope{Y/N}
+%
+% DO NOT remove the \begin{PI} and \end{PI} or the \begin{CoI} and
+% \end{CoI} lines.
+
+\begin{PI}
+\name{Marcel Ag\"ueros}			% REQUIRED
+\emailaddress{marcel@astro.columbia.edu}		% REQUIRED
+\atthetelescope{Y}       % REQUIRED
+\end{PI}
+
+\begin{CoI}
+\name{Emily Bowsher}			% REQUIRED
+\emailaddress{ebowsher@astro.columbia.edu}		% REQUIRED
+\atthetelescope{Y}       % REQUIRED  
+\end{CoI}
+
+\begin{CoI}
+\name{Kevin Covey}			% REQUIRED
+\emailaddress{kcovey@astro.cornell.edu}		% REQUIRED
+\atthetelescope{Y}       % REQUIRED
+\end{CoI}
+
+\begin{CoI}
+\name{Stephanie Douglas}			% REQUIRED
+\emailaddress{stephanietdouglas@gmail.com}		% REQUIRED
+\atthetelescope{Y}       % REQUIRED
+\end{CoI}
+
+\begin{CoI}
+\name{Nicholas Law }			% REQUIRED
+\emailaddress{law@di.utoronto.ca}		% REQUIRED
+\atthetelescope{Y}       % REQUIRED
+\end{CoI}
+
+% You can supply more CoI blocks, but only the first three will be
+% printed on the form.
+
+% Give a general abstract of the scientific justification appropriate for
+% a non-specialist.  Write the abstract between the \begin{abstract} and
+% \end{abstract} lines.  Limit yourself to approximately 175 words.
+
+% DO NOT remove the \begin{abstract} and \end{abstract} lines.
+
+\begin{abstract}
+We are using the Palomar Transient Factory (PTF) to monitor open clusters to study the evolution of the stellar age/activity/rotation relation and identify eclipsing binary systems at a fixed age. One season of observations of our first cluster, Praesepe, yielded robust rotation periods for 40 cluster members. We also identified and followed-up a number of interesting low-mass binary systems, which may provide critical insights into the mass-radius relationship for M stars. In 2010-2011, we obtained $>$700 1-min observations of NGC 752; a paper describing our analysis of the the PTF light-curves and our MDM spectra for stars in this cluster will be submitted soon. Our PTF targets in 2011-2012 included Alpha Per and the Pleiades, which will be the focus of our MDM campaign in 2012-2013. \\
+We propose to use five nights on the 2.4-m MDM telescope to continue the program begun in 2010B to obtain follow-up spectroscopy of interesting PTF-target cluster members. Specifically, we will: 1) continue our low- to moderate-resolution spectroscopic survey of known cluster members to measure H$\alpha$ emission, a key indicator of chromospheric activity in low-mass stars; and 2) obtain high-resolution spectroscopy of candidate eclipsing binaries to determine orbital parameters. Together, our rotational and spectroscopic data will allow us to investigate the relationship between stellar rotation and activity at ages between $\sim$50 Myr and $\sim$1 Gyr --- while also characterizing new, interesting binary systems. 
+
+\end{abstract}
+
+% Indicate whether this proposal is part of your PhD thesis work by
+% putting a Y or an N inside the \thesis{} curly braces.
+
+\thesis{N}
+
+% Indicate whether you are requesting long-term status by putting
+% a Y or an N inside the \longterm{} curly braces.  If you do want
+% long-term status (a "Y" answer), please tell us the number of nights,
+% number of semesters, and what telescopes by filling in \longtermdetails{}.
+% Please be brief; \longtermdetails is limited to one line.
+
+\longterm{Y}
+\longtermdetails{Five nights/semester for the next two years with the 2.4-m telescope.}
+
+% List the details of the observing runs being requested, for
+% UP TO THREE runs.  The parameters for each run are segregated
+% between \begin{obsrun} and \end{obsrun} lines.  Please be sure
+% that the information is isolated properly for each run.
+%
+%   \telescope{}	For example, \telescope{1.3m}
+%   \instrument{}	For example, \instrument{Mk III + Charlotte}
+%   \lunardays{}	For example, \lunardays{14}
+%   \optimaldates{}	For example, \optimaldates{Sep 1 - Nov 30}
+%   \acceptabledates{}	For example, \acceptabledates{Sep 1 - Dec 15}
+%
+%
+% Instrument combinations may be specified with "+".
+%
+% \numnights should give the number of nights of the run
+% \lunardays should specify the maximum number of nights from new moon 
+% which can be utilized to accomplish your scientific goals.  It should 
+% be a number from 1 (new moon) to 14 (full moon).
+%
+% \optimaldates should contain the range of OPTIMAL dates.
+%
+% \acceptabledates should give the range of ACCEPTABLE dates (i.e., you
+% would not accept time outside those limits).
+%
+% To enter the acceptable and optimal date ranges, please use two 
+% dash-separated dates with 3-letter abbreviations for the month
+% (Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec) 
+% followed by the day.  For example:  \optimaldates{Feb 15 - Apr 23}
+%
+% If you need to enter two or more ranges of acceptable or optimal dates
+% for a single observing run, separate the ranges by commas.  For example:
+% \acceptabledates{Oct 7 - Nov 24, Jan 7 - Jan 31}
+% It is not necessary to give date ranges based on lunar phase information.
+% For instance, if you wish to observe an object in March through May
+% within five days of new moon, you may give \lunardays{5} and 
+% \optimaldates{Mar 1 - May 31} instead of multiple shorter date ranges.
+% 
+% DO NOT remove the \begin{obsrun} and \end{obsrun} blocks.
+
+\begin{obsrun}
+\telescope{2.4 m}
+\instrument{(MkIII, Modspec, or) OSIRIS}
+\numnights{5}
+\lunardays{5}
+\optimaldates{Jan 10 - Jan 15}
+\acceptabledates{Jan 7 - Jan 17}
+\end{obsrun}
+
+\begin{obsrun}
+\telescope{}
+\instrument{}
+\numnights{}
+\lunardays{}
+\optimaldates{}
+\acceptabledates{}
+\end{obsrun}
+
+\begin{obsrun}
+\telescope{}
+\instrument{}
+\numnights{}
+\lunardays{}
+\optimaldates{}
+\acceptabledates{}
+\end{obsrun}
+
+% You may NOT supply more obsrun blocks.  Three is the limit.
+
+% If there are dates that you cannot use for non-astronomical reasons,
+% (i.e., other than moon phase or when your object is up)
+% please give the dates by filling in the curly braces in \unusabledates{}.
+% Please be brief; \unusabledates is LIMITED TO ONE LINE.
+
+\unusabledates{}
+
+% In the following "essay question" sections, the delimiting pieces of
+% markup (\justification, \feasibility, etc.) act as LaTeX \section*{}
+% commands.  If the author wanted to have numbered subsections within
+% any of these, LaTeX's \subsection could be used.
+
+% SCIENTIFIC JUSTIFICATION
+%
+% Give the scientific justification for the proposed observations.
+% This section should consist of paragraphs of text (and may include
+% EPS figures) that follow the \justification line.
+% Try to include an explanation of the overall significance to astronomy.
+
+% In order to include an EPS plot, you should use the LaTeX "figure"
+% environment.  The plot file is included with the \plotone{FILENAME}
+% command; two side-by-side plot files can be included by typing
+% \plottwo{FILENAME1}{FILENAME2}.  Use \caption{} to specify a caption.
+% The \epsscale{} command can be used to scale \plotone plots if they
+% appear too large on the printed page.
+%
+% \begin{figure}
+% \epsscale{0.85}
+% \plotone{sample.eps}
+% \caption{Sample figure showing important results.}
+% \end{figure}
+%
+% If you need to rotate or make other transformations to a figure, you may
+% use the \plotfiddle command:
+% \plotfiddle{PSFILE}{VSIZE}{ROTANG}{HSCALE}{VSCALE}{HTRANS}{VTRANS}
+% \plotfiddle{sample.eps}{2.6in}{-90.}{32.}{32.}{-250}{225}
+% where HSCALE and VSCALE are percentages and HTRANS and VTRANS are 
+% in PostScript units, 72 PS units = 1 inch.
+%
+% If you wish to use the "reference" environment, follow
+% the following example:
+%
+%\begin{references}
+%\reference Armandroff \& Massey 1991 AJ 102, 927.
+%\reference Berkhuijsen \& Humphreys 1989 A\&A 214, 68.
+%\reference Massey 1993 in Massive Stars: Their Lives in the Interstellar
+%  Medium (Review), ed. J. P. Cassinelli and E. B. Churchwell, p. 168.
+%\reference Massey, Armandroff, \& Pyke 1993, in prep.
+%\end{references}
+
+\justification
+Open clusters are homogeneous, coeval populations that provide an ideal environment in which to study the relationship between stellar age, activity, and rotation. One of the (Columbia-led) key science projects of the Palomar Transient Factory (PTF; Law et al.\ 2009) is to obtain multi-epoch photometric data of open clusters with which to measure stellar rotation periods at different ages. Our first target was Praesepe (M44, the Beehive Cluster), which we chose for its similarities to the Hyades, the benchmark middle-aged ($\sim$500 Myr) cluster for age/activity/rotation studies. Our first season of observations yielded close to 600 individual 1-min observations of an area that included $\sim$1000 cluster members. As part of her first-year project, Jenna Lemonias merged and analyzed the PTF light-curves, resulting in the identification of 40 robust rotation periods for cluster K \& M members. A paper describing these rotation periods is currently being assembled, with submission anticipated for late May 2011. 
+
+We recently began a low- to moderate-resolution spectroscopic survey of Praesepe members to diagnose the characteristic level of chromospheric activity as a function of both mass and rotation rate.  Prior to this effort, the spectroscopic census of Praesepe was relatively incomplete, particularly at the low-mass end of the main sequence, where many cluster members were only recently identified (Kraus \& Hillenbrand 2007; see Figure~\ref{need_spec}). This survey began with two MDM observing runs in Dec.\ 2010 and Feb.\ 2011; these observations have been reduced (see Figure~\ref{sample}) and are currently being analyzed for publication in Fall 2011.  We have also been collecting archival X-ray data for Praesepe members, as well as proposing for new observations --- the existence of the spectroscopic catalog we are currently assembling, as well as the presence of measured photometric rotation periods for many cluster members, are key elements for strengthening the case for these X-ray observations. 
+
+\begin{figure}[h!]
+\epsscale{0.5}
+\plotone{Praesepe_HaveHaSpec.ps}
+\vspace{-.5cm}
+\caption{Histogram of Praesepe members (in black) as a function of $(r - K_S)$ with members with existing spectroscopy overplotted (in red).  Spectroscopic follow-up is significantly incomplete at all masses, but the need for additional spectroscopy is greatest for M-type candidates ($r-K_S >$ 4),  which are the stars that dominate our PTF survey of Praesepe.}\label{need_spec}
+\end{figure}
+
+\begin{figure}[!ht]
+\epsscale{0.5}
+\plotone{ShowTell.ps}
+\vspace{-0.5cm}
+\caption{Example spectra from our survey of Praesepe with the 2.4-m telescope at MDM Observatory.  {\it Top panel:} A spectrum of a rapidly rotating M dwarf in Praesepe. Note the strong H$\alpha$ and H$\beta$ emission lines, indicative of significant chromospheric activity.  {\it Bottom panel:} A spectrum obtained from a slowly rotating M dwarf; while its photospheric emission is nearly identical to that of its cousin in the top panel, no chromospheric emission is detected, demonstrating the presence of a strong link between rotation and activity in this cluster.}\label{sample}
+\end{figure}
+
+In Fall 2010, we extended our PTF survey to include the older cluster NGC 752 ($\sim$1--2 Gyr). Far less is known about stellar activity at this age: this program will be an essential step in bridging the gap between our understanding of activity in stars under 1 Gyr old and in the Sun. Giardino et al.\ (2008) published a detailed X-ray analysis of NGC 752, measuring $L_X$ for $\sim$40 cluster stars from a 140 ks {\it Chandra} observation and a 40 ks {\it XMM} observation. Combining these archival $L_X$ measurements with rotation periods from our PTF observations, we will be able to provide the best characterization of the relationship between stellar coronal activity and rotation at 1--2 Gyr. Completing this picture requires spectroscopic follow-up, however, as there is far less information in the literature about low-mass membership of this cluster --- and little-to-no archival spectroscopy available to analyze the relationship between chromospheric activity and rotation.  Our PTF monitoring of NGC 752 has obtained $>$700 1-min observations of the cluster sampling baselines as long as 5 months (Aug.\ 2010 through Feb.\ 2011). While these data are still to be fully analyzed, a preliminary look at the light-curves reveals that we are already sensitive to the periods of fast rotators and have detected a few eclipsing binaries.
+
+Indeed, these monitoring programs have identified a number of eclipsing binaries in both clusters, as well as many in the surrounding field population captured by these observations. Follow-up observations are observationally intensive, requiring multiple epochs of high-resolution spectroscopy to derive full orbital solutions and characterize masses, radii, and T$_{eff}$s. With CoI Law, we have been following up these systems using MDM and other facilities accessible through our PTF collaborators (i.e., Keck, Palomar 200-in Telescope, Las Cumbres Observatory Global Telescope).  
+
+We therefore propose to utilize a five night run on the 2.4-m telescope to conduct follow-up observations of these two clusters. During this time, we will obtain:
+
+\begin{itemize}
+\vspace{-0.3cm}
+\item low- to moderate-resolution spectra of known members (down to $V \sim 18$ mag), in order to measure H$\alpha$ emission. Our targets will be the known cluster members lacking spectroscopy and/or previously identified as X-ray sources, e.g., by Franciosini et al.\ (2003) for Praesepe and by Giardino et al.\ (2008) for NGC 752. The H$\alpha$ data will allow us to compare $L_X$/$L_{bol}$ and $L_{H\alpha}$/$L_{bol}$ for these stars and investigate whether the reported decay of $L_X$ relative to young and middle-aged clusters is also seen in $L_{H\alpha}$. 
+\vspace{-0.2cm}
+\item spectra for the fastest rotators in the cluster that are undetected in the X-ray, in order to test whether there is any evidence for chromospheric activity in these stars --- which might suggest a difference in the evolution of coronal and chromospheric activity.
+\vspace{-0.2cm}
+\item higher resolution spectra of candidate eclipsing binaries to determine orbital parameters, particularly for known cluster members. Our first season of observations of Praesepe yielded at least four M-dwarf binaries and two K-dwarf eclipsers with likely M-dwarf companions. We anticipate that our PTF observations of NGC 752 are likely to yield a number of equally interesting systems requiring follow-up observations. The expected radial velocity amplitudes for M-dwarf eclipsers are 50 -- 200 km s$^{-1}$.
+%\vspace{-0.2cm}
+%\item deep multi-color imaging of the cluster in order to construct improved color-color diagrams. Barta{\v s}i{\= u}t{\.e} et al.\ (2010) recently published a membership catalog down to $\sim$18 mag for the central region of the cluster, which is the deepest photometric survey of NGC 752 to date. Our goal is to produce a color-magnitude diagram that goes at least two magnitudes deeper and covers a wider area. Previous studies have only barely sampled the low-mass end of the main sequence, but have used the apparent dearth of low-mass stars to claim that the cluster is dissolving. NGC 752 is roughly 75 arcmin in diameter, making it a good match to the 25 arcmin field-of-view of the MDM 8K CCD camera on the 2.4-m telescope.
+%\vspace{-0.2cm}
+%\item deep high-cadence imaging of the cluster center
+\end{itemize}
+
+%One possible program that I've been considering is looking for M-dwarf eclipsers in the 1-day cadence fields (2 observations per night). The observations cover a huge sky area (~700 square degrees to R=21 every night) but at too low cadence to see eclipse shapes.
+
+%The idea would be to look for M-dwarfs with multiple high-significance dips in their light curves (at a consistent period, of course). I haven't pursued this much up to now because the followup requirements will need to be quite intensive to remove false positives, and the PTF data reduction pipelines aren't quite up to it yet. However, if a significant amount of MDM time was available we could consider looking for double-lined binaries this way (maybe just look for double-peaked H-alpha, although I haven't calculated the resolution requirements). It's a little speculative, but may be good enough if the bar isn't too high. I'd be happy to write that up in a more detailed way.
+
+
+%\vspace{-.5cm}
+\begin{references}
+\vspace{-.2cm}
+%\reference Barta{\v s}i{\= u}t{\.e} et al.\ 2010, in IAU Symposium, Vol.\ 266,  ed.\ R.\ de Grijs \& J.\ R.\ D.\ L\'epine, 361
+%\vspace{-.2cm}
+\reference Franciosini et al.\ 2003, A\&A, 405, 551
+%\vspace{-.2cm}
+\reference Giardino et al.\ 2008, A\&A, 490, 113
+%\vspace{-.2cm}
+\reference{} Kraus \& Hillenbrand 2007, AJ, 134, 2340
+%\vspace{-.2cm}
+\reference{} Law et al.\ 2009, PASP, 121, 1395
+\reference{} West et al.\ 2008, AJ, 135, 785
+%\vspace{-.2cm}
+%\reference{} Scholz \& Eisl\"offel 2007, MNRAS, 381, 1638
+%\reference Berkhuijsen \& Humphreys 1989 A\&A 214, 68.
+%\reference Massey 1993 in Massive Stars: Their Lives in the Interstellar
+%  Medium (Review), ed. J. P. Cassinelli and E. B. Churchwell, p. 168.
+%\reference Massey, Armandroff, \& Pyke 1993, in prep.
+\end{references}
+
+% FEASIBILITY
+%
+% Assess the technical and scientific feasibility of the observations.
+% This section should consist of text and tables only (no figures)
+% following the \feasibility line.
+%
+% List objects, coordinates, and magnitudes (or surface brightness,
+% if appropriate), desired S/N, wavelength coverage and resolution.
+% Justify the number of nights requested as well as the specific
+% telescope(s), instruments, and lunar phase.  Indicate the optimal
+% detector, as well as acceptable alternates.  If you've requested
+% long-term status, explain why this is necessary for successful
+% completion of the science.
+
+\feasibility
+NGC 752 ($\alpha = 01^{\rm h}57.7^{\rm m}$, $\delta = +37^{\circ}47'$) is a full night object in mid-November, with Praesepe ($\alpha = 08{\rm h}40.4^{\rm m}$, $\delta = +19^{\circ}41'$) only becoming accessible toward the end of the night.  This availability is well aligned with the current needs of our program: having focused most heavily on observing Praesepe members in Dec.\ 2010 and Feb.\ 2011, obtaining spectra for more NGC 752 cluster members is our highest priority going forward.  Balancing the need to maximize access to NGC 752, while still providing some access to Praesepe for the most compelling outstanding targets (such as new objects of interest identified in our second season of PTF monitoring), has driven us to request a run in Nov.\ 2011.  We will also be able to fill in gaps at the end of the nights with targets from our next PTF cluster, Coma Ber ($\alpha = 12^{\rm h}22.5^{\rm m}$, $\delta = +25^{\circ}51'$).
+
+Our signal-to-noise requirement is driven by the ability to reliably measure the strength of H$\alpha$ emission in each star's spectrum, and thereby diagnose chromospheric activity.  Similar studies of chromospheric activity in field stars (e.g., West et al.\ 2008) have adopted 1\AA\ equivalent width (EW) as a key benchmark for diagnosing the presence of chromospheric activity from the presence of H$\alpha$ emission.  %Given the resolution of Modspec in our typical configuration (XX Ang./pixel), a 1 \AA\ EW emission line will represent a YY\% (where YY = 1 / (1 + # Ang./pixel in Modspec) increase in flux above the local continuum; detecting this excess at the 3$\sigma$ level therefore requires a spectrum with S/N $\sim$ 1/ (YY\%/3).  
+Our experience on the Dec.\ 2010 and Feb.\ 2011 observing runs indicates that we can obtain spectra 50-100 targets per night with satisfactory signal-to-noise; we estimate that we require 5 nights of MDM time to obtain spectra for $\sim$200 NGC 752 cluster members. 
+
+%NGC 752 maxes out at 7.9 hours above airmass of 1.5 from Kitt Peak in mid-Oct through early Nov.
+
+%During the Dec. 4th new moon, it is still at z < 1.5 for 6.7 hours of the night, which seems reasonable, but I wouldn't want to push it much past then.
+
+% OTHER FACILITIES
+%
+% Why MDM? If you are using other facilities for this project,
+% explain how the MDM observations fit into the scheme of things.
+%
+% This section should consist of text and tables only (no figures)
+% following the \feasibility line.
+
+\whymdm
+Praesepe and NGC 752 are part of our PTF survey of open clusters. PTF's flexible queue scheduling and wide field of view makes it an optimal facility for monitoring clusters on timescales from hours to months. Characterizing the overall clusters' properties and the most interesting objects and systems identified in PTF observations, however, requires follow-up observations. Our MDM data will enable this analysis, producing a larger-than-typical scientific return for a modest investment of MDM time.
+
+% PAST USE
+%
+% List your allocation of telescope time at MDM during the
+% past 3 years, and describe the status of the project (cite
+% publications where appropriate).  Mark any allocations of time
+% related to the current proposal with a \relatedwork{} command.
+% Are your MDM observations achieving their goals?
+
+\thepast
+\relatedwork{Several hundred spectra of stars in the Pleiades, Hyades, Praesepe, Coma Ber, and NGC 752 have been obtained with the 2.4 m to date. Nearly all of these have been reduced and analysis is underway, with submission of a paper describing the results of our spectroscopic survey of NGC 752 anticipated for this fall. Another paper comparing the rotation-activity relations derived for Praesepe and the Hyades that will use our MDM data is anticipated for 2013.} 
+
+\end{document}
+

@@ -1,0 +1,342 @@
+# -*- coding: utf-8 -*-
+# <nbformat>3.0</nbformat>
+
+# <codecell>
+
+import numpy as np
+#%matplotlib inline
+import matplotlib.pyplot as plt
+
+# <codecell>
+
+import pyCloudy as pc
+
+# <codecell>
+
+# adding some imports
+import os
+
+import stromgren as parta
+
+starsDict = parta.defineStars()
+
+# <codecell>
+dir_ = './'
+outdir = dir_
+# Adding some inputs ---- Andrew E.
+
+# Directory to output figures:
+
+
+# desired line widths
+linewidth = 1.25
+fsize= 6
+# <codecell>
+
+# Define verbosity to high level (will print errors, warnings and messages)
+pc.log_.level = 3
+
+# <codecell>
+
+# The directory in which we will have the model
+# You may want to change this to a different place so that the current directory
+# will not receive all the Cloudy files.
+dir_ = './model/'
+if not os.path.isdir(dir_): os.mkdir(dir_)
+
+# <codecell>
+
+# Define some parameters of the model:
+model_name = 'midterm_v1'
+full_model_name = '{0}{1}'.format(dir_, model_name)
+# Density of cloud (uniform density)
+dens = 3. #log cm-3
+# Effective blackbody temperature of Central Star
+#Teff = 37130. #K
+# Rate of production of Hydrogen ionizing photons
+#qH = 49.23 #s-1
+# Inner radius
+r_min = 5e16 #cm
+# Outer radius (if needed)
+#r_max = 2e18 #cm
+dist = 1.26 #kpc
+
+# <codecell>
+parteDict = {}
+# loop over the defined stars
+for star in starsDict:
+#for star in ['O3I']:
+    fig_dir = star
+    if not os.path.isdir(fig_dir): os.mkdir(fig_dir)
+
+    Teff = starsDict[star]['Teff']
+    qH   = starsDict[star]['qH']
+
+
+    # these are the commands common to all the models (here only one ...)
+    options = ('no molecules',
+                'no level2 lines',
+                'no fine opacities',
+                'atom h-like levels small',
+                'atom he-like levels small',
+                'COSMIC RAY BACKGROUND',
+                'element limit off -8',
+                'print line optical depth', 
+                'metals 1.0 linear'
+                )
+
+    # <codecell>
+
+    emis_tab = ['H  1  4861',
+                'H  1  6563',
+                'He 1  5876',
+                'O  1  6300',
+                'O II  3726',
+                'O II  3729',
+                'S II  6731',
+                'S II  6716',
+                'O  3  5007', 
+                'O  3  4959',
+                'O  3  4931',
+                'N  2  6584',
+                'N  2  6548',
+                'N  2  5755',
+                'TOTL  4363',
+                'TOTL  4861',
+                'O  1 63.17m',
+                'O  1 145.5m',
+                'C  2 157.6m']
+
+    print len(emis_tab)
+
+    # <codecell>
+
+    abund = {'He' : -0.92, 'C' : 6.85 - 12, 'N' : -4.0, 'O' : -3.40, 'Ne' : -4.00, 
+             'S' : -5.35, 'Ar' : -5.80, 'Fe' : -7.4, 'Cl' : -7.00}
+
+    # <codecell>
+
+    # Defining the object that will manage the input file for Cloudy
+    c_input = pc.CloudyInput(full_model_name)
+
+    # <codecell>
+
+    # Filling the object with the parameters
+    # Defining the ionizing SED: Effective temperature and luminosity.
+    # The lumi_unit is one of the Cloudy options, like "luminosity solar", "q(H)", "ionization parameter", etc... 
+    c_input.set_BB(Teff = Teff, lumi_unit = 'q(H)', lumi_value = qH)
+
+    # <codecell>
+
+    # Defining the density. You may also use set_dlaw(parameters) if you have a density law defined in dense_fabden.cpp.
+    c_input.set_cste_density(dens)
+
+    # <codecell>
+
+    # Defining the inner radius. A second parameter would be the outer radius (matter-bounded nebula).
+    #c_input.set_radius(r_in=np.log10(r_min),r_out=np.log10(r_max))
+    c_input.set_radius(r_in=np.log10(r_min))
+    c_input.set_abund(ab_dict = abund, nograins = True)
+    c_input.set_other(options)
+    c_input.set_iterate() # (0) for no iteration, () for one iteration, (N) for N iterations.
+    c_input.set_sphere() # () or (True) : sphere, or (False): open geometry.
+    c_input.set_emis_tab(emis_tab) # better use read_emis_file(file) for long list of lines, where file is an external file.
+    c_input.set_distance(dist=dist, unit='kpc', linear=True) # unit can be 'kpc', 'Mpc', 'parsecs', 'cm'. If linear=False, the distance is in log.
+
+    # <codecell>
+
+    # Writing the Cloudy inputs. to_file for writing to a file (named by full_model_name). verbose to print on the screen.
+    c_input.print_input(to_file = True, verbose = False)
+
+    # <codecell>
+
+    # Printing some message to the screen
+    pc.log_.message('Running {0}'.format(model_name), calling = 'test1')
+
+    # <codecell>
+
+    # Running Cloudy with a timer. Here we reset it to 0.
+    pc.log_.timer('Starting Cloudy', quiet = True, calling = 'test1')
+    c_input.run_cloudy()
+    pc.log_.timer('Cloudy ended after seconds:', calling = 'test1')
+
+    # <codecell>
+
+    # Reading the Cloudy outputs in the Mod CloudyModel object
+    Mod = pc.CloudyModel(full_model_name)
+
+    # <codecell>
+
+
+    # find nH and nHE
+    nH = Mod.nH_mean
+    nHe = nH * 10**(abund['He'])
+
+    # find the radius where x HI > 0.1
+    radius = Mod.radius
+    x_HI   = Mod.get_ionic('H', 0)
+    R_HII =    np.min(radius[x_HI > 0.01])
+    x_HeI = Mod.get_ionic('He', 0)
+    R_HeII = np.min(radius[x_HeI > 0.01])
+
+    # stromgren sphere radius
+    RS = parta.stromgren(star,nH)
+    RHE_RH = parta.RHE_RH(star,nH,nHe)
+
+    plt.figure(figsize=(6,6))
+    plt.plot(Mod.radius, Mod.get_ionic('H', 1), label = 'HII',linewidth=linewidth)
+    plt.plot(Mod.radius, Mod.get_ionic('H', 0), label = 'HI',linewidth=linewidth)
+    plt.plot(Mod.radius, Mod.get_ionic('He', 0), label = 'HeI',linewidth=linewidth)
+    plt.plot(Mod.radius, Mod.get_ionic('He', 1), label = 'HeII',linewidth=linewidth)
+    plt.plot(Mod.radius, Mod.get_ionic('He', 2), label = 'HeIII',linewidth=linewidth)
+    
+    plt.plot([R_HII,R_HII],[0.0,1.0],label = r'x$_{HI}$ > 0.01 at R = %0.2E'%(R_HII), linewidth=linewidth,
+             linestyle = '-.',color='black')
+    plt.plot([R_HII,R_HII],[0.0,1.0],label = r'RS at R = %0.2E'%(RS), linewidth=linewidth,
+             linestyle = '-',color='black')             
+             
+    
+    plt.xlabel('Radius',fontsize=18)
+    plt.ylabel(r'$x_{ion}$',fontsize=18)
+    plt.title('Ionization Zones')
+    
+    plt.legend(loc=3)
+    plt.savefig(fig_dir + "/IonizationZones.png")
+
+    starsDict[star]['R_HII'] = R_HII
+    starsDict[star]['R_HeII'] = R_HeII
+    starsDict[star]['R_S0']  = RS
+    starsDict[star]['RHE_RH'] = RHE_RH
+    
+    
+    #### Part C #####
+    starsDict[star]['O__3__5007A'] = Mod.get_emis_vol('O__3__5007A')
+    starsDict[star]['TOTL__4363A'] = Mod.get_emis_vol('TOTL__4363A')
+    
+    Te = Mod.te
+    avg_Te = np.average(Te)
+    
+    starsDict[star]['avg_Te'] = avg_Te
+    
+    #### Part D #####
+    ne = Mod.ne
+    
+    # calculate low density limit 
+    T_lowdensity = Te[ne == np.min(ne)] 
+    T_upperdensity = Te[ne == np.max(ne)]
+    
+    # a la 18.5
+    omega20 = parta.Omega_ul('S','20',T_lowdensity)
+    omega10 = parta.Omega_ul('S','10',T_lowdensity)
+    low_limit = np.average(omega20 / omega10)
+    
+    # a la 18.6
+    # for the SII case
+    A20 = 1.88E-4  # NIST table
+    A10 = 5.63E-4  # NIST table
+    g2  = 6        # Fig 18.3
+    g1  = 4        # Fig 18.3
+    
+    upper_limit = g2*A20 / (g1*A10) # Eq 18.6
+
+    # from pg 210
+    ncrit_20 = np.log10(1600.0)
+    ncrit_10 = np.log10(1.5E4)
+    
+    print "------------------------------------------------------"
+    print low_limit, upper_limit
+    
+    plt.figure(figsize=(fsize,fsize))
+    plt.scatter(np.log10(Mod.ne),( Mod.get_emis('S_II__6716A')/Mod.get_emis('S_II__6731A')),
+        c =    Mod.radius/np.max(Mod.radius),
+        edgecolors = 'none',label=r'$\frac{SII6716\AA}{SII6731\AA}$',cmap="spectral")
+
+    xlim = plt.xlim()
+    ylim = plt.ylim()
+    # draw the upper and lower limits
+    plt.plot(xlim, [low_limit,low_limit], label = "Low Limit",
+        linewidth=linewidth,color="black",linestyle="-")
+    plt.plot(xlim, [upper_limit,upper_limit], label = "High Limit",
+        linewidth=linewidth, color="black", linestyle="-.")
+
+   # plt.plot([ncrit_20,ncrit_20], ylim, label =r"n$_{c}$ 20",
+     #        linewidth = linewidth, color = 'r')
+             
+  #  plt.plot([ncrit_10,ncrit_10], ylim, label =r"n$_{c}$ 10",
+     #        linewidth = linewidth, color = 'r')
+
+    plt.colorbar()
+    plt.xlabel(r'log n$_e$',fontsize=18)
+    plt.ylabel('Ratio',fontsize=18)
+    plt.title(star,fontsize=18)
+    plt.legend(loc=1,fancybox=True)
+    plt.savefig(fig_dir + "/DensityDiagnostic.png")
+    
+    
+    ## Part E###
+    # calculate and store BPT stuff for all stars to plot all together later
+    parteDict[star] = {}
+    parteDict[star]['x'] = np.log10(Mod.get_emis('N__2__6584A')/Mod.get_emis('H__1__4861A') )
+    parteDict[star]['y'] = np.log10(Mod.get_emis('O__3__5007A')/Mod.get_emis('H__1__6563A'))
+    parteDict[star]['c'] = Mod.radius/np.max(Mod.radius)
+    
+
+# OUTPUT FOR PART A AND B
+f = open(outdir + "star_output_ab.txt",'w')
+f.write("#Star Teff qH R_HII R_HeII RS0 RS0/R_HII R_HeII/R_HII RHE_RH\n")
+print_fmt_string = "%s %5.4e %5.4e %5.4e %5.4e %5.4e %5.4e %5.4e %5.4e\n"
+for star in starsDict:
+#for star in ['O3I']:
+    starDict = starsDict[star]
+
+    R_HII = starDict['R_HII']
+    R_HeII = starDict['R_HeII']
+    R_S0   = starDict['R_S0']
+    RHE_RH = starDict['RHE_RH']
+
+    f.write(print_fmt_string % (star, starDict['Teff'], starDict['qH'],
+                                      R_HII, R_HeII, R_S0,
+                                      R_S0/R_HII, R_HeII/R_HII, RHE_RH) )
+
+
+## part c output
+f = open(outdir + "star_output_c.txt",'w')
+f.write("#Star O__3__5007A TOTL__4363A Ratio avg_Te\n")
+print_fmt_string = "%s %5.4e %5.4e %5.4e %5.4e\n"
+for star in starsDict:
+    starDict = starsDict[star]
+
+
+    O5007 = starDict['O__3__5007A']
+    O4363 = starDict['TOTL__4363A']
+    ratio = O4363 / O5007
+    
+    Te    = starDict['avg_Te']
+
+    f.write(print_fmt_string % (star,O5007,O4363,ratio,Te))
+    
+
+    
+#OUTPUT FOR PART E
+plt.figure(figsize=(7,7))
+
+markers = ["o","x","D","*","+"]
+i = 0
+for star in parteDict:
+    
+    parte = parteDict[star]
+    plt.scatter(parte['x'],parte['y'],c=parte['c'],
+                label=str(star),cmap="spectral",marker=markers[i])
+
+    i = i + 1
+    
+plt.xlim((-5.0,1.5))
+plt.ylim((-5.0,2.0))
+plt.colorbar()
+plt.xlabel(r'log NII/H$\alpha$',fontsize=18)
+plt.ylabel(r'log OIII/H$\beta$',fontsize=18)
+plt.legend(loc='best',fancybox=True)
+plt.tight_layout()
+plt.savefig("./BPTDiagram_all_stars.png")
+    
+

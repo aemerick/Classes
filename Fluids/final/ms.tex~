@@ -1,0 +1,119 @@
+\documentclass[a4paper]{article}
+\usepackage{fullpage}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage[dvips]{color}
+
+%\usepackage[bookmarks,dvips,pdfhighlight=/O,pdfstartview=FitH]{hyperref}
+%\usepackage[dvips]{graphicx}
+\usepackage{amsmath,amssymb,amsopn}
+\usepackage{latexsym} \usepackage{bm} \usepackage{mathrsfs}
+\usepackage{mathbbol} % \usepackage[dvips]{color}
+%\usepackage{pslatex} \usepackage{subfig}
+\usepackage{mathtools}
+\date{\today}
+\title{Diss. and Heating in Supersonic HD and MHD turbulence}
+\author{Andrew Emerick}
+
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+\begin{itemize}
+\item Molecular clouds are observed to contain supersonic turbulence, the details
+of which can have an effect on the SF ($\vec{B}$ and $\mathcal{M}$)
+\item Turbulent driving mechanism is unknown: periodic, pulse, driving scales?
+\item Study details of energy dissipation in HD and MHD supersonic turbulence
+\item Study effects of numerical dissipation by comparing to ZEUS
+\item Compare solenoidal and compressional driving
+\item Convergence test for HD and MHD cases
+\end{itemize}
+
+\section{Numerical Methods}
+\begin{itemize}
+\item 64$^{3}$ to 1024$^{3}$ resolution simulations made with ATHENA
+\item Ideal, isothermal MHD equations with periodic BC's
+\item Exact / approximate Riemann solver for HD / MHD
+\end{itemize}
+\subsection{Set up}
+\begin{itemize}
+\item Uniform stationary medium with $\bar{\rho}$=1
+\item Magnetic field is uniform in x-axis, set by the $\beta$ parameter
+\item For decaying turbulence, start with single pulse (adiabatic)
+\item $\beta$ ranges from 0.02 to infinity in the strong field and HD case
+\item Assuming L = 2 pc, n$_{H_2}$ = 10$^{3}$, and T = 10 K (a typical MC),
+$\dot{E}$ = 0.4 L$_{\odot}$ and B = 44 $\mu G$ when $\beta$ = 0.02
+\end{itemize}
+
+\section{Convergence Results}
+For HD:
+\begin{itemize}
+\item HD convergence by 64$^{3}$ or 128$^{3}$ depending on driving scale and
+energy injection
+\item solenoidal / compressive fraction converges to 0.78 / 0.22 in HD
+\item energy dissipation timescale is independent of driving scale and $<$ 1
+\item $\mathcal{M}$ converges to 7.2 to 5.8 for large / small driving scales
+\end{itemize}
+
+For MHD:
+\begin{itemize}
+\item Higher mach number for larger driving scales, though smaller than HD in
+all cases
+\item Convergence is around 512$^{3}$, with sol / comp frac at 0.9 / 0.1
+\item dissiption timescale is around unity
+\end{itemize}
+
+There is a good agreement between overall diagnostics for ATHENA and ZEUS. 
+Rapid decay of supersonic turbulence is not due to high numerical dissipation
+
+\section{$\mathcal{M}$}
+Mach number has a strong effect on the turbulence state. Though E$_C$ is small
+in all cases, it increases slightly from 0.05 to 0.1 with higher mach number.
+Dissipation timescale decreases with mach number, from 1.7 at low numbers to
+less than one at high mach numbers.
+
+\section{Power Spectra}
+Much higher resolution is required to appropriately resolve the intertial 
+range of the simulation. For the HD case, supersonic turbulence has a roughly
+power law slope in the intertial range (between -2 and -1.7) but that higher
+resolution runs are needed to appropriately resolve this. Bottleneck effect
+is present in the supersonic turbulence PS.
+
+Power law in the MHD case is roughly -4/3. \textbf{u} should scale to the 
+-5/3, but is observed here at -4/3. This is expected if the helicity
+timesacle is non-negligible
+
+For the MHD system, anisotropy in the PS is present, with more perpendicular
+to the mean field (-4/3 perp, -2 parallel). Compressive comp. is isotropic. 
+Results suggest that turbulent cascade in the compressive comp. of 
+velocity is not present here.
+
+\section{Sonic Scale}
+Sonic scale is point at which velocity dipserions become subsonic. For the 
+HD case, it scales as l to the 0.58. There is no nice power law relationship
+for the MHD case, as physics change drastically on many scales due to 
+different wave families of the MHD equations 
+\section{Questions}
+\begin{itemize}
+\item Why did they start with a uniform B field? What motivates that the 
+magnetic field has to be uniform and coherent on scales of the MC? This should
+likely have a large effect on the dissipation rate and development of the 
+subsequent system.
+\end{itemize}
+
+\section{Conclusions}
+\begin{itemize}
+\item Supersonic turbulence decays rapidly (often far less than flow time)
+\item High res is needed to appropriately model the intertial range
+\item Less than high res is needed for convergence in overall diagnostics
+\item Should not rely on PS to characterize these states until higher res is
+readily achievable
+\item MHD turbulence is very anisotropic (roughly HD parallel, shallow perp)
+\item Need structure functions to determine origin of power laws 
+\item Larger driving scales lead to greater time variability in temperature
+
+\end{itemize}
+
+
+\end{document}

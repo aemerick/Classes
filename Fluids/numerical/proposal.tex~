@@ -1,0 +1,31 @@
+\documentclass{article}
+\usepackage{graphicx}
+
+\begin{document}
+\title{Proposed Numerical Project}
+\author{Andrew Emerick}
+
+\date\today
+\maketitle
+
+\section{Idea 1:}
+For my numerical project this semester, I propose to write a simple code to 
+evolve the Euler equations in 1D. Specifically, I will use my scheme to evolve
+the two Sod test cases as given in Ch. 18 of Computational Gasdynamics.
+Currently, the exact scheme is open ended, but I was thinking of coding up
+and testing one of the predictor corrector methods (18.3 or 18.4/18.15). 
+The latter set of equations sound more interesting, which is MacCormack's
+method, alternating between FTBS and FTFS methods at each time step, and 
+employing a fixed CFL condition.
+
+\section{Idea 2:}
+Similar idea, different method. Looking back at some of my MHD research in
+Minnesota, the code I used (of which I frankly understood very little of what
+was going on beneath the hood) used something based on a 2nd order 
+Roe-type upwind scheme to evolve the MHD equations.
+Maybe I could do the Sod tests using section 18.3.2 (Roe's first order 
+upwind method). This will likely be more challenging than Idea 1, but also probably
+more beneficial.
+
+
+\end{document}

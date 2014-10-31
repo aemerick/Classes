@@ -1,0 +1,49 @@
+import numpy as np
+
+def R(x):
+    """
+    res given lambda in nm
+    """
+    
+    x0, R0 = 400.0, 400.0
+    x1, R1 = 1000.0, 60.0 # from OSMOS manual
+    
+    m = (R1-R0)/(x1-x0)
+    b = R1 - m*x1 
+    R = m*x+b
+    
+    R = 1600.0
+    return R
+    
+def binsize(x):
+    """
+    binsize in nm given wavelength
+    """
+    
+    return x / R(x)
+    
+# Halpha
+Halpha = 656.28
+Hbeta  = 486.13
+Hdelta = 410.17
+
+CK = 393.37
+CH = 396.85
+
+dx_Halpha = binsize(Halpha)
+dx_Hbeta = binsize(Hbeta)
+dx_Hdelta = binsize(Hdelta)
+dx_CK = binsize(CK)
+dx_CH = binsize(CH)
+
+c = 2.998e5
+
+print "Bin size in nm"
+print "Halpha", dx_Halpha, dx_Halpha / Halpha * c
+print "Hbeta", dx_Hbeta, dx_Hbeta / Hbeta * c
+print "Hdelta", dx_Hdelta, dx_Hdelta / Hdelta * c
+print "CK", dx_CK, dx_CK / CK * c
+print "CH", dx_CH, dx_CH / CH * c
+
+    
+

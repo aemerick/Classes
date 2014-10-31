@@ -1,0 +1,63 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def acalc(x,u_type):
+"""
+    Function returns a for a single component universe. the scale factor is
+    written as a function of H_o (t_o - t)
+    
+    Parameters
+    -----------
+    x : array
+        Float or array of values to evaluate a. x = H_o (t - t_o)
+
+    u_type : string
+        Type of single component universe to compute. Options are 'radiation',
+        'matter', 'empty' (which is curvature only), and 'lambda' for a 
+        cosmological constant universe.
+    
+    Returns:
+    --------
+    a : array
+        Array of resulting scale factor values.
+"""
+    if u_type=='radiation':
+        xval = 1.0*x
+        xval[x<-0.5] = -0.5       
+        return xval,(2.0*xval + 1.0)**0.5       
+ 
+    elif u_type =='matter':
+        xval = 1.0*x
+        xval[xval<-2.0/3.0] = -2.0/3.0
+        return xval,(  ((3.0/2.0)*(xval+2.0/3.0))**(2.0)  )**(1.0/3.0)
+
+    elif u_type == 'empty':
+        return x,(x+1)
+        
+    elif u_type == 'lambda':
+        return x,np.e**x
+
+
+# H_o (t - t_o) values to sample
+x = np.linspace(-2,8,1000)
+
+# type of universes to compute and their names / labels to plot
+u_types = ['matter','radiation','empty','lambda']
+names = ['matter','radiation','empty',r'$\Lambda$']
+
+lt    = [':','-','--','-.']
+
+# calculate and plot a for each universe
+for i in np.arange(np.size(u_types)):
+    xvals, a = acalc(x,u_types[i])
+    plt.plot(xvals,a,label=names[i],lw = 1.5,ls=lt[i])
+
+# formatting ----------------------------------------------------------------
+plt.legend(loc='best',fancybox=True)
+plt.xlim(-2,8)
+plt.ylim(0,8.4)
+plt.minorticks_on()
+plt.ylabel('a')
+plt.xlabel(r'H$_o$(t-t$_o$)')
+plt.savefig('p4.png')
+plt.close()

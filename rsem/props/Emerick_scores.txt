@@ -1,0 +1,12 @@
+Name        Score
+     Chen   2
+    Clark   2
+  Douglas   2
+  Emerick   N/A
+Generozov   2
+   Jaimes   3
+ Mohammed   2
+    Nunez   1
+  Pearson   1
+     Weis   4
+    Zheng   2 

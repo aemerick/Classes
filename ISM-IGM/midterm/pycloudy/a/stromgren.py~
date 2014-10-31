@@ -1,0 +1,117 @@
+import numpy as np
+
+# this will calculate stromgren radii for each chosen star
+
+def defineStars():
+
+    starDict = {'O3III': 
+                        {'M'    : 56.0,
+                         'Teff' : 44540.0,
+                         'qH'   : 49.787,
+                         'Q1Q0' : 0.234,
+                         'L'    : 5.96
+                        },
+                'O8III':
+                        {'M'    : 25.5,
+                         'Teff' : 33960.0,
+                         'qH'   : 48.88,
+                         'Q1Q0' : 0.072,
+                         'L'    : 5.35
+                        },
+                'O4V':
+                        {'M'    : 46.9,
+                         'Teff' : 42860.0,
+                         'qH'   : 49.44,
+                         'Q1Q0' : 0.224,
+                         'L'    : 5.67
+                        },
+                'O3I':
+                        {'M'    : 67.5,
+                         'Teff' : 42230.0,
+                         'qH'   : 49.78,
+                         'Q1Q0' : 0.204,
+                         'L'    : 5.99
+                        },
+                'O8I':
+                        {'M'    : 33.7,
+                         'Teff' : 33180.0,
+                         'qH'   : 49.25,
+                         'Q1Q0' : 0.079,
+                         'L'    : 5.68
+                        }
+              }
+
+    return starDict            
+                        
+                        
+def stromgren(star_name, nH=10**3.0):
+    """
+    Calculates the stromgren radius for a given star
+
+    """
+    starsDict = defineStars()
+    
+    star = starsDict[star_name]
+    
+    #nH = 10.0**(3.0) # from python notebook
+    
+    # using equation 15.3
+    Qo   = 10.0**(star['qH']) / 10.0**(49.0)
+    n2   = nH / 10.0**(2)
+    T4   = star['Teff'] / 10.0**(4)  
+    
+    
+    
+    R = 9.77E18 * Qo**(1.0/3.0) * n2 **(-2.0/3.0) * T4 **(0.28)
+        
+    return R
+
+def RHE_RH(star_name,nH,nHe):
+    """
+    """
+    starsDict = defineStars()
+    
+    Q1Q0 = starsDict[star_name]['Q1Q0']
+    T4   = starsDict[star_name]['Teff'] / (10.0**4.0)
+    
+    z    = 0.8 # assumed pg 173
+    y    = 0.2 # assumed pg 173
+    
+    alpha_H    = 2.59E-13 * T4 **(-0.833 - 0.035*np.log(T4)) # table 14.1
+    alpha_1sHe = 1.54E-13 * T4 **(-0.486)                    # Eq 14.14
+    alpha_He   = 2.72E-13 * T4 **(-0.789)                    # Eq 14.15
+    
+    #
+    
+    ratio = (nH/nHe) * (1.0-y) * alpha_H * (Q1Q0)
+    
+    ratio = ratio / (alpha_He + y*alpha_1sHe - (1.0-y)*(1.0-z)*Q1Q0*alpha_He)
+    
+    ratio = ratio ** (1.0/3.0)
+    
+    return ratio
+
+def Omega_ul(element,ul,T):
+    T4 = T / (10.0**4)
+
+    if element=='S':
+        
+        if ul=='20' or ul=='02':
+            omega = 3.83 * T ** (-0.070 - 0.022 * np.log(T4))        
+        elif ul=='10' or ul=='01':
+            omega = 2.56 * T ** (-0.071 - 0.023 * np.log(T4))
+            
+    
+    
+    return omega
+        
+
+
+#starsDict = defineStars()
+
+#for star in starsDict:
+
+ #   radius =     stromgren(star)
+    
+  #  print "For an " + star + " star, the Stromgren radius is: %0.4E" % (radius)
+                         

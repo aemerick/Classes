@@ -1,0 +1,227 @@
+\documentclass[a4paper]{article}
+\usepackage{fullpage}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage[dvips]{color}
+
+%\usepackage[bookmarks,dvips,pdfhighlight=/O,pdfstartview=FitH]{hyperref}
+%\usepackage[dvips]{graphicx}
+\usepackage{amsmath,amssymb,amsopn}
+\usepackage{latexsym} \usepackage{bm} \usepackage{mathrsfs}
+\usepackage{mathbbol} % \usepackage[dvips]{color}
+%\usepackage{pslatex} \usepackage{subfig}
+\usepackage{mathtools}
+\date{\today}
+\title{ISM/IGM Final}
+\author{Andrew Emerick}
+
+
+\begin{document}
+\maketitle
+\section{Molecules in Clouds and Photodissociation Regions}
+
+\subsection{A}
+Carbon is present as C$^{+}$ in neutral Hydrogen (HI) regions because it has a lower
+ionization threshold (11.26 eV) than HI (13.6 eV). The dominant form of ionization
+is UV photoionization, so this is the case as long as A$_{V} <$ 3.
+This HI region should be optically
+thick to UV radiation between 13.6 and 54.4 eV, meaning both H and He will be
+neutral. Carbon should be the most abundant ionized atomic species. In this case,
+it is reasonable to assume that the main contributor towards the electron
+population is from the ionization of carbon, thus n$_{e} \sim$ n$_{\text{C}^+}$ 
+is a reasonable approximation.
+
+
+\subsection{B}
+The lowest two vibrational/rotational energy levels for H$_{2}$ have wavelengths of 
+28.18 $\mu$m and 17.03 $\mu$m. These transitions correspond to a temperatures
+of 510.8 K and 845.3 K respectively. Assuming these states could be readily 
+excited, these transitions allow the cooling of a molecular cloud down to
+510.8 K. Below this temperature, CO becomes essential. Its J(1-0) transition
+has $\lambda$ = 2.6 mm, and thus a corresponding temperature of 5.54 K. Although
+H$_{2}$ is essential for cooling in general, CO cooling becomes vital in 
+the formation of molecular clouds, which have temperatures around 10 - 20 K.
+
+\subsection{C}
+As given in Draine pg. 368, the linewidth $\sigma_v$ in a virialized cloud
+is given as $<\sigma_v^2>$ = 6GM/5L, where L is the characteristic size
+of the cloud (L = 2R). Assuming that R$\propto \sigma_v^2$, then the
+gas surface density, $\Sigma$ is given as
+\begin{equation}
+\Sigma = \frac{M}{A} \propto \frac{M}{R^2} \propto \frac{\frac{5\sigma_v^2L}{6G}}{0.5L\sigma_v^{2}} \propto \frac{\sigma_v^2L}{\sigma_v^2L} = \text{constant}.
+\end{equation}
+Thus, the gas surface density is constant assuming a virialized molecular cloud.
+
+For L$_{\text{CO}}$ = $\left(\sqrt{2\pi}T_{B}\sigma_v\right)\pi R^2$ and 
+M$_{\text{gas}}$ = $\Sigma \pi R^2$, the relationship between CO luminosity and 
+gas mass can be readily seen to be
+\begin{equation}
+\frac{M_{\text{gas}}}{L_{\text{CO}}} = \frac{\Sigma}{\sqrt{2\pi}T_{B}\sigma_{v}}
+\end{equation}
+
+This relationship is then a function of easily measureable quantities,
+the brightness temperature of the CO line (T$_{B}$) and the linewidth $\sigma_v$,
+with the surface gas density being a constant. There is then a linear 
+relationship between gas mass and CO luminosity.
+
+\subsection{D}
+The CR ionization rate as traced by N(H$_3^+$)/N(H$_2$) is given as
+\begin{equation}
+\xi \approx (k_{16.9} + k_{16.10})n_{H}x_e\frac{N(H_3^+)}{2N(H_2)}(1+\phi_s)^{-1}
+\end{equation}
+where $\phi_s$ is given as
+\begin{equation}
+\phi_s = \left(1-\frac{x_e}{1.2}\right)\left(\frac{0.67}{1+\left(x_e/0.05\right)}\right)
+\end{equation}
+
+x$_{e}$ can be estimated from the ionized fraction of Carbon as x$_{e}$=x(C$^+$).
+For the provided numbers, the range of possible ionization rates is
+1.28$\times$10$^{-18}$s$^{-1} < \xi <$ 1.28$\times$10$^{-16}$s$^{-1}$. The values
+used in Draine vary, but are in the neighborhood of 1.0 to 6.0 $\times$10$^{-16}$s$^{-1}$.
+These sit at or above the given upper limit. 
+
+\subsection{E}
+The isothermal sound speed for cool (T$\sim$10 K) gas expected of molecular
+clouds is on the order of 1 km/s. For shocks colliding at roughly twice the 
+velocity dispersion of the MW's disk, the shock types are expected to be
+either C or C*, but not J, in a MHD two-fluid shock (as relevant for molecular
+clouds). This implies that there is no viscous jump between the upstream and 
+downstream gas. In the C* case, the neutrals smoothly transition from supersonic
+to subsonic pre-shock, then back to supersonic as the gas cools in the post
+shock region. These cases are valid assuming a subalfvenic ion velocity. Two-fluid
+MHD shocks are not expected to dissociate H$_2$ for shock speeds below 40 km/s. 
+In this case then, H$_2$ cooling is significant, as its vibrational/rotational
+states will be excited in the shock heating of the molecular cloud.
+
+In the shocked regions, the resulting heating may allow for reaction 33.24 to take
+place, converting C$^+$ and H$_2$ to CH$^+$ and H with the input of 0.40 eV. This
+requires gas heating above 10$^3$ K. Draine \& Katz (1986) model the chemical
+evolution MHD shocks as applied to molecular clouds, and found that C-type 
+shocks in these clouds could generate CH$^+$. They compare their results to 
+three molecular clouds ($\xi$ Per, $o$ Per, and $\chi$ Oph) and are able
+to construct models that produce the observed CH$^+$ (with other
+observational constraints) reasonably well. These models required shock 
+velocities between 7 and 12 km/s.
+
+\subsection{F}
+Assuming a uniform density molecular cloud, an ionization and shock front that
+propogates through the cloud resulting from the formation of a star will switch
+between a few different forms during its journey outward. The initial ionization
+front will be a strong, R-type front which propogates outward at speeds much
+greater than twice the isothermal sound speed (much greater than roughly 20 km/s).
+Once the front reaches speeds close to twice the sound speed, usually when 
+R$\sim$R$_{\text{SO}}$, the front generates a shock wave ahead of itself. 
+The ionization front continues to move through this shocked (heated and 
+accelerated gas), but does so now as a weak D-type shock. The ionization front
+is now trapped behind the hydrodynamical shock front, as it becomes subsonic.
+They both continue to travel outward, but decelerate over time.
+
+The D-type shock propogating outwards causes ionized gas to flow outward
+at roughly the sound speed. There is a large pressure jump between the ionized
+and neutral gas (P is larger in the nuetral gas). This pressure jump is responsible
+for accelerating ionized gas away from the ionization front (i.e. it pushes
+the ionized gas outward).
+
+
+\section{Supernovae and Winds in the ISM}
+
+\subsection{A}
+The mass flux of the expanding wind is readily given as
+$\dot{M}$ = 4$\pi$r$^{2}\rho$v$_w$. In order for the velocity of the wind to
+be constant as the wind expands, the density profile must go as r$^{-2}$.
+
+\subsection{B}
+The typical velocity dispersion of an elliptical galaxy is on the order of
+200 km s$^{-1}$. Assuming an AGB wind velocity appreciable to this velocity
+(just taking v$_w$ = 200 km s$^{-1}$), Eq. 36.28 in Draine gives the temperature
+of a postshock region for strong shocks. This equation requires knowledge of the
+mean molecular weight of the gas, which can range from 0.609 m$_H$ to 1.273 m$_H$
+for ionized and neutral gas respectively. Taking $\mu$ as a free parameter,
+the temperature of the post shock gas ranges from 5.5$\times$10$^{5}$ K to 
+1.16$\times$10$^{6}$ K for fully ionized and neutral gas respectively. This
+temperature range corresponds to wavelengths of 26 nm to 12.4 nm, both of 
+which are in the FUV/UV range. Cooling radiation from this gas should
+be at wavelengths at and below FUV.
+
+\subsection{C}
+Using a massive O star for the computation, an O star has wind velocities
+between 1500 and 2500 km/s, and mass loss rates between 10$^{-6.5}$ and 
+10$^{-5}$ M$_{\odot}$ yr$^{-1}$. For the sake of this computation, I will
+take V$_{w}$ = 2000 km/s and M$_{\odot}$ = 5$\times$10$^{-6}$ M$_{\odot}$ yr$^{-1}$.
+The rate of mechanical energy deposit in the wind is given as
+$\dot{E}$ = $\dot{M}$V$_{w}^2$/2 . Assuming this wind deposits mechanical 
+energy at this rate for the entirety of the O star lifetime, this should
+give an upper limit for the deposited mechanical energy. It is certainly
+the case that the onset of radiative cooling will remove some of the 
+deposited energy. The lifetime of an O star is around 10 Myr, but they quickly
+progress through the main sequence during that time. I will take 5 Myr as
+the lifetime of this hot wind, which gives a total deposited mechanical energy
+of 0.995 E$_{51}$ erg, which I will just round to 1.0 E$_{51}$ erg. From 
+Draine, the typical energy deposited by a 
+Type II supernova will have E$_{51} \approx$ 1 to 20
+erg. Given my rough estimate, the energy deposited by the wind is comprable
+to but certainly less than the energy deposited by the supernova. 
+
+\subsection{D}
+Frankly, I am not terribly sure of how to properly estimate this. The 
+accelerated ISM will be swept up during the Sedov-Taylor phase of the evolution,
+and also during the subequent snowplow phase (mainly in the latter as the ST
+phase ends after the swept up mass is comprable to the mass of the stellar
+ejecta). 
+
+Anyway, taking the simple approach and setting 
+E$_{\text{ej}}$ = M$_{\text{ej}}$V$^2_{\text{esc}}$/2, where M$_{\text{ej}}$ is 
+the total swept up mass that can escape the galaxy, and E$_{\text{ej}}$ is the
+energy of that mass. Assuming that 100\% of the supernova energy goes into
+pushing the ISM outward (in reality, the effeciency is less than 100\% due
+in part to radiative losses), the total amount of mass than can be ejected
+by a supernova with E$_{51}$ = 1 and V$_{esc}$ = 500 km/s is 402 M$_{\odot}$. 
+
+\subsection{E}
+Using Table 42.1 from Draine, and the text in section 42.3, the supernova rate
+for the Milky Way can be readily derived assuming the Chabrier IMF. This is 
+given in the text directly as 0.014 yr$^{-1}$. The rate per solar
+mass of star formation is given as
+\begin{equation}
+\frac{\text{Type II SN rate}}{M_{\odot}} = <M>^{-1}\frac{\text{mass}}{\text{total mass}} = 0.011
+\end{equation}
+where the mass/total mass is taken for stars with M $>$ 8 M$_{\odot}$. Assuming 5\% of these supernova have their gas ejected from the disk, then the amount
+of gas ejected per solar mass of star formation is given as 
+0.05$\times$0.011$\times$M$_{esc}$, were M$_{esc}$ is the answer from part
+D. Thus, using the possibly incorrect answer from Part D,  0.22 M$_{\odot}$ of 
+gas is ejected for every 1 M$_{\odot}$ of star formation.
+
+\subsection{F}
+The McKee \& Ostriker model gives that the ISM pressure relates to the
+supernova rate per unit volume as:
+\begin{equation}
+\frac{P}{k} = S^{0.77}_{-13}n_{\text{o}}^{-0.15}\times5700~\text{cm}^{-3}~\text{K}.
+\end{equation}
+Taking S$_{-13}$ = 12.0 (ten times the observed rate in the MW), and n$_{o}$ to
+be unity (the mean number density of the ISM), the resulting pressure for a 
+star forming galaxy would be P/k = 3.86$\times$10$^{4}$ cm$^{-3}$ K. The 
+Bonnor-Ebert mass is given as
+\begin{equation}
+M_{BE} = 0.26\left(\frac{T}{10 ~K}\right)^{2}\left(\frac{10^6 ~\text{cm}^{-3}~ \text{K}}{P/k}\right)^{1/2} M_{\odot}
+\end{equation}
+Using the calculated pressure, and assuming a molecular cloud with T$\sim$ 10 - 20 K,
+M$_{BE}$ = 1.32 - 5.28 M$_{\odot}$. This is quite large and would seem to imply
+that heavy star formation (and thus a large supernova rate) in young galaxies
+suppresses supsequent star formation of low mass stars, and favors that of
+higher mass. 
+
+\section{
+
+\begin{thebibliography}{9}
+
+\bibitem{orlanski}
+  Draine, B.T., Katz, N.
+  \textit{Magnetohydrodynamic shocks in diffuse clouds. II - 
+          Production of CH(+), OH, CH, and other species}
+  ApJ,
+  Vol. 310, p. 392-407,
+  Nov. 1986
+
+\end{thebibliography}
+
+\end{document}

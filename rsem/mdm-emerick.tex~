@@ -1,0 +1,539 @@
+% MDMPROP.TEX -- MDM electronic proposal form.
+% Revision: September 4, 2003 --- valid for the Spring 2014 observing semester.
+% DEADLINE: 5:00 PM Thursday Oct. 31, 2013
+%
+% General Instructions:
+%
+%   I. Where/how/when to submit this form:
+%
+%      Give a paper copy to Jules or his mailbox on the 10th floor
+%      of Pupin by the above deadline, or email the postscript or
+%      pdf file to jules@astro.columbia.edu.
+%
+% THE FORM STARTS HERE
+
+% please don't modify or delete this line.
+\documentstyle[mdmprop,11pt]{article}
+
+
+
+\begin{document}
+
+% Give a descriptive title for the proposal in the \title command.
+%
+%    \title{TEXT}
+%
+% Note that a title can be quite long; LaTeX will break the title into
+% separate lines automatically.  If you wish to indicate line breaks
+% yourself, do so with a `\\' command at the appropriate point in
+% the title text.
+
+\title{Uncovering the Origin of Warm Gas in Galaxy Clusters: Identifying Possible
+       Galactic Origins of Cluster Lyman Alpha Absorbers}
+
+% Investigator's (PI and CoI) information blocks.
+%
+% The PI must be affiliated with Columbia University.
+% Please give each investigator's name, email address.
+% At least one investigator must be listed as definitely
+% being present at the telescope.
+%
+%    \name{OBSERVER NAME}
+%    \emailaddress{EMAIL ADDRESS}
+%    \atthetelescope{Y/N}
+%
+% DO NOT remove the \begin{PI} and \end{PI} or the \begin{CoI} and
+% \end{CoI} lines.
+
+\begin{PI}
+\name{Andrew Emerick}			% REQUIRED
+\emailaddress{emerick@astro.columbia.edu}		% REQUIRED
+\atthetelescope{Yes}       % REQUIRED
+\end{PI}
+
+\begin{CoI}
+\name{Mary Putman}			% REQUIRED
+\emailaddress{mputman@astro.columbia.edu }		% REQUIRED
+\atthetelescope{No}       % REQUIRED  
+\end{CoI}
+
+\begin{CoI}
+\name{Greg Bryan}			% REQUIRED
+\emailaddress{gbryan@astro.columbia.edu}		% REQUIRED
+\atthetelescope{No}       % REQUIRED
+\end{CoI}
+
+%\begin{CoI}
+%\name{}			% REQUIRED
+%\emailaddress{}		% REQUIRED
+%\atthetelescope{}       % REQUIRED
+%\end{CoI}
+
+% You can supply more CoI blocks, but only the first three will be
+% printed on the form.
+
+% Give a general abstract of the scientific justification appropriate for
+% a non-specialist.  Write the abstract between the \begin{abstract} and
+% \end{abstract} lines.  Limit yourself to approximately 175 words.
+
+% DO NOT remove the \begin{abstract} and \end{abstract} lines.
+
+\begin{abstract}
+Galaxy clusters are the largest gravitationally bound structures in the Universe,
+and are host to a variety of gas flow phenomena. We want to be able to map out 
+the warm gas component (T$\sim$10$^{4-5}$) of a galaxy cluster's intracluster
+medium (ICM), which traces processes such as gas accretion onto the cluster
+from filaments, and interactions between the ICM and the cluster's galaxies. 
+This has been done recently through Ly$\alpha$ absorption observations in the
+Virgo cluster with HST's COS. However, being able to discriminate against
+or determine the possible galactic origins of the warm gas component requires
+a complete understanding of the velocities of galaxies within a few hundred
+kpc (in projection) of a given line of sight. In light of upcoming observations
+of Ly$\alpha$ absorption in the Coma Cluster, we propose to obtain more 
+precise velocity measurements of galaxies around 9 lines of sight in order to 
+better understand the relationship between the observed warm gas and the 
+galaxies within the Coma Cluster.
+\end{abstract}
+
+% Indicate whether this proposal is part of your PhD thesis work by
+% putting a Y or an N inside the \thesis{} curly braces.
+
+\thesis{N}
+
+% Indicate whether you are requesting long-term status by putting
+% a Y or an N inside the \longterm{} curly braces.  If you do want
+% long-term status (a "Y" answer), please tell us the number of nights,
+% number of semesters, and what telescopes by filling in \longtermdetails{}.
+% Please be brief; \longtermdetails is limited to one line.
+
+\longterm{N}
+\longtermdetails{}
+
+% List the details of the observing runs being requested, for
+% UP TO THREE runs.  The parameters for each run are segregated
+% between \begin{obsrun} and \end{obsrun} lines.  Please be sure
+% that the information is isolated properly for each run.
+%
+%   \telescope{}	For example, \telescope{1.3m}
+%   \instrument{}	For example, \instrument{Mk III + Charlotte}
+%   \lunardays{}	For example, \lunardays{14}
+%   \optimaldates{}	For example, \optimaldates{Sep 1 - Nov 30}
+%   \acceptabledates{}	For example, \acceptabledates{Sep 1 - Dec 15}
+%
+%
+% Instrument combinations may be specified with "+".
+%
+% \numnights should give the number of nights of the run
+% \lunardays should specify the maximum number of nights from new moon 
+% which can be utilized to accomplish your scientific goals.  It should 
+% be a number from 1 (new moon) to 14 (full moon).
+%
+% \optimaldates should contain the range of OPTIMAL dates.
+%
+% \acceptabledates should give the range of ACCEPTABLE dates (i.e., you
+% would not accept time outside those limits).
+%
+% To enter the acceptable and optimal date ranges, please use two 
+% dash-separated dates with 3-letter abbreviations for the month
+% (Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec) 
+% followed by the day.  For example:  \optimaldates{Feb 15 - Apr 23}
+%
+% If you need to enter two or more ranges of acceptable or optimal dates
+% for a single observing run, separate the ranges by commas.  For example:
+% \acceptabledates{Oct 7 - Nov 24, Jan 7 - Jan 31}
+% It is not necessary to give date ranges based on lunar phase information.
+% For instance, if you wish to observe an object in March through May
+% within five days of new moon, you may give \lunardays{5} and 
+% \optimaldates{Mar 1 - May 31} instead of multiple shorter date ranges.
+% 
+% DO NOT remove the \begin{obsrun} and \end{obsrun} blocks.
+
+\begin{obsrun}
+\telescope{2.4}
+\instrument{OSMOS, VPH grism}
+\numnights{3}
+\lunardays{}
+\optimaldates{March 18-22 ; April 17-20}
+\acceptabledates{March 13-22; April 6-20}
+\end{obsrun}
+
+\begin{obsrun}
+\telescope{}
+\instrument{}
+\numnights{}
+\lunardays{}
+\optimaldates{}
+\acceptabledates{}
+\end{obsrun}
+
+\begin{obsrun}
+\telescope{}
+\instrument{}
+\numnights{}
+\lunardays{}
+\optimaldates{}
+\acceptabledates{}
+\end{obsrun}
+
+% You may NOT supply more obsrun blocks.  Three is the limit.
+
+% If there are dates that you cannot use for non-astronomical reasons,
+% (i.e., other than moon phase or when your object is up)
+% please give the dates by filling in the curly braces in \unusabledates{}.
+% Please be brief; \unusabledates is LIMITED TO ONE LINE.
+
+\unusabledates{}
+
+% In the following "essay question" sections, the delimiting pieces of
+% markup (\justification, \feasibility, etc.) act as LaTeX \section*{}
+% commands.  If the author wanted to have numbered subsections within
+% any of these, LaTeX's \subsection could be used.
+
+% SCIENTIFIC JUSTIFICATION
+%
+% Give the scientific justification for the proposed observations.
+% This section should consist of paragraphs of text (and may include
+% EPS figures) that follow the \justification line.
+% Try to include an explanation of the overall significance to astronomy.
+
+% In order to include an EPS plot, you should use the LaTeX "figure"
+% environment.  The plot file is included with the \plotone{FILENAME}
+% command; two side-by-side plot files can be included by typing
+% \plottwo{FILENAME1}{FILENAME2}.  Use \caption{} to specify a caption.
+% The \epsscale{} command can be used to scale \plotone plots if they
+% appear too large on the printed page.
+%
+% \begin{figure}
+% \epsscale{0.85}
+% \plotone{sample.eps}
+% \caption{Sample figure showing important results.}
+% \end{figure}
+%
+% If you need to rotate or make other transformations to a figure, you may
+% use the \plotfiddle command:
+% \plotfiddle{PSFILE}{VSIZE}{ROTANG}{HSCALE}{VSCALE}{HTRANS}{VTRANS}
+% \plotfiddle{sample.eps}{2.6in}{-90.}{32.}{32.}{-250}{225}
+% where HSCALE and VSCALE are percentages and HTRANS and VTRANS are 
+% in PostScript units, 72 PS units = 1 inch.
+%
+% If you wish to use the "reference" environment, follow
+% the following example:
+%
+%\begin{references}
+%\reference Armandroff \& Massey 1991 AJ 102, 927.
+%\reference Berkhuijsen \& Humphreys 1989 A\&A 214, 68.
+%\reference Massey 1993 in Massive Stars: Their Lives in the Interstellar
+%  Medium (Review), ed. J. P. Cassinelli and E. B. Churchwell, p. 168.
+%\reference Massey, Armandroff, \& Pyke 1993, in prep.
+%\end{references}
+
+\justification
+Ly$\alpha$ absorption seen through the Ly$\alpha$ forest probes the diffuse gas
+contained within the intergalactic medium (IGM) (Rauch 1998). UV spectrographs
+aboard the Hubble Space Telescope, most recently the 
+Cosmic Origins Spectrograph (COS), provide a window into Ly$\alpha$ absorption 
+in the nearby Universe. In addition to its usefulness probing baryons in the
+IGM, Ly$\alpha$ can be used to observe warm gas flows into and out of 
+galaxy clusters. Clusters are hosts to massive dark matter potential wells
+(10$^{14-15}$ M$_{\odot}$) that can shock-heat infalling cool gas to the virial
+temperature of the intracluster medium (T$\sim$10$^{7-8}$K). In general, warm
+gas (T$\sim$10$^{4-5}$~K) traces the inflow of gas from pristine filamentary
+structures, as well as processes unique to cluster environments, shock as the
+ram-pressure stripping of gas in infalling galaxies, galactic starvation, 
+and galaxy-galaxy interactions. Recently, Yoon et. al. 2012 (hereafter Y12) used
+COS to systematically probe the warm gas distribution in
+galaxy clusters through 14 lines of sight to background QSOs through the Virgo
+cluster. Y12 indicated the presence of an inflowing warm gas component that could
+have galactic or filamentary origins. Regardless, this compenent traces important dynamical
+processes associated with galaxy clusters. We propose to conduct observations
+to discriminate against or determine the possible galactic orgins of this Ly$\alpha$
+absorbing gas seen in recent and upcoming lines of sight towards
+richer and more massive Coma Cluster.
+
+The investigators have secured the necessary time with COS to observe nine 
+lines of sight towards background QSOs through the Coma Cluster. Fig. 1
+gives these lines of sight, spread throughout the cluster environment, along
+with the SDSS galaxies shown in gray.
+From the results of Y12, we expect a covering
+fraction of unity for Ly$\alpha$ absorbing gas at N$_{HI}$ above 10$^{13.1}$ cm$^{-2}$.
+Since we expect a more massive galaxy cluster such as Coma to contain more 
+inflowing warm gas, each of our lines of sight should exhibit some Ly$\alpha$ 
+absorption associated with the Coma Cluster. The circumgalactic medium (CGM)
+of galaxies in the field show up in Ly$\alpha$ absorption
+as long as their impact parameter to the line of sight is within a few hundred kpc
+(Prochaska et. al. 2011). However, cluster environments affect the evolution of 
+galaxies and tend to suppress the CGM; this suppresses the observable galactic
+Ly$\alpha$ absorption (Yoon \& Putman 2013). For this reason, we restrict our
+target list to galaxies within a few hundred kpc of each line of sight.
+Yoon \& Putman 2013 studied the 
+association of galaxies and Ly$\alpha$ absorbers within the Virgo Cluster, 
+developing a method to pair Ly$\alpha$ absorbers with galaxies. However, this
+analysis requires a complete understanding of the distribution and velocities
+of galaxies around each line of sight. Although the Coma Cluster is well studied,
+and many galaxies already have measured velocities, there are still many near
+each line of sight with no velocity measurements. We propose to use MDM to obtain
+velocity measurements of a selection of galaxies near each line of sight in
+order to extend the analysis of Yoon \& Putman 2013 to the Coma Cluster. This 
+is important in order to better understand how a diverse range of cluster 
+environments affect their resident galaxies.
+
+% In addition,
+%an important discriminator of the possible galactic origin of the absorbers
+%is metallicity, indicating whether or not the gas is enriched and likely
+%galactic in origin, or pristine, likely from the IGM filaments. Using
+%the spectral observations, we can obtain an understanding of the metallicity and
+%star formation properties of the galaxies near each line of sight, which
+%can be a useful indicator also of whether or not the galaxy has undergone 
+%a stripping or starvation event. \textbf{need to describe the specific obsevations
+%needed for this (i.e. which line ratios, etc.)}
+
+Currently, we are conducting synthetic Ly$\alpha$ observations through a galaxy
+cluster simulated with the adaptive mesh refinement code Enzo
+(The Enzo Collaboration et. al. 2013).
+In this work, we reconstruct the three dimensional distrubution of the
+observable warm gas within a galaxy cluster in order to determine the origin
+of the observed absorption features. The synthesis of this 
+computational work, the observations of Ly$\alpha$ absorption in Virgo and Coma,
+and the observations proposed here will provide a robust test of our theoretical
+understanding of gas flows in galaxy clusters.
+The MDM observations are essential, then, towards determining the potentially 
+galactic origin of the observed warm gas, and testing what we predict from
+cosmological simulations. These observations would provide a better understanding
+of the relationship between galaxies and their cluster environments, and the 
+evolution of the gaseous baryons within galaxy clusters. 
+
+\begin{figure}
+\label{fig:coma}
+\epsscale{0.85}
+\plotone{figures/coma_QSO_los.eps}
+\caption{The Coma Cluster with the distrubution of associated galaxies from SDSS (gray dots).
+The red diamonds give the lines of sight to the QSO's being observed with HST. The dashed
+circle gives the Coma Cluster virial radius, 2.9 Mpc. The lines of sight as listed
+in Table 1 are ordered in increasing distance from cluster center.}
+\end{figure}
+
+
+
+%The origin of these Ly$\alpha$ absorbers is not well understood. The absorbers themselves
+%could originate from ram-pressure stripping events as galaxies fall into a cluster's 
+%potential well, or could trace cooler gas acretting onto the galaxy cluster from 
+%IGM filaments. In addition, the gas could come from galactic outflows from galaxies associated
+%with the galaxy cluster. To discriminate between these possibilities, the metallicities of these
+%absorbers must be better constrained, and the properties of galaxies along the line of sight
+%of the absorbers must be well understood.
+
+%In light of upcoming observations using HST's COS of lines of sight towards 9 background quasars
+%through the Coma Cluster, we propose to obtain spectra of \textbf{number} galaxies
+%near these lines of sight. 
+
+%Currently, computational work is being performed by the authors using the adaptive mesh refinement
+%code Enzo (Bryan et. al 2013) to conduct synthetic UV spectra observations on a Virgo-like and a
+%Coma-like cluster. These results will be combined with the previous Virgo observations 
+%in Y12, and the upcoming Coma observations in order to provide a solid theoretical understanding
+%of the origin of these absorbers. Using this in combination with the proposed MDM observations
+%has the potential to test our predictions for the origins of this warm gas component in
+%galaxy clusters in general, and also to potentially pinpoint the specific galaxies from which 
+%these absorbers came from. Doing so would allow for a better understanding of the relationship
+%between galaxies and their cluster environment, or the accretion process by which matter
+%falls into the cluster potential from cosmic filaments.
+
+
+
+\begin{references}
+\vspace{-0.2cm}
+\reference The Enzo Collaboration et. al. 2014, ApJS, 211:19
+\reference Prochaska, J. X., Weiner, B., Chen, H.-W., Mulchaey, J., \& Cooksey, K., 2011, ApJ, 740, 91
+\reference Rauch, M. 1998, ARA\&A, 36, 267
+\reference Yoon, J. H., Putman, M.E., Thom, C., Checn, H.-W., \& Bryan, G. L. 2012 ApJ, 754, 84
+\reference Yoon, J. H., Putman, M.E., 2013, ApJ, 722, L29
+\reference Yoon, J. H., Schawinski, K., Sheen, Y-K., Ree, C. H., \& Yi, S. K., 2008, ApJS, 176, 414 
+\end{references}
+
+% FEASIBILITY
+%
+% Assess the technical and scientific feasibility of the observations.
+% This section should consist of text and tables only (no figures)
+% following the \feasibility line.
+%
+% List objects, coordinates, and magnitudes (or surface brightness,
+% if appropriate), desired S/N, wavelength coverage and resolution.
+% Justify the number of nights requested as well as the specific
+% telescope(s), instruments, and lunar phase.  Indicate the optimal
+% detector, as well as acceptable alternates.  If you've requested
+% long-term status, explain why this is necessary for successful
+% completion of the science.
+
+\feasibility
+We propose to measure the velocity of galaxies given
+in Table 1. For each galaxy, Table 1 shows its position (RA,DEC), the nearby
+background QSO, the galaxy's magnitude, and the separation (in arcmin)
+from the line of sight. At Coma's
+redshift, z = 0.023, 10$'$ corresponds roughly to 250 kpc. Ultimately, there are
+many galaxies within 10$'$ of each line of sight without known velocity measurements.
+However, we restrict ourselves to the brightest galaxies that are closest
+to each of the lines of sight. This selection is fairly arbitrary, but restricts our sample
+to galaxies most likely associated with the Coma Cluster, and galaxies that would 
+most likely be responsible for an observed absorption feature. Some galaxies near
+the line of sight are likely associated with the Coma Cluster, but only have 
+photometric redshifts available. We restrict ourselves to five galaxies near each
+sight line shown in Fig. 1, placing precedence
+on those in Coma with photometric redshifts available.
+
+The velocity of these galaxies can be readily determined using the
+OSMOS detector on the 2.4m telescope. This  instrument was designed specifically
+for the purpose of studying galaxies in galaxy clusters in the nearby Universe.
+OSMOS is perfect for observing galaxies within Coma. Given the magntitudes listed
+in Table 1, we can make our observations within 3 hours of exposure time. 
+Given the possible range
+of slit dimensions, 0.6-20$"$ long and 0.6-1.2$"$ wide, we will be able to 
+fit all of our galaxies on a single mask (45 slits in all) without collisions
+between slits.
+
+We will use the VPH grism to conduct observations in two sets, over the
+wavelength range 310-590nm (peak at 500 nm) and 310-680nm (peak at 640nm). Given
+the required exposure time per observation, this implies six hours of exposure
+to make the required measurements. The VPH grism has a peak resolution of
+R=1600, which would allow velocity measurements 
+accurate to about 180 km/s at H$\alpha$. The accuracy of velocity measurements are improved
+greatly by measuring the Doppler shift for two or three lines. With OSMOS,
+we will be able to observe H$\alpha$ (656.28 nm), H$\beta$ (486.13 nm), H$\delta$
+(410.17 nm), and the Ca H and K lines (396.85 nm and 393.37 nm). However,
+H$\alpha$ and H$\beta$ will likely be the most useful (nearest two to the 
+resolution peaks at 500 nm and 640 nm). For older, elliptical galaxies are not 
+likely to be seen in emission, but rather absorption. For this case, we can
+use NaD (589.2 nm), Mgb (517.5 nm) and also potentially the Ca H and K lines to
+measure the velocity.
+
+%\begin{itemize}
+%\item Some notes:
+%\item slit length: 0.6-20 arcsec
+%\item slit width: 0.6-1.2 arcsec
+%\item Good performance over 380-1000 nm with triple prism
+%\item R=400 -$>$ 60 over 400nm to 1000 nm
+%\item 40 min exposure was enough for (i-z)=3.29,i=23.30 QSO at z=6.43
+%\end{itemize}
+
+
+\begin{table}
+\small
+\begin{tabular}{ c c c c c c c }
+\hline
+Object Name & RA & DEC & Sep. (") & Mag.\\
+\hline
+& \textbf{HB89.1259+281}&&&\\
+\hline
+SDSS J130129.58+275052.1 & 195.37329 & 27.84782 & 0.400 & 18.2r \\
+SDSS J130128.71+275134.8 & 195.36963 & 27.85968 & 0.488 & 19.9r \\
+SDSS J130132.58+275018.0 & 195.38578 & 27.83835 & 1.273 & 18.6g\\
+ABELL 1656* & 195.2308 & 27.79202 & 8.081 & 20.4g\\
+SDSS J130123.95+275316.6* & 195.34983 & 27.88796 & 2.357 & 21.0g\\
+\hline
+& \textbf{HB89.1258+285} &&&\\
+\hline
+SDSS J130101.38+282011.4 & 195.25579 & 28.33652 & 0.459 & 19.5r\\
+APD2000 J130104.3+281956 & 195.26808 & 28.33228 & 0.783 & 18.9R\\
+SDSS J130055.49+281939.7 & 195.23121 & 28.32772 & 1.191 & 19.4r\\
+GALEXASC J130051.96+281852.4 & 195.21663 & 28.31486 & 2.136 & 16.9R\\
+SDSS J130056.49+281650.0 & 195.23539 & 28.28056 & 3.068 & 18.5r\\
+\hline
+& \textbf{TON0694} &&&\\
+\hline
+%SDSS J130313.13+281114.1 & 13 03 13.1 & +28 11 14 & TON0694 & 0.108 & 20.6g\\ % 21.06i
+%SDSS J130311.00+281124.9 & 13 03 11.0 & +28 11 25 & TON0694 & 0.529 & 21.7g\\ % 20.69i
+%SDSS J130315.43+281041.4* & 13 03 15.4 & +28 10 41 & TON0694 & 0.689 & 20.8g \\ % 20.09i
+%SDSS J130312.63+281151.4 & 13 03 14.7 & +28 11 49 & TON0694 & 0.732 & 22.9g \\ %  20.473
+%SDSS J130308.38+281047.7* & 13 03 35.9 & +28 10 48 & TON0694 & 1.075' & 21.8g\\ % 21.68
+SDSS J130313.13+281114.1 & 195.80472 & 28.18726 & 0.108 & 20.6g\\
+SDSS J130308.38+281047.7* & 195.78494 & 28.17993 & 1.075 & 21.8g\\
+SDSS J130311.68+280832.5 & 195.79868 & 28.14238 & 2.604 & 19.65\\
+SDSS J130300.41+280945.8 & 195.75171 & 28.16275 & 3.096 & 19.81\\
+SDSS J130302.68+280852.0 & 195.76118 & 28.1478 & 3.21 & 19.8g\\
+\hline
+& \textbf{RX.J1303.7+2633} &&&\\
+\hline
+SDSS J130346.40+263327.3 & 195.94334 & 26.55759 & 0.239 & 21.8g\\
+SDSS J130339.80+263329.8 & 195.91585 & 26.5583 & 1.406 & 18.9g\\
+SDSS J130351.64+263228.9 & 195.96518 & 26.54138  & 1.473 & 20.8g\\
+SDSS J130340.05+263028.6 & 195.91692 & 26.50796  & 3.06 & 19.81\\
+SDSS J130359.02+263425.4 & 195.99593 & 26.57372  & 3.149 & 19.8g\\
+\hline
+& \textbf{FBQS.J1252+2913} &&&\\
+\hline
+SDSS J125327.13+291330.0 & 193.36306 & 29.22505  & 0.49 & 21.7g\\
+SDSS J125320.37+291237.7 & 193.3346 & 29.21048  & 1.24 & 20.5g\\
+SDSS J125334.07+291232.6 & 193.39197 & 29.20907 & 2.141 & 19.2g\\
+SDSS J125314.44+291556.2 & 193.31019 & 29.26562 & 3.459 & 19.5g\\
+SDSS J125314.37+291602.6 & 193.3099 & 29.26741 & 3.55 & 19.2g\\
+\hline
+& \textbf{TON0133} &&&\\
+\hline
+SDSS J125100.27+302637.8 & 192.75115 & 30.44385 & 0.933 & 19.1g\\
+SDSS J125054.85+302541.9 & 192.72856 & 30.42832 & 1.176 & 19.9g\\
+SDSS J125105.99+302715.4 & 192.77499 & 30.4543 & 1.984 & 19.6g\\
+SDSS J125106.96+302743.2 & 192.779 & 30.46201 & 2.48 & 19.2g\\
+SDSS J125020.07+302310.9 & 192.58363 & 30.38638 & 9.033 & 18.7g\\
+\hline
+& \textbf{FBQS.J130451.4+245445} &&&\\
+\hline
+SDSS J130459.32+245548.0 & 196.24717 & 24.93003 & 2.071 & 19.3g\\
+SDSS J130445.27+245719.2 & 196.18866 & 24.95536 & 2.91 & 19.9g\\
+NGP9 F379-0188786 & 196.194 & 24.84016 & 4.492 & 19.16g\\
+SDSS J130507.51+245517.3 196.2813 & 24.92148 & 3.688 & 19.8g\\
+SDSS J130512.51+245242.6 & 196.30213 & 24.87852 & 5.207 & 18.8g\\
+\hline
+& \textbf{SDSS.J130429.04+311308.2} &&&\\
+\hline
+SDSS J130428.67+311311.2 & 196.11947 & 31.21979 & 0.092 & 22.0g\\
+MAPS-NGP O\_323\_0147666 & 196.12412 & 31.27387 & 3.299 & 18.35\\
+SDSS J130431.67+311725.5 & 196.13199 & 31.29042 & 4.325 & 19.72\\
+SDSS J130412.89+311357.4 & 196.05373 & 31.23264 & 3.546 & 19.9g\\
+GALEXASC J130415.22+311713.9 & 196.06322 & 31.28699 & 5.043 & 18.5\\
+\hline
+& \textbf{SDSSJ125846.67+242739.1} &&&\\
+\hline
+1RXS J125847.1+242740 & 194.69625 & 24.46139 & 0.105 & 17.8\\
+SDSS J125846.50+242746.5 & 194.69376 & 24.46293 & 0.128 & 21.5g\\
+SDSS J125845.71+242840.8 & 194.69048 & 24.47802 & 1.05 & 19.8g\\
+SDSS J125840.10+242821.3 & 194.66709 & 24.47259 & 1.649 & 19.9g\\
+SDSS J125847.38+243153.8 & 194.69745 & 24.53164 & 4.248 & 19.2g\\
+\hline
+\end{tabular}
+\caption{Given are the positions of proposed galaxies to observe, along with the 
+background QSO each galaxy is near, the separation in arcmin from the line of sight
+to the QSO, and galaxy magnitude in the designated band. Galaxies marked with *
+have a photometric redshifts available.}
+\end{table}
+
+
+% OTHER FACILITIES
+%
+% Why MDM? If you are using other facilities for this project,
+% explain how the MDM observations fit into the scheme of things.
+%
+% This section should consist of text and tables only (no figures)
+% following the \feasibility line.
+
+\whymdm
+HST's COS is the only other observational instrument being used for this project.
+The time on HST has already been obtained, and all observations will be made by
+the end of summer 2014. The MDM observations are essential for identifying the
+possible galactic origin of the identified Ly$\alpha$ absorbers in the Coma 
+Cluster. Since the investigators are affiliated with Columbia University, the ease
+of access to MDM facilities makes it an attractive option for conducting this
+experiment. More importantly, the availability of the mutli-object spectrograph
+OSMOS, designed to look at the objects we propose to observe, makes MDM the 
+logical choice.
+
+% PAST USE
+%
+% List your allocation of telescope time at MDM during the
+% past 3 years, and describe the status of the project (cite
+% publications where appropriate).  Mark any allocations of time
+% related to the current proposal with a \relatedwork{} command.
+% Are your MDM observations achieving their goals?
+
+\thepast
+AE has not had any previous use of MDM.
+
+\end{document}
+

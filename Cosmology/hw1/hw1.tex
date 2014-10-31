@@ -1,0 +1,78 @@
+\documentclass[12pt]{article}% uses letterpaper by default
+
+%---------- Uncomment one of them ------------------------------
+\usepackage[includeheadfoot, top=.5in, bottom=.5in, hmargin=1in]{geometry}
+
+% \usepackage[a5paper, landscape, twocolumn, twoside,
+%    left=2cm, hmarginratio=2:1, includemp, marginparwidth=43pt,
+%    bottom=1cm, foot=.7cm, includefoot, textheight=11cm, heightrounded,
+%    columnsep=1cm, dvips,  verbose]{geometry}
+%---------------------------------------------------------------
+\usepackage{fancyhdr}
+\usepackage{verbatim}
+\usepackage{url}
+\pagestyle{fancy}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage[pdftex]{graphicx}
+\usepackage[english]{babel}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{}
+%\doublespacing
+\singlespacing
+
+\newcommand{\degrees}{\ensuremath{^\circ}}
+\newcommand{\arcmin}{\ensuremath{'}}
+\newcommand{\arcsec}{\ensuremath{"}}
+\newcommand{\hours}{\ensuremath{^\mathrm{h}}}
+\newcommand{\minutes}{\ensuremath{^\mathrm{m}}}
+\newcommand{\seconds}{\ensuremath{^\mathrm{s}}}
+
+
+\rhead{Emerick 2014}
+\renewcommand{\rightmark}{}
+
+
+\begin{document}
+
+
+\begin{flushleft}
+\begin{center}
+
+\Large\textbf{HW1: Computational Portions}
+\end{center}
+
+\section{Problem 4}
+
+Fig.~\ref{fig:p4} gives the results to problem 4.
+
+\begin{figure}[tb]
+\center
+\includegraphics[width=0.9\linewidth]{p4}
+\caption{\small The solution to problem 4, plotting the scale factor as a function of H$_o$(t-t$_o$) for various single component universes.}
+\label{fig:p4}
+\end{figure}
+
+\section{Problem 5}
+
+Unfortunately I was having some problems solving problem 5 properly. In principle, it should be simple, but the ODE solver I was using was running into some issues solving backwards in time. I tried a few times to get things right, but none of them worked. Some examples are shown in Fig.~\ref{fig:p5}. The initial conditions are ($\tau$,a) = (1,1), where $\tau$ = H$_o$t which is true by definition. My thought process was to find the solution in two steps. First by starting here and solving backwards in time to $\tau$ = 1 $\times$ 10$^{-10}$, and second by solving from the initial conditions forwards in time until $\tau$ = 10. Since this requires computing values of the scale factor at over 11 orders of magnitude in $\tau$, I used a loop that finds the solution over one order of magnitude at a fixed d$\tau$, resets using the farthest calculated a and $\tau$ as the new initial conditions, and repeats until the desired final time is reached.
+
+This worked great going forwards in time from $\tau$ = 1 to $\tau$ = 10 (dash-dot blue line). However, going backwards in time fails (blue line). At some point, the solution just blows up and nose-dives. I initially assumed this may have been because the ODE solver I used could not solve backwards in time, so I defined a new variable s = $\tau_o$ - $\tau$, and ds = -d$\tau$, so solving backwards in $\tau$ is forwards in s. This is given by the solid black line. Again, same problem. 
+
+If I know the solution of a($\tau$) beforehand (which I do since you gave us the plot), I can pick different initial conditions. I use the lower intersection point you gave us as another set of initial conditions and solve from here forwards in time (dotted red line). As you can see, this reproduces your curve perfectly over this region. Going the other direction (solid red), however, I still have the same issue. 
+
+
+\begin{figure}[t]
+\center
+\includegraphics[width=0.9\linewidth]{p5}
+\caption{Attempted solution to problem five using diffeorent starting points and directions in time}
+\label{fig:p5}
+\end{figure}
+
+
+\
+
+\end{flushleft}
+\end{document}

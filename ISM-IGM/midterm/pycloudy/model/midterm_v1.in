@@ -1,0 +1,68 @@
+////////////////////////////////////
+title midterm_v1
+////////////////////////////////////
+set punch prefix "midterm_v1"
+Blackbody 37130.000000
+q(H) = 49.230
+radius = 16.699
+hden = 3.000
+element abundance iron -7.400
+element abundance oxygen -3.400
+element abundance neon -4.000
+element abundance argon -5.800
+element abundance nitrogen -4.000
+element abundance carbon -5.150
+element abundance sulphur -5.350
+element abundance helium -0.920
+element abundance chlorine -7.000
+distance = 1260.0 parsecs linear
+no molecules
+no level2 lines
+no fine opacities
+atom h-like levels small
+atom he-like levels small
+COSMIC RAY BACKGROUND
+element limit off -8
+print line optical depth
+metals 1.0 linear
+sphere
+iterate
+save last radius ".rad"
+save last continuum ".cont"
+save last physical conditions ".phy"
+save last overview ".ovr"
+save last heating ".heat"
+save last cooling ".cool"
+save last optical depth ".opd"
+save last element hydrogen ".ele_H"
+save last element helium ".ele_He"
+save last element carbon ".ele_C"
+save last element nitrogen ".ele_N"
+save last element oxygen ".ele_O"
+save last element argon ".ele_Ar"
+save last element neon ".ele_Ne"
+save last element sulphur ".ele_S"
+save last element chlorin ".ele_Cl"
+save last element iron ".ele_Fe"
+save last element silicon ".ele_Si"
+save last lines emissivity ".emis"
+H  1  4861
+H  1  6563
+He 1  5876
+O  1  6300
+O II  3726
+O II  3729
+S II  6731
+S II  6716
+O  3  5007
+O  3  4959
+O  3  4931
+N  2  6584
+N  2  6548
+N  2  5755
+TOTL  4363
+TOTL  4861
+O  1 63.17m
+O  1 145.5m
+C  2 157.6m
+end of lines

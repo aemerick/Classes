@@ -1,0 +1,40 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def soln(x,t,p0,p1,a,A):
+
+    return p0**(x/a) * (p0+p1)**(1.0-x/a) * np.exp(A*t)
+    
+def addLine(x,rho,t):
+    plt.plot(x,rho,label="%.3f"%(t),linewidth=1.25)
+    
+
+def setupPlot():
+    plt.xlabel("x")
+    plt.ylabel("Density")
+    plt.legend(loc="best",fancybox=True)
+    
+
+p0 =1.5
+p1 = 2.5
+a  = 1.0
+A  = -1.0
+    
+x = np.linspace(0.0,2.0,100.0)
+tArray = np.linspace(0.0 ,3.0,5.0)
+
+addLine(x,rho0)
+
+for t in tArray:
+    rho = soln(x,t,p0,p1,a,A)
+    
+    addLine(x,rho,t)
+    
+setupPlot()
+
+plt.savefig("./const_c.png")
+
+
+
+
+

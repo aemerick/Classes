@@ -1,0 +1,311 @@
+\documentclass[a4paper]{article}
+\usepackage{fullpage}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage[dvips]{color}
+
+%\usepackage[bookmarks,dvips,pdfhighlight=/O,pdfstartview=FitH]{hyperref}
+%\usepackage[dvips]{graphicx}
+\usepackage{amsmath,amssymb,amsopn}
+\usepackage{latexsym} \usepackage{bm} \usepackage{mathrsfs}
+\usepackage{mathbbol} % \usepackage[dvips]{color}
+%\usepackage{pslatex} \usepackage{subfig}
+\usepackage{mathtools}
+\date{\today}
+\title{ISM/IGM Midterm: Parts I and III}
+\author{Andrew Emerick}
+
+
+\begin{document}
+\maketitle
+Below are parts I and III. I refer a lot to equations from the handouts and 
+Draine without retyping them here. If this is annoying, let me know and I can 
+write them out and resubmit. I did part II by hand before starting this latex
+file, so that is separate.
+
+\section{1 Ionization and Heating of the IGM}
+\subsection{A}
+In general, detailed balance gives for both HI and HeII that,
+\begin{equation} n_e n_p \alpha_i (T) = n_i \Gamma \end{equation}
+where $\alpha$(T) is the temperature dependent recombination rate, $\Gamma$ is
+the provided photo-ionization rate per particle, and i is either HI or HeII.
+At lower redshift, when the ionized fraction is large, the n$_p$ can be taken
+as the total number of bound and free protons. Thus, this equation reduces
+to
+\begin{equation} x_{i} \Gamma_{i} = n_{e} \alpha_{i}(T), \end{equation}
+as given in LF 4.20. Under the assumption that free electrons only come from
+ionized Hydrogen, the number density of electrons comes from
+\begin{equation} n_e = (1 - x_{HI}) f_H n_o (1+z)^3, \label{eq:ne} \end{equation}
+where x$_{HI}$ is the neutral fraction of Hydrogen,
+f$_H$ = 0.93 is the fraction of Hydrogen in the Universe by number 
+(f$_{He}$ is then 0.07), and n$_o$ is the number density of baryons given
+by WMAP as n$_o$=2.542$\times$10$^{-7}$ cm$^{-3}$. This is of course wrong,
+as electrons can come from ionizing HeI and HeII, but since He is 0.07 of the 
+baryons, the error in this approximation is not large (but is significant). 
+Also, accounting for He electrons would make Eq.~\eqref{eq:fraction} a coupled
+system between H and He; this would be ugly to solve.
+In addition, I assume that the HeI fraction is fixed at zero. 
+Differing in notation from 16.56-16.58 in MvdBW, I arrive at the final
+expressions for the fraction of HI and HeII in the universe:
+\begin{eqnarray}
+\label{eq:fraction}
+x_{HI} &= &(1 + A_{i})^{-1} \\
+x_{HeII}& = &(1 + 1/A_{i})^{-1}\\
+A_{i}& =& \frac{n_e \alpha_{i}(T)}{\Gamma_{i}}
+\end{eqnarray}
+where n$_e$ is given in Eq.~\ref{eq:ne}. Although the recombination rate 
+coefficient is a function of temperature, I assume T is constant at the 
+provided 2$\times$10$^{4}$ K. I take the coefficients using Case A from Draine's
+Eq. 14.5. 
+
+The results of this calculation are shown in Fig.~\ref{fig:fraction},
+with the HI and HeII fractions shown in the solid and dashed lines respectively,
+the 1\% line is drawn in blue, and the redshifts marking HI reionization 
+and HeII reionization are shown in red dotted lines. HI is reionized at 
+a z=6.01 and HeII at z=4.08.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{./../../IGM/xHI_xHe.eps}
+\caption{Plot of the evolution of the HI (solid) and HeII (dashed) fractions.
+The redshifts
+marking HI and HeII re-ionization are shown, and are defined as the point
+when the fractions dip below 1\%.}
+\label{fig:fraction}
+\end{figure}
+
+\subsection{B and C.}
+The total heating rate per volume is given by equation 16.69 and 16.70 in
+MvdBW. Here we are just concerned with HI and HeII. The heating rate is then
+dependent upon the results from part A (as it depends upon the number density
+of the respective ions), so the assumptions made there extend here. Eq. 16.70 
+is long and I will not reproduce it here. I take J($\nu$) is taken as given
+in the problem, $\sigma_i$($\nu$) is the photionization cross section for the 
+given ion, and is taken in full from Draine Eq. 13.1 and 13.2, and $\nu_i$ is 
+the ionization frequency for the given ion. I integrate Eq. 16.70 of MvdBW numerically
+using SciPy's integrate.quad function, using the result to calculate the 
+heating rate per volume. The actual number density of each ion is given by
+\begin{eqnarray}
+n_{HI} &=& f_H x_{HI} n(z)\\
+n_{HeII} &=& (1-f_H) x_{HeII} n(z).
+\end{eqnarray}
+The fractions x$_{i}$ are given by Eq.~\ref{eq:fraction} and n(z) is the given
+expansion evolution equation. 
+
+Fig.~\ref{fig:heating} gives the results of the calculation. As shown, HeII
+heating is always below HI. It becomes more significant, however, soon after
+HI is re-ionized. They appear to stay at roughly the same ratio for the rest
+of the evolution.
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{./../../IGM/HI_HeII_heating.eps}
+\caption{Heating rates per volume for both HI and HeII.}
+\label{fig:heating}
+\end{figure}
+
+\subsection{D.}
+At low redshifts, the thermal evolution of the IGM is going to be dominated by
+adiabatic cooling. The effects of cosmological exansion are still present,
+but heating/cooling due to the local density fluctuations will dominate. The 
+temperature evolution will go as Eq. 4.25 in Chapter 4 of LF,
+\begin{equation}
+T \approx T_{o}(1+\delta)^{\gamma-1},
+\end{equation}
+
+where 1+$\delta$ reflects the local density ($\rho$/$\bar{\rho}$), $\gamma$ is
+1.6 at low redshift, and T$_{o}$ is a normalization constant. Other processes
+become relevant at higher gas densities, but this equation well approximates
+the general IGM temperature.
+
+\subsection{E.}
+Collisional processes (e.g. electrons colliding with hydrogen atoms)
+are able to heat and ionize a gas, and could conceivably be relevant for the 
+IGM. However, the observed Ly$\alpha$ absorption by neutral gas in the IGM
+(the Ly$\alpha$ forest) indicates that this is not relevant. Ly$\alpha$ absorption
+features in the forest can be used as an indication of the thermal state of the
+IGM at a given redshift (the line width is affected in part by Doppler broadening,
+a thermal effect). Eq. 16.39 of MvdBW (kind of long, not going to type here)
+gives the equillibrium number density of neutral hydrogen in the IGM between ionization
+from collisional processes (electrons) and recombination.
+As discussed in MvdBW, in order to match with observations of 
+the neutral HI via the Ly$\alpha$ forest, the temperature of the IGM must be
+above 10$^{6}$ K, which is inconsistent with observations. A typical doppler
+broadening value of the IGM in the forest is b$\sim$ 30 km/s. Assuming only 
+thermal contributions to b (i.e. ignoring turbulence, so 
+$b = \sqrt{2~k_{B}T/m_{H}}$), this implies
+an uppler limit on the typical IGM temperature as 5$\times$10$^{4}$ K.
+
+\subsection{F.}
+The evolution of the brightness temperature of the 21-cm line is given in LF
+Chapter 12 as Eq. 12.8 (again, its long so I'm not going to retype it here).
+The a simulation of the evolution is plotted in Fig. 12.9 in the same chapter,
+and shows the effect of heating and photoionization on T$_{b}$. The brightness
+temperature is at a minimum at around z$\sim$20. Since T$_{b}$ is negative here,
+this implies the 21-cm signal can be seen in absorption. As discussed in LF, at 
+this point the IGM begins to be heated significantly by the ionizing
+X-ray background formed by Population III stars, supernova remnants,
+stellar mass black holes, and quasars. After the significant X-ray heating,
+T$_{b}$ reaches a maximum around z$\sim$15 and 21-cm can be seen in emission. 
+The effect of ionization on the IGM causes another turnaround shortly after
+this peak. After reionization begins, the brightness temperature begins to
+drop again, causing it to approach zero after reionization (by z$\sim$8). In 
+general, this was only a likely sketch of the actual evolution of T$_{b}$, which
+depends strongly on the models used. 
+
+
+\section{3 Ionization and Diagnostics of Photoionized Regions}
+\subsection{a) Str\"omgren spheres}
+Using Table 15.1 and equation 15.3, I calculated the HII ionization regions
+and the Str\"omgren radii for 5 O stars. For the radius of the HII regions
+obtained from cloudy, I used the condition given in the problem, where
+the ionization region is defined at R(x$_{HI} > $ 0.01). The results are 
+tabulated in Table ~\ref{table:stromgren}.
+
+\begin{tabular}{c c c c c c c c}
+\label{table:stromgren}
+Star & Teff & qH & R$_{HII}^a$ & R$_{S0}^a$ & R$_{HeII}$/R$_{HII}^{b}$ & R$_{HeII}$/R$_{HII}^{c}$ \\
+\hline
+O3III & 44540 & 49.77 & 3.44 & 3.23 & 0.959 & 1.04\\
+O8III & 33960 & 48.88 & 1.70 & 1.22 & 0.763 & 0.709\\
+O4V & 42860 & 49.44 & 2.63 & 2.38 & 0.935 & 1.03\\
+O3I & 42230 & 49.78 & 3.42 & 3.40 & 0.929 & 0.996\\
+O8I & 33180 & 49.25 & 2.28 & 1.63 & 0.749 & 0.732 \\
+\hline 
+\caption{$^a$ Radii given in units of 10$^{18}$ cm.\\$^b$ Calculated using Cloudy\\$^c$ Calculated using Eq. 15.36 }
+\end{tabular}
+
+For all stars, the actual (Cloudy) ionization regions are slightly larger than the Str\"omgren
+radii. The agreement is better for the hotter O stars, and worse for the cooler O stars. This is
+because as qH increases, the ionization region becomes better approximated by a Str\"omgren Sphere.
+The approximation as a Str\"omgren Sphere improves for larger qH because the mean free
+path of an ionizing photon (Eq. 15.5) becomes smaller relative to R$_{S0}$ (mfp $<<$ R$_{S0}$), since
+R$_{S0}$ increases with increasing qH. Since
+a Str\"omgren Sphere assumes a discontinious boundary between ionized and neutral gas,
+the boundary region becomes smaller (approached 0, i.e. is discontinious) as R$_{S0}$ increases. 
+
+\subsection{b) Radii of He II vs H II zones:}
+I define the HeII region as that where x$_{HeI}$$>$0.1, as was done for HII above.
+To compare the results to Eq. 15.36, I assume y = 0.2 and z = 0.8 as done in the 
+book in Sec. 15.5. The $\alpha_{B}$(H), $\alpha_{1s}$(He) $\alpha_{B}$(He) values 
+are taken from Table 14.1, Eq. 14.14, and Eq. 14.15 respectively; all three are a
+function of temperature. n$_H$ = 10$^{3}$ is taken from the model, and n$_{He}$ is 
+obtained using the defined abundance of He relative to H given in the model. The
+results are shown in the last two columns of Table ~\ref{table:stromgren}. The
+differences between the Cloudy results and the analytic calculation are not
+too bad, within 8.4\%, 7.0\%, 10.2\%, 7.2\%, and 2.3\% for each star respectively.
+The errors are most likely due to the assumptions made on y and z.
+
+\subsection{c) Temperature diagnostics:}
+The volume integrated emissivities (i.e. the line strengths) for the 
+5007\AA and 4363\AA lines of OIII are obtained from the model and are tabulated
+for each star in Table ~\ref{table:partc}. Included also is the 
+diagnostic radio of the 4363\AA to 5007\AA line, and the average electron
+temperature in the nebula. Comparing this to Fig. 18.2, the results agree well
+(assuming n$_{e}<$10$^{3}$). Each star has a ratio between
+$\sim$2.0$\times$10$^{-3}$, which indicates an electron temperature of around
+8$\times$10$^{3}$ K. This agrees with the actual averaged electron temperature.
+
+\begin{tabular}{c c c c c}
+\label{table:partc}
+Star & OIII 5007A / 10$^{37}$ $^{a}$ & OIII 4363A / 10$^{34}$ $^{a}$ & Ratio/10$^{-3}$
+& $<$T$_{e}>$/10$^{3}$ K \\
+\hline
+O3III & 12.0 & 38.0 & 3.17 & 8.67 \\
+O8III & 0.378 & 0.776 & 2.05 & 7.47 \\
+O4V & 4.43 & 12.8 & 2.88 & 8.34 \\
+O3I & 9.57 & 26.9 & 2.81 & 8.40 \\
+O8I & 0.841 & 1.67 & 1.98 & 7.46\\
+\hline 
+%\caption{$^{a}$ Given are the volume integrated emissivities (line intensities)}
+\end{tabular}
+
+
+\subsection{d) Density Diagnostics:}
+The electron density varies most dramatically towards larger radii. More specifically,
+the density decreases dramatically through the boundary between the ionization and 
+neutral regions, out to the edge of the system. The dramatic increase in the last couple
+of percent
+of the normalized radius indicates a fairly sharp transition region from ionized
+to neutral.
+
+The low density limit in Eq. 18.5 has a temperature dependence on the rate coefficients
+($\Omega_{ul}$) as given in Table F.5. For the temperature in this equation, I use
+the temperature at the region where the number density of electrons is a minimum
+(NOTE: with the ratio, the temperature dependence is very weak, so this doesn't
+really matter much). The high density limit is given by Eq. 18.6, with constants
+g2 and g1 obtained from Fig. 18.3, and A$_{20}$=1.88$\times$10$^{-4}$s$^{-1}$
+A$_{10}$=5.63$\times$10$^{-4}$s$^{-1}$ obtained from the NIST table.
+Fig.~\ref{fig:density example} gives an example of the density diagnostic for an O3I
+star with the lower and upper density limits plotted at a line ratio of 1.50 and 
+0.50 respectively. The actual ratio of the nebula's emission is within these bounds
+for all stars. The transition point occurs at an electron density of around 10$^{3}$ cm$^{-3}$
+for each star (I just eyeballed this from the plots).
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{./figures/DensityDiagnostic.eps}
+\caption{Density diagnostic for an O3I star with plotted low and high density
+limits on the ratio. The Cloudy ratio is between these bounds.}
+\label{fig:density example}
+\end{figure}
+
+
+\subsection{e) BPT Diagram:}
+The BPT diagram for all stars is shown in Fig.~\ref{fig:BPT}. As shown, the stars
+occur on the BPT diagram in order of temperature/qH (hottest at the top, coolest
+at the bottom). This implies that as qH increases, the corresponding nebula
+shifts up and to the right on the BPT diagram. This means both the NII and 
+OIII lines become stronger, relative to H$\alpha$ and H$\beta$ respectively,
+as qH increases. Tracking the 80\% region,
+(NOTE: I'm using a different colormap, but 80\% is still orange in my case),
+it appears on the horizontal portion (lower NII/H$\alpha$, higher OIII/H$\beta$)
+for the hotter stars (O3III, O3I, and O4V in this case), and is more on the 
+vertical portion (higher NII/H$\alpha$, lower OIII/H$\beta$) for the cooler
+stars (O8III and O8I).
+
+\begin{figure}
+\centering
+\includegraphics[width=0.9\textwidth]{./figures/BPTDiagram_all_stars.eps}
+\caption{BPT Diagram for all 5 O stars. The plus signs represent the O8I star,
+and are hard to see, but are lined up roughly with the diamonds from the O8III
+star}
+\label{fig:BPT}
+\end{figure}
+
+One could use this trend to, in principle, pick out the relative ages of galaxies
+and learn something about their star formation. Galaxies appearing towards the
+right (more vertical) side of the figure will have cooler, older O stars, while
+galaxies appearing up and towards the left (horizontal) will have hotter,
+younger O stars. In the latter, then, star formation was more recent.
+
+
+\subsection{f) Metallicity variations:}
+Decreasing the metallicity has two immediately obvious effects on the electron temperature in
+the nebula. The first, is that it raises the overall electron temperature for the entire nebula.
+Eyeballing averages from the graphs, the average temperature (given as T$_{4}$) increases
+from around 1.1 to 1.8 between the 0.3 and 0.01 metallicity values. The second effect is 
+to smooth out the overall temperature, removing peaks at larger radii. In addition, there is 
+a noticeable depression in the temperature in the ionized region for the 0.3 case, that
+is gone in the 0.01 case (roughly linear).
+
+A lower metallicity implies that 
+more high energy ionizing photons (above Helium's ionization energy) are 
+available (there are less metals to absorb them). This increases the chances 
+that one of these higher energy photons will ionize Hydrogen, imparting a larger
+kinetic energy on the ejected electron, raising the electron temperature. 
+
+The ratio of the OIII 4346A line to the OIII 5007A line in the temperature diagnostic
+increases with decreasing metallicity. Assuming roughly constant electron densities
+between the three cases (for comparisons sake), which is fine if n$_{e}$ is below 1000 
+cm$^{-3}$, an increase in the ratio implies a hotter medium, which is the case. The
+average electron temperature increases with decreasing metallicity, from 1.0$\times$10$^{4}$ K
+to 1.5$\times$10$^{4}$ K between the 0.3 to 0.01 cases.
+
+The emissivities all decrease as metallicity decreases (H$\beta$ has the smallest change).
+For the 0.01 metallicity case, the SII and NII emissivities become very small at all radii. OIII
+is now below H$\beta$ and H$\alpha$ at all radii (not the case for 0.3 metallicity).
+H$\alpha$ is dominant at the lower metallicity. Though the total emissivity decreases for all lines,
+the ratio of H$\alpha$ to H$\beta$ appears to be approximately the same across metallicity.
+
+
+\end{document}
