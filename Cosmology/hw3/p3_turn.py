@@ -1,0 +1,146 @@
+import numpy as np
+import matplotlib.pyplot as plt
+plt.rc('font',size=16)
+
+# set color map
+cmap = 'hot'
+
+def create_baseA(N):
+    """
+    Createse the base A matrix which has NxN columns and 
+    2 * NxN rows, where N is the number of pixels in the image.
+    This assumes that the order of observation is something like this:
+    
+    For a 3x3 map:
+
+    7 8 9
+    4 5 6
+    1 2 3
+    
+    obs order:    1 2 3 6 5 4 7 8 9 9 6 3 2 5 8 7 4 1
+    
+    """
+    NN = N*N
+    baseA = np.zeros((2*NN,NN))                                   
+    # fill for the top half when the scan goes
+    # right, left, right etc.                                  
+    i = 0
+    j = 0  
+    backwards = False      
+    for n in range(NN):
+
+        baseA[n][i + j] = 1.0
+    
+        if (n+1) % ( N  ) == 0 and n > 0: # switch every N
+
+            backwards = not backwards
+            i = i + N 
+            if backwards:
+                j = N - 1
+            else:
+                j = 0
+        
+        else:
+            if backwards: # if moving left over image
+               j = j - 1
+            else:         # if moving right over image
+               j = j + 1
+  
+    # now fill it for the bottom half, 
+    # when the scan goes down,up,down etc.
+    i = -1
+    j = 0  
+    backwards = False
+    for n in range(NN):
+    
+        
+        if not backwards:  # fill moving down over image
+            index = i + j
+        else:              # fill moving up over image
+            index = -1.0*(i+j) - 1
+    
+        baseA[NN +  n][index] = 1.0      
+                 
+        j = j - N
+    
+        if (n+1) % N == 0 and n > 0: # switch every N
+            i = i -1  
+            j = 0
+            
+            backwards = not backwards
+                
+    return baseA    
+    
+
+def plot_map(xvals, yvals, map_vec, plotname):
+    """
+    Given two ranges of x and y values, makes the corresponding
+    meshgrid and rearranges the map_vector to a NxN matrix
+    corresponding to meshgrid
+    
+    uses pcolormesh to plot
+    """
+
+    N = np.size(xvals) - 1
+
+    x, y = np.meshgrid(xvals, yvals)
+    
+    col, row = x.shape
+    c    = map_vec.reshape((col-1,row-1))
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.set_axis_bgcolor('black')
+    p = ax.pcolormesh(x, y, c, vmin = 0.0, vmax = 62.3, cmap=cmap)
+
+    ax.set_xlim(np.min(xvals),np.max(xvals))
+    ax.set_ylim(np.min(yvals),np.max(yvals))
+    fig.colorbar(p,label=r'$\mu$K')
+    ax.set_xlabel('[degrees]')
+    ax.set_ylabel('[degrees]')
+    fig.savefig(plotname + '.png')
+      
+#------------------------------------------------------------------------
+#------------------------------------------------------------------------    
+N    = 11 # number of pixels in one dim
+Nobs = 10 # number of loops through         
+print create_baseA(3)
+# create base A
+baseA = create_baseA(N)
+
+# create A. compute and save transpose
+A = np.array( [baseA]*Nobs ).reshape(2.0*N*N*Nobs, N*N)
+Atrans = A.T
+
+# load data and data vector
+data = np.genfromtxt('hw3_data.dat', names=True)
+dvec = data['d']
+
+# find x and y range from data
+xmin, xmax = np.min(data['x']), np.max(data['x'])
+ymin, ymax = np.min(data['y']), np.max(data['y'])
+
+# pixel size
+psize = (xmax - xmin) / (1.0*(N-1))
+
+# x and y values in plot
+xvals = np.linspace(xmin - 0.5*psize, xmax + 0.5*psize, N+1)
+yvals = np.linspace(ymin - 0.5*psize, ymax + 0.5*psize, N+1)
+
+# Equation 2
+map_vec = np.dot( np.linalg.inv(np.dot(Atrans,A)) , np.dot(Atrans, dvec) )
+
+# plot
+plot_map(xvals, yvals, map_vec, 'p3_raw')
+
+
+                                                                               
+# -------------------------------------------------------------------------
+#  Now filter with the N matrix
+N = np.genfromtxt('N.dat')
+# Equation 3
+map_vec = np.dot(np.linalg.inv( np.dot(np.dot(Atrans,N),A) ),
+                 np.dot(np.dot(Atrans,N),dvec) )
+
+# plot                       
+plot_map(xvals,yvals, map_vec, 'p3_filtered')

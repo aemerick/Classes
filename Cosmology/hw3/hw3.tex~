@@ -1,0 +1,81 @@
+\documentclass[12pt]{article}% uses letterpaper by default
+
+%---------- Uncomment one of them ------------------------------
+\usepackage[includeheadfoot, top=.5in, bottom=.5in, hmargin=1in]{geometry}
+
+% \usepackage[a5paper, landscape, twocolumn, twoside,
+%    left=2cm, hmarginratio=2:1, includemp, marginparwidth=43pt,
+%    bottom=1cm, foot=.7cm, includefoot, textheight=11cm, heightrounded,
+%    columnsep=1cm, dvips,  verbose]{geometry}
+%---------------------------------------------------------------
+\usepackage{fancyhdr}
+\usepackage{verbatim}
+\usepackage{url}
+\pagestyle{fancy}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage[pdftex]{graphicx}
+\usepackage[english]{babel}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{}
+%\doublespacing
+\singlespacing
+
+\newcommand{\degrees}{\ensuremath{^\circ}}
+\newcommand{\arcmin}{\ensuremath{'}}
+\newcommand{\arcsec}{\ensuremath{"}}
+\newcommand{\hours}{\ensuremath{^\mathrm{h}}}
+\newcommand{\minutes}{\ensuremath{^\mathrm{m}}}
+\newcommand{\seconds}{\ensuremath{^\mathrm{s}}}
+
+
+\rhead{Emerick 2014}
+\renewcommand{\rightmark}{}
+
+
+\begin{document}
+
+
+
+\section{Problem 1}
+
+Fig.~\ref{fig:p1} gives the results to problem 1.
+
+\begin{figure}[tb]
+\center
+\includegraphics[width=0.9\linewidth]{p1_rad.png}
+\caption{}
+\label{fig:p1}
+\end{figure}
+
+\section{Problem 2}
+
+Using the full data sample out to z $\sim$ 1, I get the right plot in Fig~.\ref{fig:p2}. This gives H$_{o}$ = 68.78 km s$^{-1}$ Mpc$^{-1}$ and q$_{o}$ = -0.17. This is not a bad fit for H$_{o}$, but the fitted q$_{o}$ is less than the expected (and I think accepted) value of q$_{o}$ = -0.55. However, the equation you gave us for the distance modulus involves an approximation on the luminosity distance that is an expansion on z in the local universe. It is valid only for z $\ll$ 1. Therefore, I also fit to a cut sample of the data at z $<$ 0.25 on the left side of Fig.~\ref{fig:p2}, which, sure enough, gives a value for q$_o$ that is closer to -0.55. For this plot, H$_o$ = 69.78 km s$^{-1}$ Mpc$^{-1}$ and q$_{o}$ = -0.41.
+
+\begin{figure}[t]
+\center
+\includegraphics[width=0.45\linewidth]{p2_zcut.png}
+\includegraphics[width=0.45\linewidth]{p2_all.png}
+\caption{Fit to the distance modulus for the supernova data. Left for z $<$ 0.25. Right for the full sample}
+\label{fig:p2}
+\end{figure}
+
+\section{Problem 3}
+
+After determining A (see attached code), mapping the data and filtering the data to retrieve the signal was fairly straightforward. (Not to trivialize determining A!!) The results are shown in Fig.~\ref{fig:p3}. The raw data map is on the left, the recovered signal is on the right. These are somewhat hard to compare to your plots since the color maps are pretty different (there unfortunately wasn't any nice corresponding map in matplotlib (python) to what you have). 
+
+\begin{figure}[t]
+\center
+\includegraphics[width=0.45\linewidth]{p3_raw.png}
+\includegraphics[width=0.45\linewidth]{p3_filtered.png}
+\caption{Left: Raw data map, signal with noise. Right: Filtered data map showing the signal recovered from the raw data using the noise covariance matrix}
+\label{fig:p3}
+\end{figure}
+
+
+
+
+
+\end{document}

@@ -1,0 +1,71 @@
+\documentclass[12pt]{article}% uses letterpaper by default
+
+%---------- Uncomment one of them ------------------------------
+\usepackage[includeheadfoot, top=.5in, bottom=.5in, hmargin=1in]{geometry}
+
+% \usepackage[a5paper, landscape, twocolumn, twoside,
+%    left=2cm, hmarginratio=2:1, includemp, marginparwidth=43pt,
+%    bottom=1cm, foot=.7cm, includefoot, textheight=11cm, heightrounded,
+%    columnsep=1cm, dvips,  verbose]{geometry}
+%---------------------------------------------------------------
+\usepackage{fancyhdr}
+\usepackage{verbatim}
+\usepackage{url}
+\pagestyle{fancy}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage[pdftex]{graphicx}
+\usepackage[english]{babel}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{}
+%\doublespacing
+\singlespacing
+
+\newcommand{\degrees}{\ensuremath{^\circ}}
+\newcommand{\arcmin}{\ensuremath{'}}
+\newcommand{\arcsec}{\ensuremath{"}}
+\newcommand{\hours}{\ensuremath{^\mathrm{h}}}
+\newcommand{\minutes}{\ensuremath{^\mathrm{m}}}
+\newcommand{\seconds}{\ensuremath{^\mathrm{s}}}
+
+
+\rhead{Emerick 2014}
+\renewcommand{\rightmark}{}
+
+
+\begin{document}
+
+
+
+\section{Problem 1}
+
+Fig.~\ref{fig:p1} gives the results to problem 1.
+
+\begin{figure}[tb]
+\center
+\includegraphics[width=0.45\linewidth]{dp_to}
+\includegraphics[width=0.45\linewidth]{dp_te}
+\vspace{0.1cm}
+\includegraphics[width=0.45\linewidth]{to-te}
+\caption{}
+\label{fig:p1}
+\end{figure}
+
+\section{Problem 4}
+
+The evolution of the ionization fraction as a functin of temperature is given in Fig.~\ref{fig:p4}. Recombination is defined as the point at which $x$ = 0.5, and is given as T$_{rec}$ = 3740 K for $\eta$ = 5.5$\times$10$^{-10}$, as shown by the solid black line in the plot. Photon decoupling and the surface of last scattering occur at the same time/redshift/temperature, as the surface of last scattering exists because photons decoupled from matter. This occurs when H = $\Gamma$, which is at a redshift of z = 1100 and a temerature of about T = 3000 K, shown by the black dashed line. For $\eta$ = 5.5$\times$ 10$^{-10}$, this occurs at x = 4.33 $\times$ 10$^{-3}$.
+
+
+\begin{figure}[t]
+\center
+\includegraphics[width=0.9\linewidth]{x_T}
+\caption{Ionization fraction of Hydrogen as a function of temperature in the universe.}
+\label{fig:p4}
+\end{figure}
+
+
+
+
+\end{document}

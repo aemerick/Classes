@@ -1,0 +1,52 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import optimize as opt
+
+plt.rc('font',size=16)
+
+c = 2.998E5 # 
+lw = 1.5 # linewidth of plots
+
+def dist_mod(x, H, q):
+    """
+    Model to fit parameters to (distance modulus)
+    """
+    
+    return 5.0 * np.log10( c/H * (x + 0.5*(1.0 - q)*x*x)) + 25.0
+
+
+# load data
+data = np.genfromtxt('supernova_data.txt', names=True)
+data = np.sort(data, order='z')
+#data = data[ data['z'] < 0.25]   # place cut on z
+
+
+# plot data with errorbars
+error = data['errup']
+plt.scatter(data['z'], data['modulus'], color='black')
+plt.errorbar(data['z'], data['modulus'], yerr=data['errup'],
+              color='black', fmt='o')
+
+
+
+p0 = [100.0, -2]              # initial guess fit parameters
+
+# do a least squares fit
+popt, pconv = opt.curve_fit(dist_mod, data['z'], data['modulus'],
+                            p0, sigma=error, absolute_sigma=False)   
+               
+               
+               
+# plot the results               
+z = np.linspace(0.001,2,1000)
+fit = dist_mod(z, popt[0], popt[1])
+plt.plot(z, fit, color='red', 
+            label=r'H$_o$=%.2f , q$_o$ = %.2f'%(popt[0],popt[1]),lw = lw)
+plt.ylim(31,47)
+plt.xlim(0.01,2.0)
+plt.semilogx()
+plt.ylabel('m - M')
+plt.xlabel('z')
+plt.legend(loc='best',fancybox=True)
+plt.savefig('p2_all.png')
+
