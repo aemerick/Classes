@@ -17,9 +17,18 @@ omega_o = omega_r + omega_m + omega_l
 
 
 
-
+#
 
 def dp_to(z, universe):
+    """
+    Calculates the proper distance at t = t_o as a function of z
+    for a matter dominated and dark matter dominated universe using 
+    the single component universe formula by setting w
+    
+    For multi component, integrates the acceleration equation given 
+    omega_rad, omega_matter, omega_l, and omega_o
+    """
+
 
     if universe == 'matter':
         w = 0.0   
@@ -48,6 +57,13 @@ def dp_to(z, universe):
     
     
 def dp_te(z, universe):
+    """
+    Calculates proper distance at t_e as a function of z. For single component,
+    returns the easy analytic formulas.
+    
+    For multi, integrates accel equation to calculate dp_to and uses
+    dp_te = dp_to / (1+z)
+    """
 
     if universe == 'matter':
         dp = 2.0/(1.0+z) * (1.0 - 1.0/(1.0+z)**0.5)
@@ -58,13 +74,17 @@ def dp_te(z, universe):
     elif universe == 'multi':
         return dp_to(z, universe) / (1.0+z)
     
-#    dp = 
     
     
     return dp
     
 def te(z,universe):
-
+    """
+    Calculates t_e as a function of z.
+    Does not work for 'lambda'
+    
+    For multi, integrates acceleration equation
+    """
 
     if universe == 'matter':
 #        te = 2.0/(3.0*H_o) * 1.0/(1.0+z)**3
@@ -93,6 +113,14 @@ def te(z,universe):
 
 
 def to(z,universe):
+    """
+    calculates t_o as a function of z for 'matter' using single component
+    universe formula, setting w. This does not work for 'lambda'
+    
+    For multi, t_o = 1/H_o
+    """ 
+   
+
 
     if universe == 'matter':
 #        to = 2.0 / (3.0*H_o)
@@ -110,6 +138,11 @@ def to(z,universe):
 
 
 def l(z):
+    """
+    Calculates l for finding the angular diameter distance.
+    
+    l is the physical size of the horizon on the sky
+    """
 
     func = lambda x: (omega_r/x**2 + omega_m/x + omega_l*x*x + (1.0-omega_o))**(-0.5) /x
         
@@ -121,6 +154,10 @@ def l(z):
     return l / (1.0+z) 
  
 
+
+#-------------------------------------------------------------------------------
+# Plot dp_to for the 3 universes
+#
 types = ['matter','lambda','multi']
 z = np.logspace(-2,3,1E3)
 lw = 1.5
@@ -136,7 +173,11 @@ plt.ylim(0.001,1000.0)
 plt.legend(loc='best',fancybox=True)
 plt.savefig('dp_to.png')
 plt.close()
+#-------------------------------------------------------------------------------
 
+#-------------------------------------------------------------------------------
+# Plot t_e for the three universes
+#
 for t in types:
     plt.plot(z,dp_te(z,t),label=t,lw=lw)
     
@@ -148,10 +189,14 @@ plt.xlim(0.01,1000.0)
 plt.ylim(0.001,1000.0)
 plt.savefig('dp_te.png')
 plt.close()
+#-------------------------------------------------------------------------------
 
+#-------------------------------------------------------------------------------
+# Plot t_o - t_e
+#
 z = np.linspace(0.0,6.0,1000.0)
 for t in types:
-    if t == 'lambda':
+    if t == 'lambda': # calculates this for lambda universe
         plt.plot(z,-1.0*np.log(1.0/(1.0+z)),label=t,lw=lw)
     else:
         plt.plot(z,(to(z,t) - te(z,t)), label=t,lw=lw)
@@ -167,7 +212,7 @@ plt.close()
 
 z = np.linspace(0.0,6.0,100.0)
 for t in types:
-    if t == 'lambda':
+    if t == 'lambda': # calculates this for lambda universe
         plt.plot(z,-1.0*np.log(1.0/(1.0+z))*14.0,label=t,lw=lw)
     elif t == 'multi':
         plt.plot(z,(to(z,t) - te(z,t))*14.0 - 0.5, label=t,lw=lw)
@@ -185,12 +230,18 @@ plt.xlim(0.0,6.0)
 plt.ylim(0.0,18.0)
 plt.savefig('to-te.png')
 plt.close()
-    
-    
-z = np.array([1100.0])
-l = l(z)
-d = dp_to(z, 'multi') / (1.0 + z)
+#-------------------------------------------------------------------------------  
 
+
+
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+# Calculate the angular size of the horizon     
+z = np.array([1100.0])
+l = l(z)                                # using function defined above
+d = dp_to(z, 'multi') / (1.0 + z)       # d_te = dp_to / (1+z)
+
+# print out the answer
 print 'theta = %5.4e'%(l/d)
 print 'theta = %5.4e'%(180.0*l/d / np.pi)
 

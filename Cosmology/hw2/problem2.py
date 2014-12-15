@@ -12,20 +12,7 @@ def neutral_fraction(T,eta):
 
 
     consts = 3.84 * eta * (kb*T/(me*c*c))**(3./2.) * np.exp(Q/(kb*T))
-    
-    # 1 - x / x**2 = A
-    
- #   func = lambda x, A : A*x*x + x + 1.0*x - 1.0
-    
-#    x = np.zeros(len(T))
-#    x_o = 0.0
-#    for i in range(len(T)):
-    
-      #  root =  optimize.newton(func,x_o, args = (consts[i],))
-    
-#        x_o = root
-        
-#        x[i] = root
+
     x = (-1.0 + (1.0+4.0*consts)**0.5) / (2.0*consts)       
         
     return x
