@@ -7,6 +7,14 @@
 #if (exists(classify) == false) {
 source("classify.R")
 #}
+norm_z <- function(z){
+    # normalize z to the length of v_H
+    d = length(z) - 1
+    len <- sum(z[1:d]**2)**0.5
+    
+    z_norm <- z / len
+    return(z_norm)
+}
 
 perceptrain <- function(S,y){
 #
@@ -15,55 +23,55 @@ perceptrain <- function(S,y){
 # need to output the result (z)
 # and Z_history, or z at every iteration
 
-    max_iter  <- 10000    # maximum number of iterations
+    max_iter  <- 1000    # maximum number of iterations
     tolerance <- 1.0E-12 # minimize cost until smaller than this
     d <- ncol(S) - 1
 
-    k <- 1
     z <- c(runif(d + 1,0.0, 1.0)) # random number between 0 and 1
-    prev_z <- c(rep(0, d+1)) # zeros of size n
+    z <- norm_z(z)
 
+    # allocate memory for Z_history matrix, deptermined by max allowed iterations
     Z_history <- matrix( rep(0, (d+1) * (max_iter)), nrow=max_iter, ncol=d + 1)
     Z_history[1,] <- z
 
     cost <- 1000 # initialize cost to start the loop to > 0
 
     II <- c(rep(0, length(y)))
+    
+    # initialize the first classification with the chosen z
+    f_x    <- classify(S,z)
+    II     <- II * 0
+    II[f_x != y] <- 1  
 
-    while(cost > tolerance){
+    keep_looping <- TRUE; k <- 1
+    while(keep_looping){
         k <- k + 1
         alpha_k <- 1.0 / k
-        # do not need to sum elements where classification is correct
-        # only those where it is wrong (i.e. where  f(x) =/= y),
-        # since correct classifications give 0
-        f_x    <- classify(S,z)
-        II     <- II * 0
-        II[f_x != y] <- 1   
-
-         
-   #     grad_c <- c(rep(0,1+d))
-  #      for ( i in 1:length(y)){
- #           grad_c <- grad_c   -y[i]*S[i,] * II[i]
-#        }
+        
+        # gradient in the cost function
         grad_c = colSums(-y * S * II)
-        #print(grad_c)
-        z             <- prev_z  - alpha_k * grad_c
-        prev_z        <- z
+
+        # calculate new z and save 
+        z             <- Z_history[k-1,]  - alpha_k * grad_c
         Z_history[k,] <- z
 
-        # evaluate the current cost
+        # evaluate the cost of the new z
         f_x <- classify(S,z)
         II <- II* 0 ; II[f_x != y] <- 1
 
- #       for (i in 1:length(y)){
-#            cost <- sum( abs(t(z) %*% S[i,]) )        
-  #      }
-        cost = sum(rowSums(abs(z * S)))
-        print(cost)
+        cost = sum(II * abs(colSums( z * t(S))))
+
+        # keep looking?
+        if ((cost < tolerance) || (k > max_iter)) {
+            keep_looping <- FALSE
+        }
+        
     } # end while loop
 
+    print("number of iterations needed")
     print(k)
-    # return 
-    Z_history = Z_history[1:k,]
+ 
+    # remove the unused Z_history rows 
+    Z_history <- Z_history[1:k,]
     return (list(z=z, Z_history=Z_history))
 }
