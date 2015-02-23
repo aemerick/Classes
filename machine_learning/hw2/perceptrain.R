@@ -62,7 +62,7 @@ perceptrain <- function(S,y){
         grad_c <- colSums(-y * S * II)
 
         # calculate new z and save 
-        z             <- Z_history[k-1,]  - alpha_k * grad_c
+        z             <- Z_history[k-1,]  - alpha_k * norm_z(grad_c)
         Z_history[k,] <- z
 
         # evaluate the cost of the new z

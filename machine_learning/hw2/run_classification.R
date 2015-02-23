@@ -30,6 +30,7 @@ n = 100
 # choose a z randomly, normalize, generate training data
 z <- c(runif(d + 1, 0.01, 1.0))
 z <- norm_z(z)
+ztrue <- z
 training_data <- fakedata(z, n)
 
 # now train using perceptron... normalize final z
@@ -57,8 +58,8 @@ print(error(test_data$y,new_y))
 # now plot everything
 # y = -1 is blue
 # y = +1 is red
-S <- test_data$S
-y <- test_data$y
+S <- training_data$S
+y <- training_data$y
 
 # find the x1 and x2 limits to plot
 minval <- min( min(c(S[,1],S[,2])))-1 
@@ -95,8 +96,8 @@ for (i in 1:length(select)){
 }
 
 legend_string[6] <- sprintf("z[%i] - final",l)
-legend_string[7] <- "-1"
-legend_string[8] <- "+1"
+legend_string[7] <- "Training Data: -1"
+legend_string[8] <- "Training Data: +1"
 
 # legend for scatter plot points and the lines
 legend(x="bottomleft",legend_string[1:6],cex=1.5,col=colors[1:6],pch=pch[1:6])
@@ -104,5 +105,47 @@ legend(x="topright",legend_string[7:8],cex=1.5,col=colors[7:8],pch=c(2,0))
 
 # done!
 dev.off()
-
+graphics.off()
 # ------------------------------------------------------------------------
+# make a new plot with test data 
+# now plot everything
+# y = -1 is blue
+# y = +1 is red
+S <- test_data$S
+y <- test_data$y
+zf <- results$z
+
+# find the x1 and x2 limits to plot
+minval <- min( min(c(S[,1],S[,2])))-1
+maxval <- max( max(c(S[,1],S[,2])))+1
+xlim <- c(minval,maxval)
+ylim <- c(minval, maxval)
+
+pdf("classify_final.pdf") # open a file
+plot(S[,1][y==1],S[,2][y==1], xlab=expression('S'[1]), ylab=expression('S'[2]), col='red',bg='red',pch=0,xlim=xlim,ylim=ylim,asp=1)
+points(S[,1][y==-1],S[,2][y==-1],col='blue',bg='blue',pch=2)
+
+line_length <- 50.0 # how long to draw the hyperplanes
+p1 <- -c(ztrue[3]/ztrue[1],0)    # start point of line
+p2 <- -c(0, ztrue[3]/ztrue[2])   # end point of line
+vdir <- (p2-p1)/(sum((p2-p1)**2)**0.5)  # the line vector
+f  <- line_length / sum((p2-p1)**2)**0.5 # scaling the line
+p2 <- p2+vdir*f            # final end point
+p1 <- p1-vdir*f            # final start point
+lines(c(p1[1],p2[1]),c(p1[2],p2[2]),col='green', lwd=2)
+
+line_length <- 50.0 # how long to draw the hyperplanes
+p1 <- -c(zf[3]/zf[1],0)    # start point of line
+p2 <- -c(0, zf[3]/zf[2])   # end point of line
+vdir <- (p2-p1)/(sum((p2-p1)**2)**0.5)  # the line vector
+f  <- line_length / sum((p2-p1)**2)**0.5 # scaling the line
+p2 <- p2+vdir*f            # final end point
+p1 <- p1-vdir*f            # final start point
+lines(c(p1[1],p2[1]),c(p1[2],p2[2]),col='black', lwd=2)
+
+
+legend_string <- c('z used to generate data', 'Perceptron final z')
+legend(x="bottomleft",legend_string,cex=1.5,col=c('green','black'),pch=c('-','-'))
+legend(x="topright",c("Test Data: -1","Test Data: +1"),cex=1.5,col=c('blue','red'),pch=c(2,0))
+dev.off()
+
