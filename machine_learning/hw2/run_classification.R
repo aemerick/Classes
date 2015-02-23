@@ -54,16 +54,16 @@ minval <- min( min(c(S[,1],S[,2])))
 maxval <- max( max(c(S[,1],S[,2])))
 xlim <- c(minval,maxval)
 ylim <- c(minval, maxval)
-png("classify.png",res=300,width=3,height=3,units='in')
+png("classify.png")
 
-plot(S[,1][y==1],S[,2][y==1], xlab='S_1', ylab='S_2', col='red',bg='red',pch=0,xlim=xlim,ylim=ylim)
+plot(S[,1][y==1],S[,2][y==1], xlab='S_1', ylab='S_2', col='red',bg='red',pch=0,xlim=xlim,ylim=ylim,asp=1)
 points(S[,1][y==-1],S[,2][y==-1],col='blue',bg='blue',pch=2)
 
 z_plot <- z
 theta <- atan2(z_plot[2],z_plot[1])
-line_length <- 10.0
-p1 <- -prev_c * c(-sin(theta), cos(theta))
-p2 <- -prev_c * c(sin(theta), -cos(theta))
+line_length <- 20.0
+#p1 <- -prev_c * c(-sin(theta), cos(theta))
+#p2 <- -prev_c * c(sin(theta), -cos(theta))
 #p1 <- -results$z[3] * c(-sin(theta), cos(theta))
 #p2 <- -results$z[3] * c(sin(theta), -cos(theta))
 #f  <- line_length / sum((p2-p1)**2)**0.5
@@ -74,9 +74,24 @@ p1 <- -c(z[3]/z[1],0)
 p2 <- -c(0, z[3]/z[2])
 vdir <- (p2-p1)/(sum((p2-p1)**2)**0.5)
 f  <- line_length / sum((p2-p1)**2)**0.5 
-#p1 <- p1*f; p2<- p2
 p2 <- p2+vdir*f
 p1 <- p1-vdir*f
 lines(c(p1[1],p2[1]),c(p1[2],p2[2]))
+
+zhist <- results$Z_history
+nz    <- length(zhist)/3
+select <- ceiling(seq(1,nz,length=5))
+colors <- c('red', 'yellow', 'green', 'blue', 'purple')
+
+for (i in select){
+    zk <- zhist[i,]
+    p1 <- -c(zk[3]/zk[1],0)
+    p2 <- -c(0, zk[3]/zk[2])
+    vdir <- (p2-p1)/(sum((p2-p1)**2)**0.5)
+    f  <- line_length / sum((p2-p1)**2)**0.5
+    p2 <- p2+vdir*f
+    p1 <- p1-vdir*f
+    lines(c(p1[1],p2[1]),c(p1[2],p2[2]),col=colors[i])
+}
 
 dev.off()
