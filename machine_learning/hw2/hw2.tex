@@ -1,0 +1,91 @@
+\documentclass[12pt]{article}% uses letterpaper by default
+
+%---------- Uncomment one of them ------------------------------
+\usepackage[includeheadfoot, top=.5in, bottom=.5in, hmargin=1in]{geometry}
+
+% \usepackage[a5paper, landscape, twocolumn, twoside,
+%    left=2cm, hmarginratio=2:1, includemp, marginparwidth=43pt,
+%    bottom=1cm, foot=.7cm, includefoot, textheight=11cm, heightrounded,
+%    columnsep=1cm, dvips,  verbose]{geometry}
+%---------------------------------------------------------------
+\usepackage{fancyhdr}
+\usepackage{verbatim}
+\usepackage{url}
+\pagestyle{fancy}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage[pdftex]{graphicx}
+\usepackage[english]{babel}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{}
+%\doublespacing
+\singlespacing
+
+\rhead{Andrew Emerick\\ UNI: aje2123 \\ HW 02 \\ STAT W4400}
+\renewcommand{\rightmark}{}
+
+
+\begin{document}
+
+\section{Problem 2}
+The perceptron training algorithm and resulting linear classifier code are given in the 
+included R code. The classification scheme and the algorithm itself are given in the \textit{classify} and \textit{perceptrain} functions. The equations for the classifier and training algorithm were taken from the slides. As required in the assignment, the \textit{classify} function accepts $\rm{S}$ and $\rm{z}$ as arguments and returns the class labels for each data point in $\rm{S}$. The \textit{perceptrain} function accepts $\rm{S}$ and the correct class labels $\rm{y}$ as arguments, and returns the final $\rm{z}$ and a matrix containing all previous iterations of $\rm{z}$. The script \textit{run\_classification.R} loads in all of the functions, generates the data, trains the perceptron, tests it against test data, and plots the results.
+
+When selecting my training data using the \textit{fakedata} function, I use a random number generator to choose the true $\rm{z}$, and divide it by the length of v$_{\rm{H}}$ to normalize v$_{\rm{H}}$. In my \textit{perceptrain} implementation, my initial $\rm{z}$ is also randomly chosen and normalized. Doing the method this way allowed me to test a variety of data sets, getting an impression of how the algorithm performs for different realizations of \textit{fakedata}. 
+
+The convergence rate and final accuracy (i.e. misclassification of the test data) of the algorithm depends primarily upon the separation of the true $\rm{z}$ vs. the $\rm{z}$ chosen as the initial starting point in the \textit{perceptrain} function. Overall, the number of iterations needed is almost always less than 100, but typically between 10 and 30, though I did see iterations as small as 4 or 5. Regardless, the algorithm runs very quickly. In every case, the resulting classifier classifies the training data with 100\% accuracy. The errors on the test data varies, but appears to be always less than about 5\%, but typically around 0-2\%. 
+
+Fig.~\ref{fig:classify} demonstrates the above. Shown here on the left is the linearly separable training data points given as blue triangles (-1) or red squares (+1). The final obtained classifier is given as the black line, and was obtained after 19 iterations. The progress of the training algorithm is shown for a few select iterations over z at z$_1$ (red), z$_5$ (orange), z$_{9}$ (green), z$_{12}$ (blue), and the final z$_{19}$ (black). The obtained final hyperplane classifies the training set perfectly. On the right is the final hyperplane shown with the test data, along with the hyperplane used to generate the data in the first place. In this case, the \textbf{final error on the test data set is 0.01} (1 data point was misclassified). The entire (normalized) Z\_history is shown in Fig.~\ref{fig:zhist}.
+
+\begin{figure}[tb]
+\center
+\includegraphics[width=0.45\linewidth]{hw2_classify.pdf}
+\includegraphics[width=0.45\linewidth]{hw2_classify_final.pdf}
+\caption{The results of the perceptron training algorithm. Left: Shown here are the linearly separable training data points that lie in class +1 (red squares) or -1 (blue triangles). The data is classified using the final hyperplane (black line). A sampling of the progress of attaining the final hyperplane is shown for k$^{\rm{th}}$ iteration, as given in the legend. Right: The final hyperplane (black) and the hyperplane used to generate the data (green) for the final test data set. The \textbf{error rate on the test data is 1\%}, or 1 misclassified point.}
+\label{fig:classify}
+\end{figure}
+
+\begin{figure}[tb]
+\center
+\includegraphics[width=0.7\linewidth]{zhist_final.png}
+\caption{Normalized $\rm{z}$ for all 19 iterations of the perceptron training algorithm (illustrated in Fig.~\ref{fig:classify}}
+\label{fig:zhist}
+\end{figure}
+
+\section{Problem 3}
+All of the code used for this problem is contained in the file \textit{p3.R}. As suggested, I use the e1071 package for the SVM. I randomly choose 20\% of the supplied data and remove it for a test set, and use the rest as training data as described below. Initially, I wanted to be able to use the tune function in the e1071 to easily cross validate the margin and bandwidth parameters for the linear and non-linear SVM, but I was having trouble doing this. It was throwing errors on the data that I was passing it (even though it worked fine for the svm function). I also found the documentation to be lacking, and could not resolve this issue. Instead, I created my own cross validation functions, which I believe operate in the same fashion that tune would have worked. 
+
+I created two seperate functions \textit{linear\_svm} for the linear SVM where the only model parameter is the cost (C), and \textit{non\_linear\_svm}, for the SVM using the RBF kernel, where the model parameters are C and $\gamma$, where $\gamma$ = $\frac{1}{2\sigma^{2}}$, and $\sigma$ is the bandwidth. The costs I used in cross validation were those suggested on Piazza, or C = 2$^{\rm{seq(-10,0,0.5)}}$, and setting $\gamma$ to 10$^{-4}$, 10$^{-3}$, 10$^{-2}$, or 10$^{-1}$. In the non-linear SVM case, I cross validated over all possible combinations of the margin parameter C and $\gamma$. I use k = 5 cross validation in each case. It operated as follows. At the start of the cross validation, the training data is randomly ordered (this random ordering persists through the entire validation process). From this, it is separated into k blocks. I iterate over these blocks, setting aside one as the validation set each time and the rest as the training, until all blocks have been used for validation once. The model is generated from the training data in each iteration using the \textit{svm} function from e1071, with type set to 'C-classification' and kernel set either to 'linear' for the linear SVM, or 'radial' for the RBF kernel SVM. The error on each model is computed using the validation set, and the final error for the given model parameters is averaged over all of the cross validation steps. This is repeated for each and every model parameter choice.
+
+The best model parameters are chosen to be those with the smallest error averaged over the cross validation loop. If more than one set of model parameters have the same minimum error, only one is chosen arbitrarily. These model parameters are then used to train the final SVM using the same settings as before, but this time training with the entire training data set (i.e. no blocks are removed as was done in the validation step). The final model, best model parameters, and errors associated with each model parameter choice are outputted by my functions.
+
+\subsection{Final results}
+The final errors of the linear and non-linear SVM are calculated by classifying the test data that was set aside at the beginning. The final test error depends somewhat upon what data is selected for training and what data is set aside for testing. In every case, the error in both the linear and non-linear SVM is less than about 5\%. In general, the non-linear SVM performs equally as well as or better than the linear SVM (though, since there are many more model parameters to cross validate over, it runs slower). Since there are 40 data points in the test case (20\% of 200 = 40), 5\% corresponds to 2 misclassified points. In some runs, both the linear and non-linear SVM classified the test set with 100\% accuracy. \textbf{For the figures below, the final test errors for the linear and non-linear SVM are both 2.5\%}
+
+\textbf{Answer to 2:} Given that the error rates for both the linear and non-linear SVM are small and comparable (2.5\% for both), \textbf{I find that either the linear or non-linear SVM can be used on this data set though the non-linear may be slightly better}. Depending on which data is set aside as training vs. test, each method is able to classify the test data perfectly well, or with at most 2-3 errors. However, the non-linear SVM generally performs slightly better, though is a more complicated model. The non-linear SVM may be the best choice, but in a practical application of these methods to the real problem of distinguishing handwritten fives and sixes, it would likely be better to expand the parameter space for the margin parameter and $\gamma$ parameters over what we have here. As the plots show, the error rate for the RBF SVM varies dramatically with the choice of $\gamma$, and it would be nice to better explore the model parameter space. This may or may not allow one to better distinguish between the performance of the linear vs. non-linear SVM.
+
+Fig.~\ref{fig:linear svm} shows the misclassification rate for each chosen margin parameter (C). This misclassification rate here is the averaged error from the k-fold cross validation. The best model parameter for C here is 2$^{-10}$ (marked in red).
+
+Fig.~\ref{fig:nonlinear svm} shows the misclassification rate as a function of margin parameter (C) for each possible $\gamma$, 10$^{-4}$ (black, square), 10$^{-3}$ (red, circle), 10$^{-2}$ (blue, triangle), and 10$^{-1}$ (green, plus). 
+
+\begin{figure}[tb]
+\center
+\includegraphics[width=0.7\linewidth]{linear_svm.pdf}
+\caption{The misclassification rate (i.e. error averaged over the k-fold cross validation) for each of the chosen margin parameters / costs (black points) for the linear SVM. The best model parameter used to fit the training data is given in red, C = 2$^{-10}$.}
+\label{fig:linear svm}
+\end{figure}
+
+\begin{figure}[tb]
+\center
+\includegraphics[width=0.7\linewidth]{nonlinear_svm.pdf}
+\caption{The misclassification rate (i.e. error averaged over the k-fold cross validation) for each of the chosen model parameter pairs (cost, $\gamma$) for the non-linear SVM using the RBF kernel. The best parameter choice was (C,$\gamma$) = (0.5, 10$^{-3}$), and is marked by the black diamond.}
+\label{fig:nonlinear svm}
+\end{figure}
+
+
+
+
+
+\end{document}
