@@ -65,7 +65,7 @@ linear_svm <- function(x, y, cost, kblocks){
                          x=x_train, y=y_train, cost = cval)
                          
             # get the new classifcation and error rates of validation             
-            new_y <- sign(predict(model, x_val))
+            new_y <- predict(model, x_val)
             sum_error <- sum_error + class_error(y_val,new_y)
         }# end the cross validation loop
         print(i) 
@@ -76,7 +76,7 @@ linear_svm <- function(x, y, cost, kblocks){
     # find best fit parameters and train data on them
     # if multiple bests, just choose one arbitrarily
     best_c <- cost[ min(error) == error ][1]
-    model  <- svm(Type='C-classification', kernel = 'linear',
+    model  <- svm(type='C-classification', kernel = 'linear',
                                             x=x, y=y, cost = best_c)
 
     return(list(model,best_c, error))
@@ -135,11 +135,12 @@ non_linear_svm <- function(x, y, costs, gammas, kblocks){
                 x_train <- x[- val_index,]
                 y_train <- y[- val_index]
 
-                model <- svm(Type='C-classification', kernel = 'radial',
+                model <- svm(type='C-classification', kernel = 'radial',
                              x=x_train, y=y_train, cost = cval, gamma=gamma)
                          
                 # get the new classifcation and error rates of validation             
-                new_y <- sign(predict(model, x_val))
+#                new_y <- sign(predict(model, x_val))
+                new_y <- predict(model,x_val)
                 sum_error <- sum_error + class_error(y_val,new_y)
             }# end the cross validation loop
 
@@ -152,6 +153,7 @@ non_linear_svm <- function(x, y, costs, gammas, kblocks){
         error[i] <- sum_error
     }# end cost loop
 
+    # choose the best parameters and fit the model
     best_params <- model_params[error==min(error),]
     best_params <- matrix(best_params,ncol=2, nrow=length(best_params)/2)
     model  <- svm(type='C-classification', kernel = 'radial',
@@ -161,17 +163,23 @@ non_linear_svm <- function(x, y, costs, gammas, kblocks){
 }
 
 plot_linear_svm <- function(costs, errors, outfile){
-    # plot everything
-    png(outfile)
-    plot(costs,errors, xlab='Margin Parameter (cost)', ylab ='Misclassification Rate')
+    # Plots the results of the linear SVM
+    #
+    # Input:
+    # costs: Margin parameters used
+    # errors: classification errors for each margin parameter
+    # outfile: filename to save
+    pdf(outfile)
+    plot(costs,errors, xlab='Margin Parameter (cost)', ylab ='Misclassification Rate',asp=1,xlim=c(2**(-10),1),ylim=c(0,0.5),cex=2)
     min_err <- min(errors)
     min_costs <- costs[min_err == errors]
     min_err <- min_err * c(rep(1,length(min_costs)))
-    points(min_costs, min_err, col='red', bg='red')
+    points(min_costs, min_err, col='red', bg='red',cex=2,xlim=c(2**(-10),1),ylim=c(0,0.25))
+    legend(x='topleft',c('All points', 'Best Param'),col=c('black','red'),pch=c(1,1),cex=1.5)
     dev.off()
-}
+} # end plot linear SVM
 
-plot_non_linear_svm <- function(parameters, gammas, errors, outfile){
+plot_non_linear_svm <- function(parameters, gammas, errors, best_param, outfile){
     # Plots the results of the non-linear SVM
     # Inputs:
     # parameters : the full list of model parameters tested
@@ -179,22 +187,31 @@ plot_non_linear_svm <- function(parameters, gammas, errors, outfile){
     # error      : the classification errors for each model parameter pair
     # outfile    : output filename (must be .png!)
     #
-    png(outfile,res=300,width=4,height=4,units='in')
+    pdf(outfile)
     plot(-1,-1,xlab='Margin Parameter (cost)',
-            ylab ='Misclassification Rate',xlim=c(2**(-10),1),ylim=c(0,1))
+            ylab ='Misclassification Rate',xlim=c(2**(-10),1),ylim=c(0,1),asp=1,cex=1.5)
 
-    colors <- c("black","red","blue","green")
-    pch    <- c(0,1,2,3)
+    colors <- c("black","red","blue","green","black")
+    pch    <- c(0,1,2,3,18)
     for (i in 1:length(gammas)){
         
         select <- parameters[,2] == gammas[i]
-        points(parameters[select,][,1], errors[select], col=colors[i], bg=colors[i],pch=pch[i])
+        points(parameters[select,][,1], errors[select], col=colors[i], bg=colors[i],pch=pch[i],cex=1.5)
     }
-    legend(x=0.0001,y=1.0,c("log(Gamma) = -4","log(Gamma) = -3", "log(Gamma) = -2", "log(Gamma) = -1"),
-           cex=0.8,pch=pch,col=colors)
-    dev.off()
-}
+    points(best_param[1], min(errors), col='black', bg='black',pch=18,cex=2)
+
+    legend(x='topright',c("log(Gamma) = -4","log(Gamma) = -3", "log(Gamma) = -2", "log(Gamma) = -1","Best Param"),
+           cex=1.5,pch=pch,col=colors)
+    dev.off()	
+} # end plot non-linear SVM
+
+
 # ---------------------------------------------------------------
+#
+# The below selects the data, finds the SVM's, tests, and plots 
+#
+# ---------------------------------------------------------------
+
 
 # load in the raw data
 raw_data  <- as.matrix(read.table('uspsdata.txt'))
@@ -214,28 +231,42 @@ train_y    <- raw_class[- test_index]
 costs <-  2**seq(-10,0,0.5)
 gammas <- 10**c(-4,-3,-2,-1)
 
+#
+#
+# --------------- Linear SVM ----------------------------
+#
+#
+
 # find the best linear SVM using k=5 cross validation
-print("tuning the svm") 
+print("Finding the best linear svm") 
 results <- linear_svm(train_data, train_y, costs, 5)
 model   <- results[1][[1]]
 error   <- results[3][[1]]
 
-plot_linear_svm(costs, error, "linear_SVM.png")
-pred_test <- sign(predict(model, test_data))
+# find the test error
+plot_linear_svm(costs, error, "linear_SVM.pdf")
+pred_test <- predict(model, test_data)
 final_error <- class_error(test_y, pred_test)
-print("Final error on test data set")
+print("Final error on test data set for linear SVM")
 print(final_error)
 
+#
+#
+# ------------------- Non - linear (RBF kernel) SVM -----------
+#
+#
 # find the best non-linear SVM using k=5 corss validation
-print("non-linear time")
+print("finding the best non-linear svm")
 non_lin <-non_linear_svm(train_data, train_y, costs, gammas, 5)
 nl_model <- non_lin[1][[1]]
+best_param <- non_lin[2][[1]]
 errors   <- non_lin[3][[1]]
 params   <- non_lin[4][[1]]
 
+# calculate the test error
 pred_test <- predict(nl_model, test_data)
 final_error <- class_error(test_y, pred_test)
-print("Final error on test data set")
+print("Final error on test data set for non-linear SVM")
 print(final_error)
-plot_non_linear_svm(params, gammas, errors, "non_linear_svm.png")
+plot_non_linear_svm(params, gammas, errors, best_param, "non_linear_svm.pdf")
 
