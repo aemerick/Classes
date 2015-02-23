@@ -3,8 +3,16 @@
 # Course: STATW4400
 # HW    : HW 2
 
-# NOTES: This script produces the training & test data, trains the 
-#        classifier, tests, and plots the final results.
+# NOTES: This script generates a training set and test set
+#        of data from fakedata, uses perceptrain to develop
+#        a classifier using the training data, and tests
+#        it on the test data. Finally, plot the results.
+
+
+# load in the functions
+source("classify.R")
+source("fakedata.R")
+source("perceptrain.R")
 
 error <- function(y, new_y){
     # returns the fraction of misclassified points
@@ -19,79 +27,82 @@ error <- function(y, new_y){
 d = 2
 n = 100
 
-# load in the functions
-source("classify.R")
-source("fakedata.R")
-source("perceptrain.R")
-
-# create the data set
+# choose a z randomly, normalize, generate training data
 z <- c(runif(d + 1, 0.01, 1.0))
 z <- norm_z(z)
 training_data <- fakedata(z, n)
 
-# now train using perceptron
+# now train using perceptron... normalize final z
 results <- perceptrain(training_data$S, training_data$y)
-prev_c = results$z[3]
-results$z = norm_z(results$z)
+prev_c    <- results$z[3]
+results$z <- norm_z(results$z)
 
 # make sure perceptrain worked:
 new_y <- classify(training_data$S,results$z)
 print('fraction of points misclassified with training data')
 print(error(training_data$y,new_y))
 
-# now, classify a new batch of data:
+# now, generate and classify a new batch of data:
 test_data <- fakedata(z,n)
 new_y <- classify(test_data$S,results$z)
 print('fraction of points misclassified with test data')
 print(error(test_data$y,new_y))
+
+################################################################
+#
+# THE BELOW IS MOSTLY GROSS CODE TO PLOT THE RESULTS....
+#
+################################################################
 
 # now plot everything
 # y = -1 is blue
 # y = +1 is red
 S <- test_data$S
 y <- test_data$y
-minval <- min( min(c(S[,1],S[,2])))
-maxval <- max( max(c(S[,1],S[,2])))
+
+# find the x1 and x2 limits to plot
+minval <- min( min(c(S[,1],S[,2])))-1 
+maxval <- max( max(c(S[,1],S[,2])))+1
 xlim <- c(minval,maxval)
 ylim <- c(minval, maxval)
-png("classify.png")
 
-plot(S[,1][y==1],S[,2][y==1], xlab='S_1', ylab='S_2', col='red',bg='red',pch=0,xlim=xlim,ylim=ylim,asp=1)
+pdf("classify.pdf") # open a file
+plot(S[,1][y==1],S[,2][y==1], xlab=expression('S'[1]), ylab=expression('S'[2]), col='red',bg='red',pch=0,xlim=xlim,ylim=ylim,asp=1)
 points(S[,1][y==-1],S[,2][y==-1],col='blue',bg='blue',pch=2)
 
-z_plot <- z
-theta <- atan2(z_plot[2],z_plot[1])
-line_length <- 20.0
-#p1 <- -prev_c * c(-sin(theta), cos(theta))
-#p2 <- -prev_c * c(sin(theta), -cos(theta))
-#p1 <- -results$z[3] * c(-sin(theta), cos(theta))
-#p2 <- -results$z[3] * c(sin(theta), -cos(theta))
-#f  <- line_length / sum((p2-p1)**2)**0.5
-#p1 <- p1*f; p2<- p2*f
-#lines(c(p1[1],p2[1]),c(p1[2],p2[2]))
 
-p1 <- -c(z[3]/z[1],0)
-p2 <- -c(0, z[3]/z[2])
-vdir <- (p2-p1)/(sum((p2-p1)**2)**0.5)
-f  <- line_length / sum((p2-p1)**2)**0.5 
-p2 <- p2+vdir*f
-p1 <- p1-vdir*f
-lines(c(p1[1],p2[1]),c(p1[2],p2[2]))
-
+line_length <- 50.0 # how long to draw the hyperplanes
 zhist <- results$Z_history
 nz    <- length(zhist)/3
-select <- ceiling(seq(1,nz,length=5))
-colors <- c('red', 'yellow', 'green', 'blue', 'purple')
+select <- ceiling(seq(1,nz,length=6)) # select some z_hists to plot
+colors <- c('red', 'orange', 'green', 'blue', 'purple','black','blue','red')
+legend_string <- c(rep('',8)) # init legend format string
+pch <- c(rep('-',6))          # points used
 
-for (i in select){
-    zk <- zhist[i,]
-    p1 <- -c(zk[3]/zk[1],0)
-    p2 <- -c(0, zk[3]/zk[2])
-    vdir <- (p2-p1)/(sum((p2-p1)**2)**0.5)
-    f  <- line_length / sum((p2-p1)**2)**0.5
-    p2 <- p2+vdir*f
-    p1 <- p1-vdir*f
-    lines(c(p1[1],p2[1]),c(p1[2],p2[2]),col=colors[i])
+# this loops over chosen z histories and plots the hyperplanes
+for (i in 1:length(select)){
+    l  <- select[i]
+    zk <- zhist[l,]
+    p1 <- -c(zk[3]/zk[1],0)    # start point of line
+    p2 <- -c(0, zk[3]/zk[2])   # end point of line
+    vdir <- (p2-p1)/(sum((p2-p1)**2)**0.5)  # the line vector
+    f  <- line_length / sum((p2-p1)**2)**0.5 # scaling the line
+    p2 <- p2+vdir*f            # final end point
+    p1 <- p1-vdir*f            # final start point
+    lines(c(p1[1],p2[1]),c(p1[2],p2[2]),col=colors[i], lwd=2)
+    legend_string[i] <- sprintf("z[%i]",l)
+    
 }
 
+legend_string[6] <- sprintf("z[%i] - final",l)
+legend_string[7] <- "-1"
+legend_string[8] <- "+1"
+
+# legend for scatter plot points and the lines
+legend(x="bottomleft",legend_string[1:6],cex=1.5,col=colors[1:6],pch=pch[1:6])
+legend(x="topright",legend_string[7:8],cex=1.5,col=colors[7:8],pch=c(2,0))
+
+# done!
 dev.off()
+
+# ------------------------------------------------------------------------

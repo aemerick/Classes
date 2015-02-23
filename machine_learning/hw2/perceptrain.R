@@ -4,9 +4,8 @@
 # HW    : HW 2
 
 # make sure classifier is loaded
-#if (exists(classify) == false) {
 source("classify.R")
-#}
+
 norm_z <- function(z){
     # normalize z to the length of v_H
     d = length(z) - 1
@@ -17,39 +16,50 @@ norm_z <- function(z){
 }
 
 perceptrain <- function(S,y){
+#    Perceptron training algorithm for a linear classifier.
+#
+#    z[k+1] = z[k] - alpha[k] gradient(C_p(z[k]))
+#
+#    Input: 
+#    S : training data matrix (x,1)
+#    y : training classification labels
+# 
+#    output:
+#    z : (v_h, -c) hyperplane that classifies the training
+#        set with zero errors
+#    Z_history : z at all iterations of the algorithm.
 #
 #
-#    z[i+1] = z[i] - alpha[i] gradient(C_p(z^k))
-# need to output the result (z)
-# and Z_history, or z at every iteration
 
     max_iter  <- 1000    # maximum number of iterations
-    tolerance <- 1.0E-12 # minimize cost until smaller than this
-    d <- ncol(S) - 1
+    tolerance <- 0.0     # minimize cost until <= this value
+    d <- ncol(S) - 1     # dimensions of the data
 
-    z <- c(runif(d + 1,0.0, 1.0)) # random number between 0 and 1
+    # random initial z & normalize
+    z <- c(runif(d + 1,0.0, 1.0)) 
     z <- norm_z(z)
 
     # allocate memory for Z_history matrix, deptermined by max allowed iterations
     Z_history <- matrix( rep(0, (d+1) * (max_iter)), nrow=max_iter, ncol=d + 1)
     Z_history[1,] <- z
 
-    cost <- 1000 # initialize cost to start the loop to > 0
-
+    # initialize vector for 0 = correct class, 1 = incorrect
     II <- c(rep(0, length(y)))
     
     # initialize the first classification with the chosen z
     f_x    <- classify(S,z)
-    II     <- II * 0
-    II[f_x != y] <- 1  
+    II           <- II * 0  # set to zero
+    II[f_x != y] <- 1       # if incorrect, 1
+    cost <- sum(II * abs(colSums( z * t(S)))) # initial cost
+
 
     keep_looping <- TRUE; k <- 1
     while(keep_looping){
-        k <- k + 1
-        alpha_k <- 1.0 / k
+        k       <- k + 1    # iterations counter
+        alpha_k <- 1.0 / k 
         
         # gradient in the cost function
-        grad_c = colSums(-y * S * II)
+        grad_c <- colSums(-y * S * II)
 
         # calculate new z and save 
         z             <- Z_history[k-1,]  - alpha_k * grad_c
@@ -57,12 +67,11 @@ perceptrain <- function(S,y){
 
         # evaluate the cost of the new z
         f_x <- classify(S,z)
-        II <- II* 0 ; II[f_x != y] <- 1
-
-        cost = sum(II * abs(colSums( z * t(S))))
+        II  <- II* 0 ; II[f_x != y] <- 1
+        cost <- sum(II * abs(colSums( z * t(S))))
 
         # keep looking?
-        if ((cost < tolerance) || (k > max_iter)) {
+        if ((cost <= tolerance) || (k > max_iter)) {
             keep_looping <- FALSE
         }
         
