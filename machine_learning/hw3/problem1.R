@@ -129,7 +129,7 @@ classify <- function(X, pars){
     # --------------------------------------------------
 
     # initialize all of y to positive m
-    y <- c(rep(pars$m,dim(test_data)[1]))
+    y <- c(rep(pars$m,dim(X)[1]))
 
     # assign -m to y indeces where  x_j < theta
     y[X[,pars$j] <= pars$theta] <- -pars$m
@@ -137,16 +137,16 @@ classify <- function(X, pars){
     return(y)
 } 
 
-AdaBoost <- function(X, y, B, K = 5){
+AdaBoost <- function(X, y, B){
     # boosting algortithm
 
     n <- length(y)
     d <- dim(X)[2]
 
     # size of cross validation blocks
-    block_size <- n / K
+#    block_size <- n / K
 
-    selection <- sample(1:n) # random ordering for cross validation
+#    selection <- sample(1:n) # random ordering for cross validation
 
     allPars <- matrix(rep(0,3*B), nrow=B, ncol=3)
 
@@ -157,9 +157,97 @@ AdaBoost <- function(X, y, B, K = 5){
  
     # initialzie errors
     train_error <- c(rep(0,B))
-    test_error  <- c(rep(0,B))
+#    test_error  <- c(rep(0,B))
 
         # now that the parameters are set, perform the cross validation
+#    for (k in 1:K){
+#        low        <- (k-1)*block_size +1
+#        high       <- k * block_size
+#        test_index <- selection[low:high]
+#        test_x     <- X[test_index,]
+#        test_y     <- y[test_index]
+#        train_x    <- X[- test_index,]
+#        train_y    <- y[- test_index]
+
+            # find the classifaction on the training data
+
+# b should be inside k loop  
+
+    print("---- AdaBoost ----")
+    for (b in 1:B){
+        #print(b)
+        c_pars  <- train(X,w,y)
+
+        y_star  <- classify(X,c_pars)
+        c_error <- calc_error(y, y_star, w=w) 
+        alpha[b]   <- log( (1.0 - c_error)/c_error)
+
+        # new weights
+        II <- II*0
+        II[y_star != y] <- 1
+        w  <- w * exp( alpha[b] * II)
+    
+        # save parameters and calculate current total training error
+        allPars[b,] <- c(c_pars$j,c_pars$theta,c_pars$m)
+        
+        agg_y          <- agg_class(X,alpha[1:b],allPars[1:b,])
+        train_error[b] <- calc_error(y, agg_y)
+
+#        if (K > 1){
+#            for (k in 1:K){
+#                low        <- (k-1)*block_size +1
+#                high       <- k * block_size
+#                test_index <- selection[low:high]
+#                test_x     <- X[test_index,]
+#                test_y     <- y[test_index]
+##                train_x    <- X[- test_index,]
+ #               train_y    <- y[- test_index]
+
+                
+
+            
+
+            # find the classifaction on the training data
+
+
+
+#            } # end k loop
+#        } else{ # if K == 1... test error set to null...
+
+            # since there is no cross validation, don't retrain
+            # classifier... just report error on training data
+            # set test data error to NULL (i.e. no test error)
+            # might be safer to just set test error = train rather than NULL
+#            train_error[b,] <- calc_error(train_y, y_star)
+#            test_error[b,]  <- train_error[b,]
+
+
+#        } # endif
+
+    } # end B
+
+    # average training and test error over K CV steps
+#    test_error <- test_error / K
+#    train_error <- train_error / K 
+
+
+    return(list(alpha=alpha, allPars=allPars, train_error = train_error))
+}
+
+CV_AdaBoost <- function(X, y, B, K = 5){
+    # uses k fold cross validation to compute the 
+    # errors as a function of 'b', where b = 1,...,B, for
+    # an AdaBoost classifier of B decision stumps.
+
+    n <- dim(X)[1]
+    d <- dim(X)[2]
+
+    # initialize arrays for error
+    train_error <- c(rep(0,B))
+    test_error  <- c(rep(0,B))
+
+    block_size <- n / K
+    selection <- sample(1:n) # random ordering for cross validation
     for (k in 1:K){
         low        <- (k-1)*block_size +1
         high       <- k * block_size
@@ -169,58 +257,22 @@ AdaBoost <- function(X, y, B, K = 5){
         train_x    <- X[- test_index,]
         train_y    <- y[- test_index]
 
-            # find the classifaction on the training data
 
-# b should be inside k loop  
+        ada_results <- AdaBoost(train_x, train_y, B)
 
         for (b in 1:B){
-            c_pars  <- train(train_x,w,y)
-
-            y_star  <- classify(train_x,c_pars)
-            c_error <- calc_error(train_y, y_star, w=w)
-  
-            train_error[b,] <- train_error[b,] + calc_error(train_y, y_star)
-            test_error[b,]  <- test_error[b,]  + calc_error( test_y, classify(test_x,c_pars))
- 
-            alpha[b]   <- log( (1.0 - c_error)/c_error)
-
-            # new weights
-            II <- II*0
-            II[y_star != y] <- 1
-            w  <- w * exp( alpha[b] * II)
-    
-            allPars[b,] <- c(c_pars$j,c_pars$theta,c_pars$m)
-        } # end B loop
-        # now evaluate the errors 
-
-        test_error <- test_error / K
-        train_error <- train_error / K
-    } # end cross validation
-
-
-    return(list(alpha=alpha, allPars=allPars, test_error = test_error, train_error = train_error))
-}
-
-cross_validation_error <- function(X, y, B, K = 5){
-    # uses k fold cross validation to compute the 
-    # errors as a function of 'b', where b = 1,...,B, for
-    # an AdaBoost classifier of B decision stumps.
-
-    n <- dim(X)[1]
-    d <- dim(X)[2]
-
-    
-    for (b in 1:B){
-
-        
-        for (k in 1:K){
-            new_y <- classify(X, list(j=allPars[b,1], theta=allPars[b,2], m=allPars[b,3]))
-        
+            test_error[b] <- test_error[b] + calc_error(agg_class(test_x, ada_results$alpha[1:b], ada_results$allPars[1:b,]), test_y)
         }
+
+        train_error <- train_error + ada_results$train_error
+
     }
 
+    # now average the errors together
+    train_error <- train_error / K
+    test_error  <- test_error / K
 
-    return(errors)
+    return(list(train=train_error,test=test_error))
 }
 
 
@@ -236,10 +288,11 @@ agg_class <- function(X, alpha, allPars){
     running_sum <- c(rep(0,n))
  
     # loop over all decision stumps to compute total weighted vote 
-    print("Entering AdaBoost Loop --- printing progress")
+    if ((length(allPars) == 3)){ # make into matrix if only 1 row
+        allPars <- t(matrix(allPars))
+    }
+
     for (b in 1:B){
-        print(b)
-        #print(allPars[b,])
         running_sum <- running_sum + alpha[b]*classify(X,list(j=allPars[b,1],theta=allPars[b,2],m=allPars[b,3]))
     }
 
@@ -249,33 +302,52 @@ agg_class <- function(X, alpha, allPars){
 
 
 # load in the raw data
-raw_data  <- as.matrix(read.table('uspsdata.txt'))
-raw_class <- c(as.matrix(read.table('uspscl.txt')))
-n         <- dim(raw_data)[1]
+#raw_data  <- as.matrix(read.table('uspsdata.txt'))
+#raw_class <- c(as.matrix(read.table('uspscl.txt')))
+#n         <- dim(raw_data)[1]
 
 # draw a random sample of the data for testing
-test_index <- sample(1:n, 0.2*n, replace=F)
-test_data  <- raw_data[test_index,]
-test_y     <- raw_class[test_index]
-
+#test_index <- sample(1:n, 0.2*n, replace=F)
+#test_data  <- raw_data[test_index,]
+#test_y     <- raw_class[test_index]
+#
 # remaining data to be used as training
-train_data <- raw_data[- test_index,]
-train_y    <- raw_class[- test_index]
+#train_data <- raw_data[- test_index,]
+#train_y    <- raw_class[- test_index]
 
 
 # some tests
-B = 11
-print("adaboostin")
-ada_results <- AdaBoost(train_data, train_y, B)
-print(ada_results)
-final_class <- agg_class(test_data, ada_results$alpha, ada_results$allPars)
+#B <- 14
 
-print("error using n decision stumps")
-print(B)
-print(calc_error(test_y,final_class))
+#cv_results <- CV_AdaBoost(raw_data,raw_class,B,K=5)
+#train_error <- cv_results$train
+#test_error <- cv_results$test
+#print("Training and test errors")
+#print(train_error)
+#print(test_error)
+
+
+#print("adaboostin")
+#ada_results <- AdaBoost(train_data, train_y, B)
+#print(ada_results)
+#final_class <- agg_class(test_data, ada_results$alpha, ada_results$allPars)
+
+#print("error using n decision stumps")
+#print(B)
+#print(calc_error(test_y,final_class))
 
 # I think cross validate here... meaning .... loop over adaboost call 5 times:
 # using 4/5 of data as training and 1/5 as test. Each time, get an array of 
 # errors of length B for the erros on the training and test data as a 
 # function of b. At the end, average these 5 training error vectors together
 # and the 5 test error vectors together and plot
+#plot_results <- function(train, test, filename='error.png'){
+#    png("error.png")
+#    b <- c(1:B)
+#    plot(b, train_error, xlab='b', ylab='Error', col='black', type ='l')
+#    lines(b, test_error,col='blue')
+#    legend(x='topright', c("Training Error", "Test Error"), col=c('black','blue'),pch=c('-','-'))
+#    dev.off()
+#    graphics.off()
+#}
+#plot_results(train_error,test_error)
