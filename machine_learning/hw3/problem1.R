@@ -3,20 +3,33 @@
 # Course: STATW4400
 # HW    : HW 3
 #
-# 
-
-# 
+# Problem 1: AdaBoost implementation with error estimation
+#            via K-fold cross validation.
+#
+#    This code contains all functions asked for explicitly in
+#    the assignment, as well as a few helper functions. Function
+#    names should be descriptive, but code is commented.
+#
+#-------------------------------------------------------------------------
 
 calc_error <- function(y, new_y, w=NULL){
-    # returns the fraction of misclassified points
-    # for the correct classifications "y" and the new "new_y"
-    #
-    # if a weighting is supplied, then the weighted "error" is returned 
-    # instead. 
-
+    # If no weighting is given, returns the fraction of misclassified
+    # points between two arrays of class labels. If array of weights is
+    # supplied, calculates the "weighted error" instead:
+    #    error = sum(w_i * II_i)/sum(w_i) where II is 1 if point is 
+    #             misclassified, zero if classified correctly
+    # Inputs
+    # y     : correct class labels 
+    # new_y : test class labels
+    # w     : Optional weight array. Default is NULL (i.e. no weighting)
+    # 
+    # Outputs
+    # error : Fraction of misclassified points OR weighted error 
+    # -------------------------------------------------------------------
+ 
     n <- length(y)
 
-    if (is.null(w)){
+    if (is.null(w)){ # no weights, mis. fraction
         val <- length(new_y[new_y != y]) / n
     } else {
         # do the weighted error
@@ -37,26 +50,43 @@ calc_error <- function(y, new_y, w=NULL){
 
 
 train <- function(X, w, y){
+    #
+    # Training function for a single decision stump, implemented
+    # as per the assignment. Performs grid search over all axis,
+    # a range of theta values for each, for m=+1 and m=-1, to 
+    # choose best (j,theta,m) parameters. n+1 thetas are searched over
+    # as determined by the data points in each axis. Test thetas
+    # are placed 1/2 between each data point in each axis, + 2 additional
+    # thetas at a point less than the min value and a point greater than max.
+    #
+    # Input
+    # X    : matrix containing data points (rows) and their axis (columns)
+    # w    : weights used to train the decision stump
+    # y    : correct class labels for data
+    #
+    # Output
+    # pars : list with names "j", "theta", and "m" for parameter set that
+    #        minimized weighted classification error
+    # --------------------------------------------------------------------
 
-    # get the classifier label ( y is +m or -m) 
+    # 
     if (length(unique(y)) > 2){
         print(length(unique(y)))
         print("ERROR > 2 CLASS LABELS - BINARY CLASSIFIER ONLY")
         return()
     }
 
+    # dimensions of X
     n <- length(y)
     d <- dim(X)[2]
 
     # for each dimension, compute the best theta
-    # choose theta's as a random number between each data point
-    # ... or make it deterministic and pick halfway...
-    possible_theta <- matrix(rep(0,((n + 1)*d)),nrow=n+1,ncol=d)
+    # choose theta's at 1/2 between each data point
+    # 
+    # first, sort all columns in ascending order
     sorted_X       <- apply(X,2,sort)
-    
-    #print(dim(possible_theta))
-    #print(dim(X))
-
+    # initialize theta matrix
+    possible_theta <- matrix(rep(0,((n + 1)*d)),nrow=n+1,ncol=d)
 
     # first and last values should be < min and max value in each axis
     # by how much is arbitrarily scaled by spacing between points
@@ -65,36 +95,28 @@ train <- function(X, w, y){
     # rest of the values are 1/2 in between every point
     possible_theta[2:n,] <- 0.5*(X[2:n,] + X[1:n-1,])
 
-    #print(possible_theta)
-
-    #print(dim(possible_theta))
-    #print(dim(X))
     # now for each value of theta in each axis, calculate error
-    # assuming m = 1 or -1
+    # assuming m = 1 or -1. Initialize error to large value
     all_err_mup   <- matrix(rep(99999,((n+1)*d)),nrow=n+1,ncol=d)
     all_err_mdown <- 1.0 * all_err_mup
 
-    #
-
+    # loop over every j,theta combination and calc weighted error
     for (j in 1:d){
         for (i in 1:n+1){
-        all_err_mup[i,j]   <- calc_error(y,classify(X,list(j=j,theta=possible_theta[i,j], m=1)),w=w)
-        all_err_mdown[i,j] <- calc_error(y,classify(X,list(j=j,theta=possible_theta[i,j],m=-1)),w=w)
-        
+        all_err_mup[i,j]   <-calc_error(y,
+                              classify(X,list(j=j,theta=possible_theta[i,j], m=1)),
+                              w=w)
+        all_err_mdown[i,j] <- calc_error(y,
+                              classify(X,list(j=j,theta=possible_theta[i,j],m=-1))
+                              ,w=w)
         }
     }
 
-   # print(i)
-    #print(j)
-    # now find the argmin of each 
-   # print("minumum errors for +1 m and -1 m")
-    #print(max(all_err_mup))
-    #print(min(all_err_mdown))
+    # find the argmin of the two
     argmin_mup   <- which.min(all_err_mup  )
     argmin_mdown <- which.min(all_err_mdown)
    
-    
-
+    # decide which choice of m was better
     min_m <- which.min(c(all_err_mup[argmin_mup],all_err_mdown[argmin_mdown]))
 
     # if min_m is 1, then m = +1
@@ -138,16 +160,26 @@ classify <- function(X, pars){
 } 
 
 AdaBoost <- function(X, y, B){
-    # boosting algortithm
+    #
+    # AdaBoost algorithm. Trains B decision stumps on data (X) with
+    # correct class labels (y).
+    #
+    # Inputs
+    # X     : data matrix with data points in rows and axes in columns
+    # y     : correct class labels for data points
+    # B     : number of decision stumps to train
+    #
+    # Outputs
+    # results : Single list containing "alphas" voting weights for
+    #           aggregated classifier, "allPars" for all decision stump
+    #           parameters (rows) with colums of j, theta, and m. 
+    #           "train_error" or misclassification rate as a function of b
+    # ---------------------------------------------------------------------
 
     n <- length(y)
     d <- dim(X)[2]
 
-    # size of cross validation blocks
-#    block_size <- n / K
-
-#    selection <- sample(1:n) # random ordering for cross validation
-
+    # init all parameters matrix
     allPars <- matrix(rep(0,3*B), nrow=B, ncol=3)
 
     # initialize weights and alphas
@@ -157,87 +189,49 @@ AdaBoost <- function(X, y, B){
  
     # initialzie errors
     train_error <- c(rep(0,B))
-#    test_error  <- c(rep(0,B))
-
-        # now that the parameters are set, perform the cross validation
-#    for (k in 1:K){
-#        low        <- (k-1)*block_size +1
-#        high       <- k * block_size
-#        test_index <- selection[low:high]
-#        test_x     <- X[test_index,]
-#        test_y     <- y[test_index]
-#        train_x    <- X[- test_index,]
-#        train_y    <- y[- test_index]
-
-            # find the classifaction on the training data
-
-# b should be inside k loop  
 
     print("---- AdaBoost ----")
     for (b in 1:B){
-        #print(b)
+        # train the decision stump
         c_pars  <- train(X,w,y)
 
+        # classify with new DS, compute error and voting weights
         y_star  <- classify(X,c_pars)
         c_error <- calc_error(y, y_star, w=w) 
         alpha[b]   <- log( (1.0 - c_error)/c_error)
 
-        # new weights
+        # recompute new weights on data points (w)
         II <- II*0
         II[y_star != y] <- 1
         w  <- w * exp( alpha[b] * II)
     
-        # save parameters and calculate current total training error
+        # save parameters
         allPars[b,] <- c(c_pars$j,c_pars$theta,c_pars$m)
         
+        # running tally of training error as a function of b
         agg_y          <- agg_class(X,alpha[1:b],allPars[1:b,])
         train_error[b] <- calc_error(y, agg_y)
 
-#        if (K > 1){
-#            for (k in 1:K){
-#                low        <- (k-1)*block_size +1
-#                high       <- k * block_size
-#                test_index <- selection[low:high]
-#                test_x     <- X[test_index,]
-#                test_y     <- y[test_index]
-##                train_x    <- X[- test_index,]
- #               train_y    <- y[- test_index]
-
-                
-
-            
-
-            # find the classifaction on the training data
-
-
-
-#            } # end k loop
-#        } else{ # if K == 1... test error set to null...
-
-            # since there is no cross validation, don't retrain
-            # classifier... just report error on training data
-            # set test data error to NULL (i.e. no test error)
-            # might be safer to just set test error = train rather than NULL
-#            train_error[b,] <- calc_error(train_y, y_star)
-#            test_error[b,]  <- train_error[b,]
-
-
-#        } # endif
-
     } # end B
-
-    # average training and test error over K CV steps
-#    test_error <- test_error / K
-#    train_error <- train_error / K 
-
 
     return(list(alpha=alpha, allPars=allPars, train_error = train_error))
 }
 
 CV_AdaBoost <- function(X, y, B, K = 5){
-    # uses k fold cross validation to compute the 
-    # errors as a function of 'b', where b = 1,...,B, for
-    # an AdaBoost classifier of B decision stumps.
+    # Wrapper around the AdaBoost algorithm to perform K-fold 
+    # cross validation purely for the purpose of estimating the 
+    # error / misclassification rate as a function of b in order
+    # to determine convergence properties.
+    #
+    # Inputs
+    # X     : data matrix. n rows of points. d columns of axes
+    # y     : correct class label
+    # B     : Number of DS to train
+    # K     : Optional. Number of K-folds. Default is 5.
+    #
+    # Outputs
+    # List containing "train" and "test" errors as a function of b
+    # ------------------------------------------------------------
 
     n <- dim(X)[1]
     d <- dim(X)[2]
@@ -247,28 +241,35 @@ CV_AdaBoost <- function(X, y, B, K = 5){
     test_error  <- c(rep(0,B))
 
     block_size <- n / K
-    selection <- sample(1:n) # random ordering for cross validation
-    for (k in 1:K){
+    selection  <- sample(1:n) # random ordering for cross validation
+    for (k in 1:K){ # loop over cross validation folds
+        # select index range for test data in fold k
         low        <- (k-1)*block_size +1
         high       <- k * block_size
         test_index <- selection[low:high]
         test_x     <- X[test_index,]
         test_y     <- y[test_index]
+        # rest of data is training
         train_x    <- X[- test_index,]
         train_y    <- y[- test_index]
 
-
+        # run AdaBoost on training data...
         ada_results <- AdaBoost(train_x, train_y, B)
 
+        # Classify test data and calculate errors
+        # training data errors are already computed in AdaBoost
         for (b in 1:B){
-            test_error[b] <- test_error[b] + calc_error(agg_class(test_x, ada_results$alpha[1:b], ada_results$allPars[1:b,]), test_y)
+            test_error[b] <- test_error[b] +
+                             calc_error(
+                               agg_class(test_x, ada_results$alpha[1:b], ada_results$allPars[1:b,]),
+                               test_y)
         }
-
+        print(calc_error(agg_class(test_x, ada_results$alpha[1:B], ada_results$allPars[1:B,]),test_y))
+        print(ada_results$train_error)
         train_error <- train_error + ada_results$train_error
-
     }
 
-    # now average the errors together
+    # now average the errors together over the K folds
     train_error <- train_error / K
     test_error  <- test_error / K
 
@@ -280,6 +281,15 @@ agg_class <- function(X, alpha, allPars){
     # Aggrigated classifier from the AdaBoost algorithm using
     # weighted decision tree classifiers. 
     #    
+    # Inputs
+    # X       : data matrix to classify
+    # alpha   : array of voting weights for each decision stump
+    # allPars : matrix containing decision stump parameters, with
+    #           columns of (j,theta,m)
+    #
+    # Outputs
+    # ystar   : final classification
+    # ------------------------------------------------------------
 
     B <- length(alpha)
     n <- dim(X)[1]
@@ -287,13 +297,15 @@ agg_class <- function(X, alpha, allPars){
     # initialize running total
     running_sum <- c(rep(0,n))
  
-    # loop over all decision stumps to compute total weighted vote 
-    if ((length(allPars) == 3)){ # make into matrix if only 1 row
+    # make sure allPars is matrix (if only 1 DS is used) 
+    if ((length(allPars) == 3)){ 
         allPars <- t(matrix(allPars))
     }
 
+    # loop over all decision stumps to compute total weighted vote
     for (b in 1:B){
-        running_sum <- running_sum + alpha[b]*classify(X,list(j=allPars[b,1],theta=allPars[b,2],m=allPars[b,3]))
+        running_sum <- running_sum + 
+                          alpha[b]*classify(X,list(j=allPars[b,1],theta=allPars[b,2],m=allPars[b,3]))
     }
 
     # classification is the sign of the weighted vote
@@ -301,53 +313,3 @@ agg_class <- function(X, alpha, allPars){
 }
 
 
-# load in the raw data
-#raw_data  <- as.matrix(read.table('uspsdata.txt'))
-#raw_class <- c(as.matrix(read.table('uspscl.txt')))
-#n         <- dim(raw_data)[1]
-
-# draw a random sample of the data for testing
-#test_index <- sample(1:n, 0.2*n, replace=F)
-#test_data  <- raw_data[test_index,]
-#test_y     <- raw_class[test_index]
-#
-# remaining data to be used as training
-#train_data <- raw_data[- test_index,]
-#train_y    <- raw_class[- test_index]
-
-
-# some tests
-#B <- 14
-
-#cv_results <- CV_AdaBoost(raw_data,raw_class,B,K=5)
-#train_error <- cv_results$train
-#test_error <- cv_results$test
-#print("Training and test errors")
-#print(train_error)
-#print(test_error)
-
-
-#print("adaboostin")
-#ada_results <- AdaBoost(train_data, train_y, B)
-#print(ada_results)
-#final_class <- agg_class(test_data, ada_results$alpha, ada_results$allPars)
-
-#print("error using n decision stumps")
-#print(B)
-#print(calc_error(test_y,final_class))
-
-# I think cross validate here... meaning .... loop over adaboost call 5 times:
-# using 4/5 of data as training and 1/5 as test. Each time, get an array of 
-# errors of length B for the erros on the training and test data as a 
-# function of b. At the end, average these 5 training error vectors together
-# and the 5 test error vectors together and plot
-#plot_results <- function(train, test, filename='error.png'){
-#    png("error.png")
-#    b <- c(1:B)
-#    plot(b, train_error, xlab='b', ylab='Error', col='black', type ='l')
-#    lines(b, test_error,col='blue')
-#    legend(x='topright', c("Training Error", "Test Error"), col=c('black','blue'),pch=c('-','-'))
-#    dev.off()
-#    graphics.off()
-#}
-#plot_results(train_error,test_error)
