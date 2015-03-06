@@ -1,0 +1,59 @@
+\documentclass[12pt]{article}% uses letterpaper by default
+
+%---------- Uncomment one of them ------------------------------
+\usepackage[includeheadfoot, top=.5in, bottom=.5in, hmargin=1in]{geometry}
+
+% \usepackage[a5paper, landscape, twocolumn, twoside,
+%    left=2cm, hmarginratio=2:1, includemp, marginparwidth=43pt,
+%    bottom=1cm, foot=.7cm, includefoot, textheight=11cm, heightrounded,
+%    columnsep=1cm, dvips,  verbose]{geometry}
+%---------------------------------------------------------------
+\usepackage{fancyhdr}
+\usepackage{verbatim}
+\usepackage{url}
+\pagestyle{fancy}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage[pdftex]{graphicx}
+\usepackage[english]{babel}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{}
+%\doublespacing
+\singlespacing
+
+\rhead{Andrew Emerick\\ UNI: aje2123 \\ HW 03 \\ STAT W4400}
+\renewcommand{\rightmark}{}
+
+
+\begin{document}
+
+\section{Problem 1}
+The AdaBoost algorithm and supporting functions are implemented in the included code, along with a second R file to load data, run AdaBoost, and plot the results. The AdaBoost algorithm itself is implemented in the \texttt{AdaBoost} function, which takes in the data, class labels, and desired number of decision stumps (DS) as arguments, returning voting weights, DS parameters, and error on training data as a function of B. These can then be fed to the aggregated classifier (\texttt{agg\_class}) to classify new data. 
+
+\texttt{AdaBoost} uses the functions \texttt{train} to train the decision stumps and \texttt{classify} to use the DS parameters to classify the data. The \texttt{calc\_error} function calculates the misclassification rate given two sets of class labels. \texttt{calc\_error} accepts an optional array of weights to calculate weighted error as defined in part b and equation 2 in the homework. \texttt{train} performs a grid search for the best DS parameter triplet of (j, $\theta$, m). A range of $\theta$ values are checked for each axis. For n data points, the n-1 $\theta$ values are chosen at halfway in between every data point, with 2 additional $\theta$ values below/above the minimum/maximum data point value. This is done for every axis. Weighted error is computed for every possible parameter triplet (with m as either +1 or -1), and the best parameters are returned (as defined in equation 2). For a d dimensional data set of n data points, this corresponds to a total of (n+1)$\times$d$\times$2 parameter triplets to test; for n = 100 and d = 256, this is 51,200 parameter triplets. 
+
+As asked, a K-fold cross validation method is implemented to compute errors on training and test data as a function of B in order to find the ideal B value. With cross validation, the algorithm takes a while to evaluate (about 1 minute for B=5) as \texttt{AdaBoost} must be called K times. \texttt{CV\_AdaBoost} is a wrapper around \texttt{AdaBoost} to perform the cross validation. This takes in the entire data set and performs an initial random sorting that persists throughout the CV process. The data is split into K folds (I used K=5), with 1 test fold and K-1 training folds. An AdaBoost classifier is trained on the selected training data, and the associated test error is calculated on the test data as a function of B. This is done K times until every fold is a test fold once. The final training and test errors are averaged over the K folds and output.
+
+\subsection{Results of CV with AdaBoost}
+Fig.~\ref{fig:errors} shows the misclassification rate of the AdaBoost algorithm as averaged over K=5 cross validation folds. The training error rate is given in black, with the test rate in blue. The misclassification rate of the training data becomes zero fairly quickly, at B $\ge$ 17. At this point, \texttt{AdaBoost} becomes inefficient at improving the quality of the resulting classifier, and thus the errors on the test data are noisy as a function of B. The test errors at this point are governed by the nuances of the data used in the training vs. test folds. However, the amplitude of fluctuations about the mean do decrease towards larger B, but this is only a small improvement. By about B = 50, there is no more readily discernible improvement. The final test error fluctuates about a \textbf{mean final error rate of 0.053}, as shown. And again, in this case \textbf{B = 17 is the minimum number of DS necessary}; larger B (around 25-50) would be my recommended number of decision stumps to train.
+
+
+
+\begin{figure}[tb]
+\center
+\includegraphics[width=0.75\linewidth]{final_error.pdf}
+\caption{Misclassification rates of aggregated AdaBoost classifier as a function of the 
+number of decision stumps used, as averaged over a K=5 fold cross validation scheme. As
+shown, training error becomes zero at B=17. At this point, classifier can only improve
+with more / better training data... hence the noise in the test errors around a mean
+of about 0.05}
+\label{fig:error}
+\end{figure}
+
+\section{Problem 2}
+The q = 0.5 $l_q$-regression (as shown on the left) encourages sparse elements as compared to the q = 4 regression. This is illustrated fairly well by the diagram. The oval contours show fixed error for the $\beta$ pairs that it touches. The $\beta$ parameters generated by the regression for a fixed error (oval contour) is the 
+
+
+\end{document}
