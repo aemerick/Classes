@@ -7,76 +7,81 @@
 norm_vec <- function(v){
 
     if (dim(v)[1] > 1){
-        result <- v / sqrt(rowSums(v^2))
+        result <- v / rowSums(v)
     } else{
-        result <- v / sqrt(sum(v^2))
+        result <- v / sum(v)
     }
 
-    return(v)
+    return(result)
 }
 
 MultinomialEM <- function(H, K,tau){
     # multinomial EM with histogram matrix H
     # number of classes  K, and threshold tau
     n <- dim(H)[1]
+    print(dim(H))
 
     # step 1: choose K at random and calculate centroids
     selection <- sample(1:K)
-    tk <- norm_vec(H[selection,])
-#    H  <- norm_vec(H)
+    selection <- c(50,6000,10000)
+    H <- H + 0.01
+    H  <- H / rowSums(H)
+    
+    tk <- H[selection,] 
+    tk <- tk / rowSums(tk)
+    
+    print('tk dim');    print(dim(tk))
+
     # initialize phi and a 
     phi   <- matrix(rep(0,n*K),nrow=n,ncol=K)
-    a     <- matrix(rep(0,n*K),nrow=n,ncol=K)
-    preva <- matrix(rep(1,n*K),nrow=n,ncol=K)
-
+    P     <- matrix(rep(0,n*K),nrow=n,ncol=K)
+    prevP <- matrix(rep(0,n*K),nrow=n,ncol=K)
+ 
     # initialize ck to random values and normalize so
     # sum of ck = 1
     ck  <- runif(K,0,1)
+    ck  <- c(1,0.5,0.33333333)
     ck  <- ck / sum(ck)
 
-    delta <- 10*tau
     iter  <- 1
     keeplooping <- TRUE
-    max_iter <- 100
+    max_iter <- 500
     while (keeplooping){
+        prevP <- P
         # Now do the E-step
- #       sum <- c(rep(0,K))
-        for (k in 1:K) {
-            phi[,k] <- exp( rowSums(H * log(tk[k,])))
-            a[,k]   <- ck[k] * phi[,k]
-
-#            sum <- sum + ck[k]*phi[,k]
+        for (kk in 1:K) {
+            phi[,kk] <- exp( H %*% (log(tk[kk,])))
+           
+            P[,kk]   <- ck[kk] * phi[,kk]
         }
-        #print(phi)
+
         # normalize a 
-        a <- a / rowSums(a)
+        P <- P / rowSums(P)
 
         # Now do the M step
-        ck   <- colSums(a)/n
-  #      print(dim(a))
- #       print(dim(H))
-#        print(dim(t(a)))
-        bk   <- t(a) %*% H
-        sumb <- rowSums(bk)
-        tk   <- bk / sumb
+        ck   <- colSums(P)/n
+
+        bk   <- t(P) %*% H
+
+        tk   <- bk / rowSums(bk)
 
         # A is the matrix ak
-        delta <- norm( a - preva,"O") #L1 matrix norm
+        delta <- norm( P - prevP,"O") #L1 matrix norm
         iter  <- iter + 1
-        preva <- a
-#        print(tau)
- #       print(delta)
-  #      print(a[1,])
+
+
         if ((delta < tau) || (iter > max_iter)){
             keeplooping <- FALSE
         }
+        print(tk)
     }
+
     print(iter)
     m <- c(rep(0,n))
     for (i in 1:n){
-        m[i] <- which.max(a[i,])
+        m[i] <- which.max(P[i,])
     }
-    print(a[sample(1:10),])
+    print(P[sample(1:30),])
     return(m)
 }
 
@@ -86,6 +91,6 @@ MultinomialEM <- function(H, K,tau){
 H <- matrix(readBin("histograms.bin", "double", 640000), 40000, 16)
 
 # adjust for zero H's
-H <- H + 0.01
+#H <- H + 0.001
 #H <- H[1:10,]
 
