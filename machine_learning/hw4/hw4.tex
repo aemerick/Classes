@@ -1,0 +1,72 @@
+\documentclass[12pt]{article}% uses letterpaper by default
+
+%---------- Uncomment one of them ------------------------------
+\usepackage[includeheadfoot, top=.5in, bottom=.5in, hmargin=1in]{geometry}
+
+% \usepackage[a5paper, landscape, twocolumn, twoside,
+%    left=2cm, hmarginratio=2:1, includemp, marginparwidth=43pt,
+%    bottom=1cm, foot=.7cm, includefoot, textheight=11cm, heightrounded,
+%    columnsep=1cm, dvips,  verbose]{geometry}
+%---------------------------------------------------------------
+\usepackage{fancyhdr}
+\usepackage{verbatim}
+\usepackage{url}
+\pagestyle{fancy}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage[pdftex]{graphicx}
+\usepackage[english]{babel}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{setspace}
+\usepackage{}
+%\doublespacing
+\singlespacing
+
+\rhead{Andrew Emerick\\ UNI: aje2123 \\ HW 04 \\ STAT W4400}
+\renewcommand{\rightmark}{}
+
+
+\begin{document}
+
+\section{Problem 1:}
+
+\subsection{Part 1:}
+As given in \textit{An Introduction to Statistical Learning}, Sec. 10.2.3, a data set \textsc{X} of dimensions n$\times$p has a total of $min(n-1,p)$ principal components. In this case, the data set has dimensions 100$\times$10304, and therefore there are \textbf{99 total principal components.}
+
+\subsection{Part 2:}
+As discussed on Slide 260, each data point (image) x can be constructed completely as the sum of the projection of x onto every eigenvector $\xi_{i}$, or $x = \sum^{D}_{i=1} c_{i}\xi_{i}$, where D is the total number of eigenvectors, and c$_{i} \in \mathbb{R}^{1}$. However, the image can be approximated as $\hat{x}$, or the sum over $d$ principal components, rather than all eigenvectors as
+\begin{equation}
+\hat{x} = \sum^{d}_{i=1} c_{i}\xi_{i},
+\end{equation}
+where in this case d = 48, $\xi_{i}$ are the principal component eigenvectors where $\xi_i \in \mathbb{R}^{10304}$, and c$_{i}$ is a scalar where c$_{i} \in \mathbb{R}$. The weights on the principal components, c$_{i}$ can be found via covex optimization.
+
+\section{Problem 2}
+
+\begin{itemize}
+\item C$_{k}$ is the set if all i where m$_{i}$ = k. Here, i is the index number for the set of data x$_{1}$,...,x$_{d}$; therefore i $\in {1,...,d}$. m$_{i}$ is the class label for a given data point x$_{i}$, and k $\in {1,...,K}$ denotes a class. For example, if K = 2, d = 5, and we have a vector M = (1,1,2,1,2) with elements (m$_1$,...,m$_d$), then C$_{1}$ = (1,2,4) with length 3, and C$_{2}$ = (3,5) with length 2.
+
+\item This objective is sensible because it seeks to cluster points together in classes K such that we minimize the differences between the points within each cluster. In this case, how different each point is from each other is measured by the mutual distances between each point within each cluster, normalized by the number of points in each cluster. This is a very reasonable thing to do, and as is shown in the next part, translates to calculating the distances between the cluster points and the cluster means. 
+
+\item
+
+\item  
+
+\section{Problem 3:}
+I have implemented the EM clustering algorithm for multinomial mixtures in the included R code. There are two files, one containing the EM algorithm and the other the code used to run and plot the results. The algorithm is implemented as described in the assignment. To deal with the zero values in the H matrix, I add 0.01 to H, randomly choose my initial centroids from this new matrix at random, normalize my centroids, and then add 0.01 again to the normalized centroids. I found that this was the only way I could consistently obtain reasonable results from this algorithm.
+
+The results are shown in Figure~\ref{fig:EM} for, from left to right, K = 3, K = 4, and K = 5. In all three cases, I used $\tau$=1.0$\times$10$^{-10}$ when checking for convergence. I use grayscale coloring for each of the results, with each class assigned a value evenly spaced from 0 (black) to 1 (white). E.x. for K = 3, k = 1 is 0 (black), k = 2 is 0.5 (gray), and k = 3 is 1 (white). 
+
+Comparing to the original image, the clusters in K = 3 seem to show two different types of field, and picks out the trees as a third class. For K = 4, this is preserved, yet the additional class picks out the shadows around the forest from the rest of the image. K = 5 preserves the two different fields, forest, and shadows, and the additional class picks out the dividing lines between the fields. 
+\begin{figure*}
+\centering
+\includegraphics[width=0.45\linewidth]{problem3/k3.pdf}
+\includegraphics[width=0.45\linewidth]{problem3/k4.pdf}
+\vspace{0.1cm}
+\includegraphics[width=0.45\linewidth]{problem3/k5.pdf}
+\caption{The imaged results of the EM clustering algorithm. From left to right, K=3, K=4, and K=5. The colors of each class are assigned in grayscale to be evenly spaced from 0 (black) and 1 (white).}
+\label{fig:EM}
+\end{figure*}
+
+\end{itemize}
+\end{document}
